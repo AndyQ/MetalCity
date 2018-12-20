@@ -28,7 +28,7 @@ class Sky: Model {
     }
     
     func buildDome() {
-        let radius :Float = 1000
+        let radius :Float = 800
         let dtheta : Float = 15
         let dphi : Float = 15
 
@@ -37,11 +37,12 @@ class Sky: Model {
         for phi in stride( from:0, to:90-dphi+1, by:dphi ) {
             print( "phi - \(phi)" )
             for theta in stride( from:0, to:360 - dtheta+1, by:dtheta ) {
-                var p = float4()
+                var p = float4(0, 0, 0, 1)
                 
                 p.x = radius * sinf(phi*DEGREES_TO_RADIANS) * cosf(theta*DEGREES_TO_RADIANS)
                 p.z = radius * sinf(phi*DEGREES_TO_RADIANS) * sinf(theta*DEGREES_TO_RADIANS)
                 p.y = radius * cosf(phi*DEGREES_TO_RADIANS)
+
                 var v = Vertex()
                 v.position = p
                 vlist.append(v)
@@ -145,7 +146,8 @@ class Sky: Model {
         // Convert vertices into trianglestrip
         var i : UInt16 = 0
         for var v in vlist {
-            v.position.w = 1
+            v.position.x += Float(WORLD_SIZE/2)
+            v.position.z += Float(WORLD_SIZE/2)
             v.color = float4(1,0,0,1)
             v.normal = float4(1,0,0,1)
             vertices.append(v)
