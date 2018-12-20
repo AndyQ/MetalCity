@@ -38,6 +38,7 @@ class City {
     var floor : PlaneModel
     var buildings = [Building]()
     var decoration : Streetlights
+    var cars : Cars
     var texture : Int = 0
 
     var vlist : [Int]
@@ -45,7 +46,6 @@ class City {
 
     var device: MTLDevice
     
-    var world : [[MapItem]]
     var modern_count = 0
     var tower_count = 0
     var blocky_count = 0
@@ -61,16 +61,21 @@ class City {
         
         sky = Sky(device: device)
         floor = PlaneModel(device: device)
+        cars = Cars(device:device)
 
-        world = Array(repeating: Array(repeating: .unclaimed, count: WORLD_SIZE), count: WORLD_SIZE)
         buildCity()
         
+        // Add in 100 cars
+        for _ in 0 ..< 1000 {
+            cars.addCar()
+        }
     }
     
     func update(  )
     {
         sky.update()
         floor.update()
+        cars.update()
 /*
         for b in buildings {
             b.update()
@@ -118,6 +123,7 @@ class City {
 
         decoration.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)
 
+        cars.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)
     }
 
     func  buildCity() {
@@ -146,17 +152,17 @@ class City {
             bytes[i+2] = 0 // blue
             bytes[i+3] = 255 // alpha
 */
-            if self.world[x][y].contains(.claimRoad) {
+            if WorldMap.instance.cellAt(x, y).contains(.claimRoad) {
                 bytes[i] = 75 // red
                 bytes[i+1] = 75 // green
                 bytes[i+2] = 75 // blue
                 bytes[i+3] = 255 // alpha
-            } else if self.world[x][y].contains(.claimBuilding) {
+            } else if WorldMap.instance.cellAt(x, y).contains(.claimBuilding) {
                 bytes[i] = 0 // red
                 bytes[i+1] = 0 // green
                 bytes[i+2] = 0 // blue
                 bytes[i+3] = 255 // alpha
-            } else if self.world[x][y].contains(.claimWalk) {
+            } else if WorldMap.instance.cellAt(x, y).contains(.claimWalk) {
                 bytes[i] = 50 // red
                 bytes[i+1] = 50 // green
                 bytes[i+2] = 50 // blue
@@ -249,9 +255,9 @@ class City {
             while y < WORLD_SIZE {
                 //if this isn't a bit of sidewalk, then keep looking
                 //If it's used as a road, skip it.
-                if self.world[x][y].contains(.claimWalk) && !self.world[x][y].contains(.claimRoad) {
-                    road_left = self.world[x+1][y].contains(.claimRoad)
-                    road_right = self.world[x-1][y].contains(.claimRoad)
+                if WorldMap.instance.cellAt(x, y).contains(.claimWalk) && !WorldMap.instance.cellAt(x, y).contains(.claimRoad) {
+                    road_left = WorldMap.instance.cellAt(x+1, y).contains(.claimRoad)
+                    road_right = WorldMap.instance.cellAt(x-1, y).contains(.claimRoad)
 
                     //if the cells to our east and west are not road, then we're not on a corner.
                     //if the cell to our east AND west is road, then we're on a median. skip it
@@ -271,10 +277,10 @@ class City {
             while x < WORLD_SIZE {
                 //if this isn't a bit of sidewalk, then keep looking
                 //If it's used as a road, skip it.
-                if self.world[x][y].contains(.claimWalk) && !self.world[x][y].contains(.claimRoad) {
+                if WorldMap.instance.cellAt(x, y).contains(.claimWalk) && !WorldMap.instance.cellAt(x, y).contains(.claimRoad) {
 
-                    road_left = self.world[x][y+1].contains(.claimRoad)
-                    road_right = self.world[x][y-1].contains(.claimRoad)
+                    road_left = WorldMap.instance.cellAt(x, y+1).contains(.claimRoad)
+                    road_right = WorldMap.instance.cellAt(x, y-1).contains(.claimRoad)
                 
                     //if the cells to our east and west are not road, then we're not on a corner.
                     //if the cell to our east AND west is road, then we're on a median. skip it
@@ -314,7 +320,7 @@ class City {
         while x < WORLD_SIZE {
             var y = 0
             while y < WORLD_SIZE {
-                if self.world[x][y].rawValue != 0 {
+                if WorldMap.instance.cellAt(x, y).rawValue != 0 {
                     y += 1
                     continue
                 }
@@ -444,7 +450,7 @@ class City {
             let x = xx.clamped(to:0...WORLD_SIZE-1)
             for yy in y ..< y + depth {
                 let y = yy.clamped(to:0...WORLD_SIZE-1)
-                self.world[x][y].insert(value)
+                WorldMap.instance.addValue(x, y, val:value)
             }
         }
     }
@@ -485,7 +491,7 @@ class City {
         var z2 = z1
         var length = 0
         while x2 > 0 && x2 < WORLD_SIZE && z2 > 0 && z2 < WORLD_SIZE {
-            if self.world[x2][z2].contains(.claimRoad) {
+            if WorldMap.instance.cellAt(x2, z2).contains(.claimRoad) {
                 break
             }
             length += 1
@@ -631,10 +637,8 @@ class City {
 
     func claimed( atX x: Int, y:Int, width:Int, depth:Int ) -> Bool {
         for xx in x ..< x + width {
-            let x = xx.clamped(to:0...WORLD_SIZE-1)
             for yy in y ..< y + depth {
-                let y = yy.clamped(to:0...WORLD_SIZE-1)
-                if self.world[x][y].rawValue != 0 {
+                if WorldMap.instance.cellAt(xx, yy).rawValue != 0 {
                     return true
                 }
             }

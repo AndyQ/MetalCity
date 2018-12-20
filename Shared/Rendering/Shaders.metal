@@ -84,7 +84,7 @@ fragment half4 objectFragmentShader(ProjectedVertex vert [[stage_in]] )
     return half4(color.r, color.g, color.b, a);
 }
 
-vertex ProjectedVertex indexedVertexShaderb( const device InVertex *vertices [[buffer(0)]],
+vertex ProjectedVertex indexedVertexShader( const device InVertex *vertices [[buffer(0)]],
                                            const device Uniforms &uniforms [[buffer(1)]],
                                            unsigned int  vertexId [[vertex_id]],
                                            unsigned int iid [[instance_id]])
@@ -102,6 +102,7 @@ vertex ProjectedVertex indexedVertexShaderb( const device InVertex *vertices [[b
     return outVert;
 }
 
+/*
 vertex ProjectedVertex indexedVertexShader( const device InVertex *vertices [[buffer(0)]],
                                        const device Uniforms &uniforms [[buffer(1)]],
                                            const device PerInstanceUniforms *perInstanceUniforms [[buffer(2)]],
@@ -122,7 +123,8 @@ vertex ProjectedVertex indexedVertexShader( const device InVertex *vertices [[bu
     outVert.texCoords = vertices[vertexId].texCoords;
     return outVert;
 }
-
+*/
+ 
 fragment half4 indexedFragmentShader(ProjectedVertex fragments [[stage_in]],
                                  texture2d<float> textures [[texture(0)]])
 {
@@ -140,4 +142,37 @@ fragment half4 indexedFragmentShader(ProjectedVertex fragments [[stage_in]],
     }
     
     return half4(texture);
+}
+
+
+
+vertex ProjectedVertex carVertexShader( const device InVertex *vertices [[buffer(0)]],
+                                           const device Uniforms &uniforms [[buffer(1)]],
+                                           unsigned int  vertexId [[vertex_id]],
+                                           unsigned int iid [[instance_id]])
+{
+    
+    InVertex v = vertices[vertexId];
+    
+    ProjectedVertex outVert;
+    
+    outVert.position = uniforms.viewProjectionMatrix * float4(v.position);
+    outVert.normal = float4(v.normal).xyz;
+    outVert.texCoords = vertices[vertexId].texCoords;
+    outVert.color = v.color;
+    
+    return outVert;
+}
+
+fragment half4 carFragmentShader(ProjectedVertex fragments [[stage_in]],
+                                     texture2d<float> textures [[texture(0)]])
+{
+    constexpr sampler samplers(coord::normalized,
+                               address::repeat,
+                               filter::linear);
+    float4 texture = textures.sample(samplers, fragments.texCoords);
+    
+    float4 baseColor = fragments.color;
+    baseColor.a = 1;
+    return half4(baseColor * texture);
 }

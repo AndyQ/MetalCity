@@ -20,15 +20,23 @@ class TextureManager {
     
     func createTextures( device:MTLDevice ) {
         createStreetlightTexture(device:device)
+        createHeadlightTexture(device:device)
         createBuildingTextures(device:device)
         createSkyTexture(device:device)
     }
     
     func createStreetlightTexture(device:MTLDevice) {
         guard let image = Image(named: "light") else { print( "Failed to load image: light.png"); return }
-
+        
         let t = imageToTexture(image: image, named:"Light", device: device)
         textures[.light] = t
+    }
+    
+    func createHeadlightTexture(device:MTLDevice) {
+        guard let image = Image(named: "headlight") else { print( "Failed to load image: headlight.png"); return }
+        
+        let t = imageToTexture(image: image, named:"headlight", device: device)
+        textures[.headlight] = t
     }
     
 

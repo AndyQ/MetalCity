@@ -83,7 +83,7 @@ class Building : Model {
 
         super.init()
         
-        let vertexShader : String = "indexedVertexShaderb"
+        let vertexShader : String = "indexedVertexShader"
         let fragmentShader : String = "indexedFragmentShader"
 //        let vertexShader : String = "objectVertexShader"
 //        let fragmentShader : String = "objectFragmentShader"
@@ -95,13 +95,13 @@ class Building : Model {
             createModern()
             break
         case .simple:
-            createSimple()
+//            createSimple()
             break
         case .blocky:
-            createBlocky()
+//            createBlocky()
             break
         case .tower:
-            createTower()
+//            createTower()
             break
         }
         

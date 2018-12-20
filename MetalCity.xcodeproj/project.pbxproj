@@ -29,7 +29,6 @@
 		A117A85421CA793B008FFC94 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655421C66A610043139A /* State.swift */; };
 		A117A85521CA793B008FFC94 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB2E21C2EC4F001A3DA2 /* Renderer.swift */; };
 		A117A85621CA793B008FFC94 /* BufferProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3121C2EC74001A3DA2 /* BufferProvider.swift */; };
-		A117A85721CA793B008FFC94 /* ObjectRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3B21C2F112001A3DA2 /* ObjectRenderer.swift */; };
 		A117A85821CA793B008FFC94 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3021C2EC74001A3DA2 /* Shaders.metal */; };
 		A117A85A21CA7A06008FFC94 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = A117A85921CA7A06008FFC94 /* Color.swift */; };
 		A117A85C21CA7A55008FFC94 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = A117A85B21CA7A55008FFC94 /* Image.swift */; };
@@ -46,12 +45,15 @@
 		A12CDB3621C2EC74001A3DA2 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3321C2EC74001A3DA2 /* Math.swift */; };
 		A12CDB3821C2EEF8001A3DA2 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3721C2EEF8001A3DA2 /* Camera.swift */; };
 		A12CDB3A21C2F0FD001A3DA2 /* Cube.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3921C2F0FD001A3DA2 /* Cube.swift */; };
-		A12CDB3C21C2F112001A3DA2 /* ObjectRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3B21C2F112001A3DA2 /* ObjectRenderer.swift */; };
 		A12CDB3E21C2F13C001A3DA2 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3D21C2F13C001A3DA2 /* Model.swift */; };
 		A12CDB4021C2F13F001A3DA2 /* CubeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3F21C2F13E001A3DA2 /* CubeModel.swift */; };
 		A12CDB4321C30AC2001A3DA2 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB4221C30AC2001A3DA2 /* City.swift */; };
 		A12F600721CBC63F000E920B /* Sky.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F600621CBC63F000E920B /* Sky.swift */; };
 		A12F600821CBC76A000E920B /* Sky.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F600621CBC63F000E920B /* Sky.swift */; };
+		A12F600A21CC26FB000E920B /* Cars.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F600921CC26FB000E920B /* Cars.swift */; };
+		A12F600C21CC2C3E000E920B /* WorldMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F600B21CC2C3E000E920B /* WorldMap.swift */; };
+		A12F600D21CC2E8E000E920B /* WorldMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F600B21CC2C3E000E920B /* WorldMap.swift */; };
+		A12F600E21CC325A000E920B /* Cars.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F600921CC26FB000E920B /* Cars.swift */; };
 		A1B7655521C66A610043139A /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655421C66A610043139A /* State.swift */; };
 		A1B7655721C6818B0043139A /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655621C6818B0043139A /* Utils.swift */; };
 		A1B7655B21C698D70043139A /* BoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655A21C698D70043139A /* BoundingBox.swift */; };
@@ -87,11 +89,12 @@
 		A12CDB3321C2EC74001A3DA2 /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		A12CDB3721C2EEF8001A3DA2 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		A12CDB3921C2F0FD001A3DA2 /* Cube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cube.swift; sourceTree = "<group>"; };
-		A12CDB3B21C2F112001A3DA2 /* ObjectRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectRenderer.swift; sourceTree = "<group>"; };
 		A12CDB3D21C2F13C001A3DA2 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		A12CDB3F21C2F13E001A3DA2 /* CubeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubeModel.swift; sourceTree = "<group>"; };
 		A12CDB4221C30AC2001A3DA2 /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		A12F600621CBC63F000E920B /* Sky.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sky.swift; sourceTree = "<group>"; };
+		A12F600921CC26FB000E920B /* Cars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cars.swift; sourceTree = "<group>"; };
+		A12F600B21CC2C3E000E920B /* WorldMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldMap.swift; sourceTree = "<group>"; };
 		A1B7655421C66A610043139A /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		A1B7655621C6818B0043139A /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A1B7655A21C698D70043139A /* BoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundingBox.swift; sourceTree = "<group>"; };
@@ -197,7 +200,6 @@
 				A1B7655421C66A610043139A /* State.swift */,
 				A12CDB2E21C2EC4F001A3DA2 /* Renderer.swift */,
 				A12CDB3121C2EC74001A3DA2 /* BufferProvider.swift */,
-				A12CDB3B21C2F112001A3DA2 /* ObjectRenderer.swift */,
 				A12CDB3221C2EC74001A3DA2 /* ShaderTypes.h */,
 				A12CDB3021C2EC74001A3DA2 /* Shaders.metal */,
 			);
@@ -213,8 +215,10 @@
 				A1B7655C21C6A5C30043139A /* Building.swift */,
 				A1B7656021C7D3430043139A /* Streetlights.swift */,
 				A12F600621CBC63F000E920B /* Sky.swift */,
+				A12F600921CC26FB000E920B /* Cars.swift */,
 				A12CDB3921C2F0FD001A3DA2 /* Cube.swift */,
 				A12CDB3F21C2F13E001A3DA2 /* CubeModel.swift */,
+				A12F600B21CC2C3E000E920B /* WorldMap.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -322,11 +326,13 @@
 			files = (
 				A117A85621CA793B008FFC94 /* BufferProvider.swift in Sources */,
 				A117A85121CA7935008FFC94 /* BoundingBox.swift in Sources */,
+				A12F600E21CC325A000E920B /* Cars.swift in Sources */,
 				A117A85E21CA7A96008FFC94 /* Image.swift in Sources */,
 				A117A84B21CA7932008FFC94 /* CubeModel.swift in Sources */,
 				A117A84521CA7931008FFC94 /* Model.swift in Sources */,
 				A117A84821CA7931008FFC94 /* Building.swift in Sources */,
 				A117A84D21CA7935008FFC94 /* AutoCamera.swift in Sources */,
+				A12F600D21CC2E8E000E920B /* WorldMap.swift in Sources */,
 				A117A85421CA793B008FFC94 /* State.swift in Sources */,
 				A117A83521CA78C3008FFC94 /* GameViewController.swift in Sources */,
 				A117A85821CA793B008FFC94 /* Shaders.metal in Sources */,
@@ -337,7 +343,6 @@
 				A117A85321CA793B008FFC94 /* City.swift in Sources */,
 				A117A85D21CA7A96008FFC94 /* Color.swift in Sources */,
 				A117A84C21CA7935008FFC94 /* Camera.swift in Sources */,
-				A117A85721CA793B008FFC94 /* ObjectRenderer.swift in Sources */,
 				A117A85521CA793B008FFC94 /* Renderer.swift in Sources */,
 				A117A84921CA7931008FFC94 /* Streetlights.swift in Sources */,
 				A117A85221CA7935008FFC94 /* TextureManager.swift in Sources */,
@@ -353,10 +358,12 @@
 			files = (
 				A1D9BD0121C57A7800D7204A /* PlaneModel.swift in Sources */,
 				A117A85C21CA7A55008FFC94 /* Image.swift in Sources */,
+				A12F600A21CC26FB000E920B /* Cars.swift in Sources */,
 				A12CDB3821C2EEF8001A3DA2 /* Camera.swift in Sources */,
 				A117A85A21CA7A06008FFC94 /* Color.swift in Sources */,
 				A12CDB2F21C2EC4F001A3DA2 /* Renderer.swift in Sources */,
 				A117A82B21CA5393008FFC94 /* AutoCamera.swift in Sources */,
+				A12F600C21CC2C3E000E920B /* WorldMap.swift in Sources */,
 				A1B7655B21C698D70043139A /* BoundingBox.swift in Sources */,
 				A12CDB4321C30AC2001A3DA2 /* City.swift in Sources */,
 				A1D9BCFE21C57A4400D7204A /* Plane.swift in Sources */,
@@ -370,7 +377,6 @@
 				A1B7655521C66A610043139A /* State.swift in Sources */,
 				A12CDB4021C2F13F001A3DA2 /* CubeModel.swift in Sources */,
 				A12CDB2D21C2EC23001A3DA2 /* GameViewController.swift in Sources */,
-				A12CDB3C21C2F112001A3DA2 /* ObjectRenderer.swift in Sources */,
 				A12CDB3E21C2F13C001A3DA2 /* Model.swift in Sources */,
 				A1B7656121C7D3430043139A /* Streetlights.swift in Sources */,
 				A12CDB1B21C2EBDC001A3DA2 /* AppDelegate.swift in Sources */,

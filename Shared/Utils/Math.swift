@@ -32,9 +32,73 @@ func calculateTriangleSurfaceNormal(v1 : Vertex, v2 : Vertex, v3 : Vertex ) -> f
     let crossProduct = cross(vector1, vector2)
     let normal = normalize(crossProduct)
     
-    return [normal.x, normal.y, normal.z, 1];
+    return [normal.x, normal.y, normal.z, 1]
 }
 
+func distance(_ x1 : Float, _ y1: Float, _ x2: Float, _ y2: Float) -> Float {
+    
+    let dx = x1 - x2;
+    let dy = y1 - y2;
+    return sqrtf(dx * dx + dy * dy)
+}
+
+/*-----------------------------------------------------------------------------
+ Keep an angle between 0 and 360
+ -----------------------------------------------------------------------------*/
+
+func clampAngle( _ angle : Float ) -> Float {
+    let newAngle : Float
+    if angle < 0.0 {
+        newAngle = 360.0 - fmodf(abs(angle), 360.0)
+    } else {
+        newAngle = fmodf(angle, 360.0)
+    }
+    return newAngle
+    
+}
+
+
+func angleBetweenPoints ( _ x1 : Float, _ y1 : Float, _ x2 : Float, _ y2 : Float) -> Float
+{
+    let  z_delta = (y1 - y2)
+    let x_delta = (x1 - x2)
+    if x_delta == 0 {
+        if (z_delta > 0) {
+            return 0.0
+        } else {
+            return 180.0
+        }
+    }
+    
+    var angle : Float
+    if abs(x_delta) < abs(z_delta) {
+        angle = 90 - atanf(z_delta / x_delta) * RADIANS_TO_DEGREES
+        if x_delta < 0 {
+            angle -= 180.0
+        }
+    } else {
+        angle = atanf(x_delta / z_delta) * RADIANS_TO_DEGREES
+        if z_delta < 0.0 {
+            angle += 180.0
+        }
+    }
+    if angle < 0.0 {
+        angle += 360.0
+    }
+    return angle
+}
+
+func mathAngleDifference( _ a1: Float, _ a2: Float ) -> Float {
+    let result = fmodf(a1 - a2, 360.0)
+    if result > 180.0 {
+        return result - 360.0
+    }
+    if result < -180.0 {
+        return result + 360.0
+    }
+    return result
+    
+}
 
 extension Double {
     /// Number of radians in *half a turn*.
@@ -144,32 +208,6 @@ extension float4x4 {
         return mat3x3
     }
 
-    
-/*
-    func lookAt( from: float3, to:float3, up:float3 = [0,1,0] ) -> float4x4 {
-        let forward = normalize(from - to);
-        let right = cross(normalize(up), forward);
-        let upv = cross(forward, right);
-        
-        Matrix44f camToWorld;
-        
-        camToWorld[0][0] = right.x;
-        camToWorld[0][1] = right.y;
-        camToWorld[0][2] = right.z;
-        camToWorld[1][0] = up.x;
-        camToWorld[1][1] = up.y;
-        camToWorld[1][2] = up.z;
-        camToWorld[2][0] = forward.x;
-        camToWorld[2][1] = forward.y;
-        camToWorld[2][2] = forward.z;
-        
-        camToWorld[3][0] = from.x;
-        camToWorld[3][1] = from.y;
-        camToWorld[3][2] = from.z;
-        
-        return camToWorld;
-    }
-*/
     
     static func makeLookAt(eye: float3, lookAt: float3, up:float3) -> float4x4 {
         let n = normalize(eye + (-lookAt))

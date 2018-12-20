@@ -17,7 +17,7 @@ class Sky: Model {
     init( device: MTLDevice ) {
         self.device = device
         
-        let vertexShader : String = "indexedVertexShaderb"
+        let vertexShader : String = "indexedVertexShader"
         let fragmentShader : String = "indexedFragmentShader"
         
         super.init()
@@ -35,7 +35,6 @@ class Sky: Model {
         var n = 0
         var vlist = [Vertex]()
         for phi in stride( from:0, to:90-dphi+1, by:dphi ) {
-            print( "phi - \(phi)" )
             for theta in stride( from:0, to:360 - dtheta+1, by:dtheta ) {
                 var p = float4(0, 0, 0, 1)
                 

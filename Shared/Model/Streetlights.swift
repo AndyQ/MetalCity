@@ -22,7 +22,7 @@ class Streetlights : Model {
     init( device: MTLDevice ) {
         self.device = device
         
-        let vertexShader : String = "indexedVertexShaderb"
+        let vertexShader : String = "indexedVertexShader"
         let fragmentShader : String = "indexedFragmentShader"
 
         super.init()

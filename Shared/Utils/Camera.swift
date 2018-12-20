@@ -43,13 +43,11 @@ class Camera {
     func look()  -> float4x4
     {
         // Calculate angle
-        /*
-         float dist = MathDistance (m_vPosition.x, m_vPosition.z, m_vView.x, m_vView.z)
-         state.camera.angle.y = ClampAngle (-AngleBetweenPoints (m_vPosition.x, m_vPosition.z, m_vView.x, m_vView.z))
-         state.camera.angle.x = 90.0f + AngleBetweenPoints (0, m_vPosition.y, dist, m_vView.y)
-         
-         state.camera.position = m_vPosition
-         */
+        let dist = distance(m_vPosition.x, m_vPosition.z, m_vView.x, m_vView.z)
+        appState.cameraState.angle.y = clampAngle(-angleBetweenPoints(m_vPosition.x, m_vPosition.z, m_vView.x, m_vView.z))
+        appState.cameraState.angle.x = 90.0 + angleBetweenPoints (0, m_vPosition.y, dist, m_vView.y)
+
+        appState.cameraState.position = m_vPosition
         let lookAt = float4x4.makeLookAt(eye: m_vPosition, lookAt: m_vView, up:m_vUpVector)
         
         return lookAt
