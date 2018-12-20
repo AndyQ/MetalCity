@@ -8,7 +8,7 @@
 
 import MetalKit
 
-class Decoration : Model {
+class Streetlights : Model {
     var type : Int = 0
     var textureType : TextureType = .light
     var gridX : Int = 0
@@ -21,7 +21,6 @@ class Decoration : Model {
     var indices = [UInt16]()
     init( device: MTLDevice ) {
         self.device = device
-//        bufferProvider = BufferProvider(device: device, inflightBuffersCount: 3, sizeOfUniformsBuffer: MemoryLayout<PerInstanceUniforms>.size * (1))
         
         let vertexShader : String = "indexedVertexShaderb"
         let fragmentShader : String = "indexedFragmentShader"
@@ -76,8 +75,6 @@ class Decoration : Model {
 
     func update(  )
     {
-
-//        self.uniformsBuffer = bufferProvider.nextBuffer()
         
         let translation = float4x4(translate: [0,0,0])
         
@@ -90,17 +87,12 @@ class Decoration : Model {
         uniform.g = 1
         uniform.b = 1
         uniform.a = 1.0
-        
-//        memcpy(self.uniformsBuffer.contents() + MemoryLayout<PerInstanceUniforms>.stride*0, &uniform, MemoryLayout<PerInstanceUniforms>.stride)
-
     }
     
     func prepareToDraw() {
-//        _ = bufferProvider.avaliableResourcesSemaphore.wait(timeout: DispatchTime.distantFuture)
     }
     
     func finishDrawing() {
-//        self.bufferProvider.avaliableResourcesSemaphore.signal()
     }
     
     override func draw( commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer ) {
@@ -113,7 +105,6 @@ class Decoration : Model {
         
         commandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, index: 0)
         commandEncoder.setVertexBuffer(sharedUniformsBuffer, offset: 0, index: 1)
-//        commandEncoder.setVertexBuffer(uniformsBuffer, offset: 0, index: 2)
         
         if let texture = TextureManager.instance.textures[textureType] {
             commandEncoder.setFragmentTexture(texture, index: 0)

@@ -75,7 +75,7 @@ class Renderer: NSObject, MTKViewDelegate {
         
         camera = Camera(pos: [0, 85, 0], lookAt: [10, 80, 10])
         autoCam = AutoCamera(camera: camera)
-        autoCam.isEnabled = true
+        autoCam.isEnabled = false
         city = City(device:device)
         
         super.init()
@@ -120,7 +120,7 @@ class Renderer: NSObject, MTKViewDelegate {
         let aspect = Float(metalLayer.drawableSize.width / metalLayer.drawableSize.height)
         let fov :Float = (aspect > 1) ? (Float.pi / 4) : (Float.pi / 3); //.pi_2/5
 
-        projectionMatrix = float4x4(perspectiveWithAspect: aspect, fovy: fov, near: 0.1, far: 1000)
+        projectionMatrix = float4x4(perspectiveWithAspect: aspect, fovy: fov, near: 0.1, far: 2000)
         
         if autoCam.isEnabled {
             autoCam.update()

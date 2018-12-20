@@ -16,7 +16,7 @@
 		A117A84621CA7931008FFC94 /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D9BCFD21C57A4400D7204A /* Plane.swift */; };
 		A117A84721CA7931008FFC94 /* PlaneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D9BD0021C57A7800D7204A /* PlaneModel.swift */; };
 		A117A84821CA7931008FFC94 /* Building.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655C21C6A5C30043139A /* Building.swift */; };
-		A117A84921CA7931008FFC94 /* Decoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7656021C7D3430043139A /* Decoration.swift */; };
+		A117A84921CA7931008FFC94 /* Streetlights.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7656021C7D3430043139A /* Streetlights.swift */; };
 		A117A84A21CA7932008FFC94 /* Cube.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3921C2F0FD001A3DA2 /* Cube.swift */; };
 		A117A84B21CA7932008FFC94 /* CubeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3F21C2F13E001A3DA2 /* CubeModel.swift */; };
 		A117A84C21CA7935008FFC94 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3721C2EEF8001A3DA2 /* Camera.swift */; };
@@ -50,12 +50,14 @@
 		A12CDB3E21C2F13C001A3DA2 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3D21C2F13C001A3DA2 /* Model.swift */; };
 		A12CDB4021C2F13F001A3DA2 /* CubeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3F21C2F13E001A3DA2 /* CubeModel.swift */; };
 		A12CDB4321C30AC2001A3DA2 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB4221C30AC2001A3DA2 /* City.swift */; };
+		A12F600721CBC63F000E920B /* Sky.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F600621CBC63F000E920B /* Sky.swift */; };
+		A12F600821CBC76A000E920B /* Sky.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F600621CBC63F000E920B /* Sky.swift */; };
 		A1B7655521C66A610043139A /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655421C66A610043139A /* State.swift */; };
 		A1B7655721C6818B0043139A /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655621C6818B0043139A /* Utils.swift */; };
 		A1B7655B21C698D70043139A /* BoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655A21C698D70043139A /* BoundingBox.swift */; };
 		A1B7655D21C6A5C30043139A /* Building.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655C21C6A5C30043139A /* Building.swift */; };
 		A1B7655F21C7BFD10043139A /* TextureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655E21C7BFD10043139A /* TextureManager.swift */; };
-		A1B7656121C7D3430043139A /* Decoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7656021C7D3430043139A /* Decoration.swift */; };
+		A1B7656121C7D3430043139A /* Streetlights.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7656021C7D3430043139A /* Streetlights.swift */; };
 		A1D9BCFE21C57A4400D7204A /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D9BCFD21C57A4400D7204A /* Plane.swift */; };
 		A1D9BD0121C57A7800D7204A /* PlaneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D9BD0021C57A7800D7204A /* PlaneModel.swift */; };
 /* End PBXBuildFile section */
@@ -65,9 +67,6 @@
 		A117A83021CA78C3008FFC94 /* MetalCity_Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetalCity_Mac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A117A83221CA78C3008FFC94 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A117A83421CA78C3008FFC94 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
-		A117A83621CA78C3008FFC94 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
-		A117A83821CA78C3008FFC94 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
-		A117A83A21CA78C3008FFC94 /* ShaderTypes_.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes_.h; sourceTree = "<group>"; };
 		A117A83B21CA78C4008FFC94 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A117A83E21CA78C4008FFC94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A117A84021CA78C4008FFC94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -92,12 +91,13 @@
 		A12CDB3D21C2F13C001A3DA2 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		A12CDB3F21C2F13E001A3DA2 /* CubeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubeModel.swift; sourceTree = "<group>"; };
 		A12CDB4221C30AC2001A3DA2 /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
+		A12F600621CBC63F000E920B /* Sky.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sky.swift; sourceTree = "<group>"; };
 		A1B7655421C66A610043139A /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		A1B7655621C6818B0043139A /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A1B7655A21C698D70043139A /* BoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundingBox.swift; sourceTree = "<group>"; };
 		A1B7655C21C6A5C30043139A /* Building.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Building.swift; sourceTree = "<group>"; };
 		A1B7655E21C7BFD10043139A /* TextureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureManager.swift; sourceTree = "<group>"; };
-		A1B7656021C7D3430043139A /* Decoration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Decoration.swift; sourceTree = "<group>"; };
+		A1B7656021C7D3430043139A /* Streetlights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Streetlights.swift; sourceTree = "<group>"; };
 		A1D9BCFD21C57A4400D7204A /* Plane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; };
 		A1D9BD0021C57A7800D7204A /* PlaneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -125,9 +125,6 @@
 			children = (
 				A117A83221CA78C3008FFC94 /* AppDelegate.swift */,
 				A117A83421CA78C3008FFC94 /* GameViewController.swift */,
-				A117A83621CA78C3008FFC94 /* Renderer.swift */,
-				A117A83821CA78C3008FFC94 /* Shaders.metal */,
-				A117A83A21CA78C3008FFC94 /* ShaderTypes_.h */,
 				A117A83B21CA78C4008FFC94 /* Assets.xcassets */,
 				A117A83D21CA78C4008FFC94 /* Main.storyboard */,
 				A117A84021CA78C4008FFC94 /* Info.plist */,
@@ -139,6 +136,7 @@
 		A12CDB0E21C2EBDC001A3DA2 = {
 			isa = PBXGroup;
 			children = (
+				A12F600421CBAF8B000E920B /* Shared */,
 				A12CDB1921C2EBDC001A3DA2 /* MetalCity */,
 				A117A83121CA78C3008FFC94 /* MetalCity_Mac */,
 				A12CDB1821C2EBDC001A3DA2 /* Products */,
@@ -157,17 +155,8 @@
 		A12CDB1921C2EBDC001A3DA2 /* MetalCity */ = {
 			isa = PBXGroup;
 			children = (
-				A1D9BCFF21C57A4D00D7204A /* Model */,
-				A12CDB4121C30A21001A3DA2 /* Utils */,
 				A12CDB1A21C2EBDC001A3DA2 /* AppDelegate.swift */,
 				A12CDB2C21C2EC23001A3DA2 /* GameViewController.swift */,
-				A12CDB4221C30AC2001A3DA2 /* City.swift */,
-				A1B7655421C66A610043139A /* State.swift */,
-				A12CDB2E21C2EC4F001A3DA2 /* Renderer.swift */,
-				A12CDB3121C2EC74001A3DA2 /* BufferProvider.swift */,
-				A12CDB3B21C2F112001A3DA2 /* ObjectRenderer.swift */,
-				A12CDB3221C2EC74001A3DA2 /* ShaderTypes.h */,
-				A12CDB3021C2EC74001A3DA2 /* Shaders.metal */,
 				A12CDB1E21C2EBDC001A3DA2 /* Main.storyboard */,
 				A12CDB2121C2EBDD001A3DA2 /* Assets.xcassets */,
 				A12CDB2321C2EBDD001A3DA2 /* LaunchScreen.storyboard */,
@@ -191,6 +180,30 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		A12F600421CBAF8B000E920B /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				A1D9BCFF21C57A4D00D7204A /* Model */,
+				A12CDB4121C30A21001A3DA2 /* Utils */,
+				A12F600521CBAF9E000E920B /* Rendering */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		A12F600521CBAF9E000E920B /* Rendering */ = {
+			isa = PBXGroup;
+			children = (
+				A12CDB4221C30AC2001A3DA2 /* City.swift */,
+				A1B7655421C66A610043139A /* State.swift */,
+				A12CDB2E21C2EC4F001A3DA2 /* Renderer.swift */,
+				A12CDB3121C2EC74001A3DA2 /* BufferProvider.swift */,
+				A12CDB3B21C2F112001A3DA2 /* ObjectRenderer.swift */,
+				A12CDB3221C2EC74001A3DA2 /* ShaderTypes.h */,
+				A12CDB3021C2EC74001A3DA2 /* Shaders.metal */,
+			);
+			path = Rendering;
+			sourceTree = "<group>";
+		};
 		A1D9BCFF21C57A4D00D7204A /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -198,7 +211,8 @@
 				A1D9BCFD21C57A4400D7204A /* Plane.swift */,
 				A1D9BD0021C57A7800D7204A /* PlaneModel.swift */,
 				A1B7655C21C6A5C30043139A /* Building.swift */,
-				A1B7656021C7D3430043139A /* Decoration.swift */,
+				A1B7656021C7D3430043139A /* Streetlights.swift */,
+				A12F600621CBC63F000E920B /* Sky.swift */,
 				A12CDB3921C2F0FD001A3DA2 /* Cube.swift */,
 				A12CDB3F21C2F13E001A3DA2 /* CubeModel.swift */,
 			);
@@ -317,6 +331,7 @@
 				A117A83521CA78C3008FFC94 /* GameViewController.swift in Sources */,
 				A117A85821CA793B008FFC94 /* Shaders.metal in Sources */,
 				A117A84F21CA7935008FFC94 /* Utils.swift in Sources */,
+				A12F600821CBC76A000E920B /* Sky.swift in Sources */,
 				A117A84621CA7931008FFC94 /* Plane.swift in Sources */,
 				A117A84A21CA7932008FFC94 /* Cube.swift in Sources */,
 				A117A85321CA793B008FFC94 /* City.swift in Sources */,
@@ -324,7 +339,7 @@
 				A117A84C21CA7935008FFC94 /* Camera.swift in Sources */,
 				A117A85721CA793B008FFC94 /* ObjectRenderer.swift in Sources */,
 				A117A85521CA793B008FFC94 /* Renderer.swift in Sources */,
-				A117A84921CA7931008FFC94 /* Decoration.swift in Sources */,
+				A117A84921CA7931008FFC94 /* Streetlights.swift in Sources */,
 				A117A85221CA7935008FFC94 /* TextureManager.swift in Sources */,
 				A117A83321CA78C3008FFC94 /* AppDelegate.swift in Sources */,
 				A117A84721CA7931008FFC94 /* PlaneModel.swift in Sources */,
@@ -347,6 +362,7 @@
 				A1D9BCFE21C57A4400D7204A /* Plane.swift in Sources */,
 				A1B7655F21C7BFD10043139A /* TextureManager.swift in Sources */,
 				A12CDB3521C2EC74001A3DA2 /* BufferProvider.swift in Sources */,
+				A12F600721CBC63F000E920B /* Sky.swift in Sources */,
 				A1B7655D21C6A5C30043139A /* Building.swift in Sources */,
 				A12CDB3621C2EC74001A3DA2 /* Math.swift in Sources */,
 				A1B7655721C6818B0043139A /* Utils.swift in Sources */,
@@ -356,7 +372,7 @@
 				A12CDB2D21C2EC23001A3DA2 /* GameViewController.swift in Sources */,
 				A12CDB3C21C2F112001A3DA2 /* ObjectRenderer.swift in Sources */,
 				A12CDB3E21C2F13C001A3DA2 /* Model.swift in Sources */,
-				A1B7656121C7D3430043139A /* Decoration.swift in Sources */,
+				A1B7656121C7D3430043139A /* Streetlights.swift in Sources */,
 				A12CDB1B21C2EBDC001A3DA2 /* AppDelegate.swift in Sources */,
 				A12CDB3421C2EC74001A3DA2 /* Shaders.metal in Sources */,
 			);
@@ -410,7 +426,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.andyqua.MetalCity-Mac";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_OBJC_BRIDGING_HEADER = MetalCity/ShaderTypes.h;
+				SWIFT_OBJC_BRIDGING_HEADER = Shared/Rendering/ShaderTypes.h;
 				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
@@ -433,7 +449,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.andyqua.MetalCity-Mac";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_OBJC_BRIDGING_HEADER = MetalCity/ShaderTypes.h;
+				SWIFT_OBJC_BRIDGING_HEADER = Shared/Rendering/ShaderTypes.h;
 				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
@@ -567,7 +583,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.andyqua.MetalCity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = MetalCity/ShaderTypes.h;
+				SWIFT_OBJC_BRIDGING_HEADER = Shared/Rendering/ShaderTypes.h;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -586,7 +602,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.andyqua.MetalCity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = MetalCity/ShaderTypes.h;
+				SWIFT_OBJC_BRIDGING_HEADER = Shared/Rendering/ShaderTypes.h;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

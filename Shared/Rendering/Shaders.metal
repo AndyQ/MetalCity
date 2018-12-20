@@ -120,16 +120,12 @@ vertex ProjectedVertex indexedVertexShader( const device InVertex *vertices [[bu
     outVert.position = uniforms.viewProjectionMatrix * instanceModelMatrix * float4(v.position);
     outVert.normal = instanceNormalMatrix * float4(v.normal).xyz;
     outVert.texCoords = vertices[vertexId].texCoords;
-
-//    out.position = mvpMatrix * position;
-//    out.texCoords = vertices[vertexId].texCoords;
     return outVert;
 }
 
 fragment half4 indexedFragmentShader(ProjectedVertex fragments [[stage_in]],
                                  texture2d<float> textures [[texture(0)]])
 {
-//    constexpr sampler samplers;
     constexpr sampler samplers(coord::normalized,
                         address::repeat,
                         filter::linear);
@@ -143,9 +139,5 @@ fragment half4 indexedFragmentShader(ProjectedVertex fragments [[stage_in]],
 
     }
     
-    //    return half4(baseColor);
-    //    return half4(baseColor * occlusion);
-    //return half4(baseColor + texture);
     return half4(texture);
-    //return half4(baseColor * occlusion * texture);
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 
 var appState = AppState()
@@ -89,9 +90,15 @@ struct AppState {
     var cameraState = CameraState()
     var hot_zone = BoundingBox()
 
-//    var bloom_color : float4 = [0]
+    var bloom_color : float4 = float4(0,0,0,1)
     var last_update : Int = 0
     
+    init() {
+        let index = randomValue(light_colors.count)
+        let hue = light_colors[index].hueComponent
+        
+        bloom_color = Color(hue: hue, saturation: 0.5 + CGFloat(randomValue(10)) / 20, brightness: 0.75, alpha: 1.0).rgba()!
+    }
 }
 
 /*

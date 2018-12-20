@@ -34,9 +34,10 @@ func gridToWorld( _ x: Int ) -> Int {
 
 
 class City {
+    var sky : Sky
     var floor : PlaneModel
     var buildings = [Building]()
-    var decoration : Decoration
+    var decoration : Streetlights
     var texture : Int = 0
 
     var vlist : [Int]
@@ -54,10 +55,11 @@ class City {
     
     init(device: MTLDevice) {
         self.device = device
-        decoration = Decoration(device:device)
+        decoration = Streetlights(device:device)
         
         vlist = [Int]()
         
+        sky = Sky(device: device)
         floor = PlaneModel(device: device)
 
         world = Array(repeating: Array(repeating: .unclaimed, count: WORLD_SIZE), count: WORLD_SIZE)
@@ -67,6 +69,7 @@ class City {
     
     func update(  )
     {
+        sky.update()
         floor.update()
 /*
         for b in buildings {
@@ -79,7 +82,9 @@ class City {
     }
     
     func prepareToDraw() {
+        sky.prepareToDraw()
         floor.prepareToDraw()
+
 /*
         for b in buildings {
             b.prepareToDraw()
@@ -91,6 +96,7 @@ class City {
     }
     
     func finishDrawing() {
+        sky.finishDrawing()
         floor.finishDrawing()
 /*
         for b in buildings {
@@ -103,12 +109,15 @@ class City {
     }
     
     func draw( commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer ) {
+        sky.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)
+
         floor.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)
         for b in buildings {
             b.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)
         }
-        
+
         decoration.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)
+
     }
 
     func  buildCity() {

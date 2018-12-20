@@ -46,6 +46,12 @@ extension Image {
             space: colorSpace,
             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
         
+        context!.setFillColor(Color.black.cgColor)
+        context!.fill(CGRect(x:0, y:0, width:size.width, height:size.height))
+
+        let flipVertical = CGAffineTransform( a: 1, b: 0, c: 0, d: -1, tx: 0, ty: size.height )
+        context!.concatenate(flipVertical)
+
         doDrawing(context!)
         
         let image = context!.makeImage()
@@ -90,4 +96,13 @@ extension Image {
         
         return image
     }
+    
+    @objc func debugQuickLookObject() -> AnyObject {
+#if os(OSX)
+        return self as NSImage
+#else
+        return self as UIImage
+#endif
+    }
+
 }
