@@ -17,8 +17,6 @@
 		A117A84721CA7931008FFC94 /* PlaneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D9BD0021C57A7800D7204A /* PlaneModel.swift */; };
 		A117A84821CA7931008FFC94 /* Building.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655C21C6A5C30043139A /* Building.swift */; };
 		A117A84921CA7931008FFC94 /* Streetlights.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7656021C7D3430043139A /* Streetlights.swift */; };
-		A117A84A21CA7932008FFC94 /* Cube.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3921C2F0FD001A3DA2 /* Cube.swift */; };
-		A117A84B21CA7932008FFC94 /* CubeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3F21C2F13E001A3DA2 /* CubeModel.swift */; };
 		A117A84C21CA7935008FFC94 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3721C2EEF8001A3DA2 /* Camera.swift */; };
 		A117A84D21CA7935008FFC94 /* AutoCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A117A82A21CA5393008FFC94 /* AutoCamera.swift */; };
 		A117A84E21CA7935008FFC94 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3321C2EC74001A3DA2 /* Math.swift */; };
@@ -44,9 +42,7 @@
 		A12CDB3521C2EC74001A3DA2 /* BufferProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3121C2EC74001A3DA2 /* BufferProvider.swift */; };
 		A12CDB3621C2EC74001A3DA2 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3321C2EC74001A3DA2 /* Math.swift */; };
 		A12CDB3821C2EEF8001A3DA2 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3721C2EEF8001A3DA2 /* Camera.swift */; };
-		A12CDB3A21C2F0FD001A3DA2 /* Cube.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3921C2F0FD001A3DA2 /* Cube.swift */; };
 		A12CDB3E21C2F13C001A3DA2 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3D21C2F13C001A3DA2 /* Model.swift */; };
-		A12CDB4021C2F13F001A3DA2 /* CubeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3F21C2F13E001A3DA2 /* CubeModel.swift */; };
 		A12CDB4321C30AC2001A3DA2 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB4221C30AC2001A3DA2 /* City.swift */; };
 		A12F600721CBC63F000E920B /* Sky.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F600621CBC63F000E920B /* Sky.swift */; };
 		A12F600821CBC76A000E920B /* Sky.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F600621CBC63F000E920B /* Sky.swift */; };
@@ -92,9 +88,7 @@
 		A12CDB3221C2EC74001A3DA2 /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
 		A12CDB3321C2EC74001A3DA2 /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		A12CDB3721C2EEF8001A3DA2 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
-		A12CDB3921C2F0FD001A3DA2 /* Cube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cube.swift; sourceTree = "<group>"; };
 		A12CDB3D21C2F13C001A3DA2 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		A12CDB3F21C2F13E001A3DA2 /* CubeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubeModel.swift; sourceTree = "<group>"; };
 		A12CDB4221C30AC2001A3DA2 /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		A12F600621CBC63F000E920B /* Sky.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sky.swift; sourceTree = "<group>"; };
 		A12F600921CC26FB000E920B /* Cars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cars.swift; sourceTree = "<group>"; };
@@ -224,8 +218,6 @@
 				A1B7656021C7D3430043139A /* Streetlights.swift */,
 				A12F600621CBC63F000E920B /* Sky.swift */,
 				A12F600921CC26FB000E920B /* Cars.swift */,
-				A12CDB3921C2F0FD001A3DA2 /* Cube.swift */,
-				A12CDB3F21C2F13E001A3DA2 /* CubeModel.swift */,
 				A12F600B21CC2C3E000E920B /* WorldMap.swift */,
 			);
 			path = Model;
@@ -336,7 +328,6 @@
 				A117A85121CA7935008FFC94 /* BoundingBox.swift in Sources */,
 				A12F600E21CC325A000E920B /* Cars.swift in Sources */,
 				A117A85E21CA7A96008FFC94 /* Image.swift in Sources */,
-				A117A84B21CA7932008FFC94 /* CubeModel.swift in Sources */,
 				A117A84521CA7931008FFC94 /* Model.swift in Sources */,
 				A117A84821CA7931008FFC94 /* Building.swift in Sources */,
 				A117A84D21CA7935008FFC94 /* AutoCamera.swift in Sources */,
@@ -347,7 +338,6 @@
 				A117A84F21CA7935008FFC94 /* Utils.swift in Sources */,
 				A12F600821CBC76A000E920B /* Sky.swift in Sources */,
 				A117A84621CA7931008FFC94 /* Plane.swift in Sources */,
-				A117A84A21CA7932008FFC94 /* Cube.swift in Sources */,
 				A117A85321CA793B008FFC94 /* City.swift in Sources */,
 				A117A85D21CA7A96008FFC94 /* Color.swift in Sources */,
 				A117A84C21CA7935008FFC94 /* Camera.swift in Sources */,
@@ -383,9 +373,7 @@
 				A1B7655D21C6A5C30043139A /* Building.swift in Sources */,
 				A12CDB3621C2EC74001A3DA2 /* Math.swift in Sources */,
 				A1B7655721C6818B0043139A /* Utils.swift in Sources */,
-				A12CDB3A21C2F0FD001A3DA2 /* Cube.swift in Sources */,
 				A1B7655521C66A610043139A /* State.swift in Sources */,
-				A12CDB4021C2F13F001A3DA2 /* CubeModel.swift in Sources */,
 				A12F601221CD2859000E920B /* Font.swift in Sources */,
 				A12CDB2D21C2EC23001A3DA2 /* GameViewController.swift in Sources */,
 				A12F601521CD2B9D000E920B /* TextTextureAtlas.swift in Sources */,

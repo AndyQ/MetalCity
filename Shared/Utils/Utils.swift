@@ -33,6 +33,13 @@ func randomValue( _ range : Int) -> Int {
     return i
 }
 
+func randomColor() -> float4 {
+    let h = CGFloat(randomValue(255))/255.0
+    let c = Color( hue:h, saturation:1.0, brightness:0.75, alpha:1).rgba()!
+
+    return c
+}
+
 func getTickCount() -> UInt64 {
     var info = mach_timebase_info_data_t()
     mach_timebase_info(&info)

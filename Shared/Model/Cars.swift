@@ -38,7 +38,7 @@ class Cars: Model {
     
     let dangles : [Int] = [ 0, 90, 180, 270]
 
-    let CAR_SIZE : Float = 3
+    let CAR_SIZE : Float = 1
     let DEAD_ZONE = 25
     let STUCK_TIME = 230
     let MOVEMENT_SPEED : Float = 0.61
@@ -73,8 +73,8 @@ class Cars: Model {
 
         for i in 0 ..< 360 {
             var v = float2(0, 0)
-            v.x = cosf(Float(i) * DEGREES_TO_RADIANS) * CAR_SIZE/2
-            v.y = sinf(Float(i) * DEGREES_TO_RADIANS) * CAR_SIZE/2
+            v.x = cosf(Float(i) * DEGREES_TO_RADIANS) * CAR_SIZE
+            v.y = sinf(Float(i) * DEGREES_TO_RADIANS) * CAR_SIZE
             carAngles.append(v)
         }
 

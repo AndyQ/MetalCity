@@ -49,16 +49,22 @@ class City {
         
         vlist = [Int]()
         
+        print( "Creating sky" )
         sky = Sky(device: device)
+        print( "Creating floor" )
         floor = PlaneModel(device: device)
+
         cars = Cars(device:device)
 
+        print( "Building city" )
         buildCity()
         
         // Add in 100 cars
-        for _ in 0 ..< 1000 {
+        print( "Creating cars" )
+        for _ in 0 ..< 500 {
             cars.addCar()
         }
+        print( "City Built" )
     }
     
     func update(  )
@@ -196,6 +202,7 @@ class City {
         var south_street : Float = 0
 
         // Generate East/west roads
+        print( "   generating east/west roads" )
         var y = WORLD_EDGE
         while y < WORLD_SIZE - WORLD_EDGE {
 
@@ -220,6 +227,7 @@ class City {
         }
                     
         // Generate North/south roads
+        print( "   generating north/south roads" )
         broadway_done = false
         var x = WORLD_EDGE
         while x < WORLD_SIZE - WORLD_EDGE {
@@ -242,6 +250,7 @@ class City {
         }
         
         //Scan for places to put runs of streetlights on the east & west side of the road
+        print( "   generating east/west streetlights" )
         for x in 1 ..< WORLD_SIZE - 1 {
             var y = 0
             while y < WORLD_SIZE {
@@ -264,6 +273,7 @@ class City {
         }
         
         //Scan for places to put runs of streetlights on the north & south side of the road
+        print( "   generating north/south streetlights" )
         for y in 1 ..< WORLD_SIZE - 1 {
             var x = 0
             while x < WORLD_SIZE {
@@ -295,6 +305,7 @@ class City {
         appState.hot_zone.includePoint(point: float3(east_street, 0.0, south_street))
         
 
+        print( "   Placing large buildings in center of map" )
         //Scan over the center area of the map and place the big buildings
         attempts = 0
         while self.skyscrapers < 50 && attempts < 350 {
@@ -308,6 +319,7 @@ class City {
         }
         
         //now blanket the rest of the world with lesser buildings
+        print( "   Placing smaller buildings around outside" )
         x = 0
         while x < WORLD_SIZE {
             var y = 0

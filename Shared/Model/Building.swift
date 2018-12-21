@@ -31,6 +31,8 @@ enum BuildingAddOns : CaseIterable
 
 class Building : Model {
     
+    static var logoIndex = 0
+
     var bufferProvider : BufferProvider!
     var device : MTLDevice
     var logoRenderPipelineState : MTLRenderPipelineState!
@@ -46,7 +48,6 @@ class Building : Model {
 
     var textureType : TextureType
     var type : BuildingType
-    
     var seed : Int
     var roof_tiers : Int = 0
     var color : float4
@@ -272,11 +273,18 @@ class Building : Model {
             pos.x = center.x - sin(Float(angle) * DEGREES_TO_RADIANS) * radius.x
             pos.z = center.z + cos(Float(angle) * DEGREES_TO_RADIANS) * radius.y
             
-            var length = 0
+            var length : Float = 0
             if (angle > 0 && skip_counter == 0)
             {
-                length = Int(distance(p, pos))
-                windows += length
+                length = distance(p, pos)
+                windows += Int(length)
+                if length > 10 && !have_logo {
+                    have_logo = true
+                    let start = float2(pos.x, pos.z);
+                    let end = float2(p.x, p.z);
+                    createLogo(start: start, end: end, bottom: Float(height), seed: Building.logoIndex, color: randomColor())
+                    Building.logoIndex += 1
+                }
             } else if (skip_counter != 1) {
                 windows += 1
             }
@@ -741,7 +749,8 @@ class Building : Model {
                 break
             }
             
-            createLogo( start:start, end:end, bottom:bottom, seed:1, color:trim_color)
+            createLogo( start:start, end:end, bottom:bottom, seed:Building.logoIndex, color:trim_color)
+            Building.logoIndex += 1
 //            d->CreateLogo (start, end, bottom, WorldLogoIndex (_state), _trim_color)
             have_logo = true
          }
@@ -927,27 +936,32 @@ class Building : Model {
         let LOGO_ROWS : Float = 12
         let LOGO_OFFSET :Float = 0.2
         
+        let logo_index = seed % TextureManager.instance.textAtlas.nrItems
+
         var to = float3(start.x, 0.0, start.y) - float3(end.x, 0.0, end.y)
         to = normalize(to)
         var outtmp = cross(float3(0.0, 1.0, 0.0), to) * LOGO_OFFSET
         let out = float4(outtmp.x, outtmp.y, outtmp.z, 0)
         
-        
+
         let len = length(start - end);
         let height = (len / 8.0) * 1.5
         let top = bottom + height
-        let u1 : Float = 0.0
-        let u2 : Float = 0.5 //We actually only use the left half of the texture
-        let v1 : Float = Float(1) / LOGO_ROWS
-        let v2 : Float = v1 + (1.0 / LOGO_ROWS)
         
+        let textItem = TextureManager.instance.textAtlas.textItems[logo_index]
+        
+        let u1 = textItem.bl.x
+        let v1 = textItem.bl.y
+        let u2 = textItem.tr.x
+        let v2 = textItem.tr.y
+
         let ver1 = Vertex(position: float4(start.x, bottom, start.y, 1) + out, normal: float4(0,1,0,1), color: color, texCoords: float2(u1,v2))
         let ver2 = Vertex(position: float4(end.x, bottom, end.y, 1) + out, normal: float4(0,1,0,1), color: color, texCoords: float2(u2,v2))
         let ver3 = Vertex(position: float4(start.x, top, start.y, 1) + out, normal: float4(0,1,0,1), color: color, texCoords: float2(u1,v1))
         let ver4 = Vertex(position: float4(end.x, top, end.y, 1) + out, normal: float4(0,1,0,1), color: color, texCoords: float2(u2,v1))
 
+        print( "Creating logo" )
         logoVertices.append(contentsOf: convertQuadsToTriangles([ver1, ver2, ver3, ver4], useMainColor:false))
-        print( "Created LOGO - \(color.x), \(color.y), \(color.z)" )
     }
 
 }

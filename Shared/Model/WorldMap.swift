@@ -8,7 +8,7 @@
 
 import Foundation
 
-let WORLD_SIZE : Int = 1024//512
+let WORLD_SIZE : Int = 512
 let WORLD_HALF = WORLD_SIZE / 2
 let WORLD_EDGE = 100
 let GRID_RESOLUTION = 32

@@ -9,11 +9,14 @@
 import Foundation
 import MetalKit
 import CoreGraphics
+import CoreImage
 
 class TextureManager {
     public static let instance = TextureManager()
-    
+
+
     var textures = [TextureType:MTLTexture]()
+    var textAtlas : TextTextureAtlas!
     
     private init() {
         
@@ -28,13 +31,88 @@ class TextureManager {
     }
     
     func createStreetlightTexture(device:MTLDevice) {
-        guard let image = Image(named: "light") else { print( "Failed to load image: light.png"); return }
+        let size = CGSize(width:128, height:128)
+        let image = Image.createImageFromDrawing( size:size, doDrawing: { (ctx) in
+            
+            ctx.clear(CGRect(x:0, y:0, width:size.width, height:size.height))
+            let s = Int(size.width)
+            for x in 0 ..< s/2 {
+                let a = CGFloat(x)/CGFloat(s/2) / 32
+                let w = Color.white.withAlphaComponent(a)
+                ctx.setFillColor(w.cgColor)
+                
+                let r = CGRect( x:x, y:x, width:(s/2-x)*2, height:(s/2-x)*2 )
+                ctx.fillEllipse(in: r)
+            }
+        })
         
-        let t = imageToTexture(image: image, named:"Light", device: device)
-        textures[.light] = t
+        if let image = image {
+            let texture = imageToTexture(image: image, named:"Light", device: device)
+            textures[.light] = texture
+        } else {
+            print( "Invalid image created for light" )
+        }
+        
     }
-    
+
     func createHeadlightTexture(device:MTLDevice) {
+        let size = CGSize(width:128, height:128)
+        let image = Image.createImageFromDrawing( size:size, doDrawing: { (ctx) in
+            
+            ctx.clear(CGRect(x:0, y:0, width:size.width, height:size.height))
+            ctx.setFillColor(Color.white.cgColor)
+            
+            let r1 = CGRect( x:50, y:56, width:10, height:10 )
+            ctx.fill(r1)
+            
+            let r2 = CGRect( x:73, y:56, width:10, height:10 )
+            ctx.fill(r2)
+            
+        })
+        
+        let blurImage = Image.createImageFromDrawing( size:size, doDrawing: { (ctx) in
+            
+            ctx.clear(CGRect(x:0, y:0, width:size.width, height:size.height))
+            ctx.setFillColor(Color.white.cgColor)
+//            ctx.fill(CGRect(x:0, y:0, width:size.width, height:size.height))
+
+            let r1 = CGRect( x:45, y:51, width:20, height:20 )
+            ctx.fill(r1)
+            
+            let r2 = CGRect( x:68, y:51, width:20, height:20 )
+            ctx.fill(r2)
+            
+        })
+        
+        if let image = image, let blurImage = blurImage {
+            // Blur image
+            let inputImage = CIImage(cgImage:image.cgImage)
+            let blurInputImage = CIImage(cgImage:blurImage.cgImage)
+
+            // Apply gaussian blur filter with radius of 30
+            let gaussianBlurFilter = CIFilter(name:"CIGaussianBlur")!
+            gaussianBlurFilter.setValue(blurInputImage, forKey:"inputImage")
+            gaussianBlurFilter.setValue(10, forKey:"inputRadius")
+            
+            let overlay = CIFilter(name:"CIOverlayBlendMode")!
+            overlay.setValue(inputImage, forKey:"inputImage")
+            overlay.setValue(gaussianBlurFilter.outputImage!, forKey:"inputBackgroundImage")
+
+            let ci = overlay.outputImage!
+            let ciContext = CIContext(options:nil)
+            let cgImage = ciContext.createCGImage(ci, from:inputImage.extent)
+
+            let finalImage = Image(cgImage: cgImage!)!
+
+            let texture = imageToTexture(image: finalImage, named:"headlight", device: device)
+            textures[.headlight] = texture
+        } else {
+            print( "Invalid image created for light" )
+        }
+        
+    }
+
+    func createHeadlightTexture2(device:MTLDevice) {
         guard let image = Image(named: "headlight") else { print( "Failed to load image: headlight.png"); return }
         
         let t = imageToTexture(image: image, named:"headlight", device: device)
@@ -76,16 +154,33 @@ class TextureManager {
     }
     
     func createLogoTexture(device:MTLDevice) {
+        
+        textAtlas = TextTextureAtlas(device:device)
+        textAtlas.buildAtlas()
+        textures[.logos] = textAtlas.texture
+
+/*
         let size = CGSize(width:512, height:512)
         let image = Image.createImageFromDrawing( size:size, doDrawing: { (ctx) in
             
             // Draw text
             var i : CGFloat = 0
-            let nrRows : CGFloat = 12
+            let nrRows : CGFloat = 16
             let logoHeight : CGFloat = size.height/nrRows
             while i < size.height {
-                let string = "MyLogo"
-                let attrs = [NSAttributedString.Key.font: Font(name: "HelveticaNeue", size: 36)!, NSAttributedString.Key.strokeColor: Color.white, NSAttributedString.Key.foregroundColor: Color.white]
+                let name_num = randomValue(logoName.count)
+                let prefix_num = randomValue(logoPrefix.count)
+                let suffix_num = randomValue(logoSuffix.count)
+
+                let string : String
+                if flipCoinIsHeads() {
+                    string = "\(logoPrefix[prefix_num])\(logoName[name_num])"
+                } else {
+                    string = "\(logoName[name_num])\(logoSuffix[suffix_num])"
+                }
+                print( string)
+
+                let attrs = [NSAttributedString.Key.font: Font(name: "HelveticaNeue", size: 24)!, NSAttributedString.Key.strokeColor: Color.white, NSAttributedString.Key.foregroundColor: Color.white]
                 string.draw(with: CGRect(x: 2, y: i, width: 448, height: logoHeight), options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
 //                let textSize = string.size(withAttributes:attrs)
                 
@@ -97,12 +192,13 @@ class TextureManager {
             let t = imageToTexture(image: image, named:"Logos", device: device, flip:false)
             textures[.logos] = t
         }
-
+*/
     }
 }
 
 // MARK: Draw the textures
 extension TextureManager {
+    
     
 
     func drawBuildingTexture( context ctx : CGContext, size:Int, textureType: TextureType ) {
