@@ -33,6 +33,7 @@ class Building : Model {
     
     var bufferProvider : BufferProvider!
     var device : MTLDevice
+    var logoRenderPipelineState : MTLRenderPipelineState!
 
     var x : Int
     var y : Int
@@ -56,6 +57,8 @@ class Building : Model {
     var have_logo = false
     
     var vertexCount : Int = 0
+    
+    var logoVertices = [Vertex]()
     
     init( device: MTLDevice, type:BuildingType, x:Int, y:Int, height:Int, width:Int, depth:Int, seed:Int, color:float4) {
         self.device = device
@@ -82,29 +85,38 @@ class Building : Model {
         self.textureType = TextureType.randomBuildingTexture()
 
         super.init()
-        
+
         let vertexShader : String = "indexedVertexShader"
         let fragmentShader : String = "indexedFragmentShader"
 //        let vertexShader : String = "objectVertexShader"
 //        let fragmentShader : String = "objectFragmentShader"
-        createLibraryAndRenderPipeline( device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader  )
+        self.renderPipelineState = createLibraryAndRenderPipeline( device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader  )
+        self.logoRenderPipelineState = createLibraryAndRenderPipeline( device: device, vertexFunction:"indexedVertexShader", fragmentFunction:"logoFragmentShader"  )
 
 
+        var arr : [Vertex]?
         switch type {
         case .modern:
-            createModern()
+            arr = createModern()
             break
         case .simple:
-            createSimple()
+            arr = createSimple()
             break
         case .blocky:
-            createBlocky()
+            arr = createBlocky()
             break
         case .tower:
-            createTower()
+            arr = createTower()
             break
         }
         
+        if var arr = arr {
+            if have_logo {
+                arr.append(contentsOf: logoVertices)
+            }
+            
+            createVertexBufforFromVertexArray(array:arr)
+        }
     }
     
     func update( )
@@ -138,6 +150,7 @@ class Building : Model {
         if vertexCount == 0 {
             return
         }
+        
         commandEncoder.setRenderPipelineState(self.renderPipelineState)
         
         commandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, index: 0)
@@ -148,10 +161,27 @@ class Building : Model {
             commandEncoder.setFragmentTexture(texture, index: 0)
         }
         
-        commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount )
+        var verticesToDraw = vertexCount
+        if have_logo {
+            verticesToDraw -= 6
+        }
+        
+        commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: verticesToDraw )
+        
+        commandEncoder.setRenderPipelineState(self.logoRenderPipelineState)
+        commandEncoder.setCullMode(MTLCullMode.back)
+
+        if have_logo {
+            if let texture = TextureManager.instance.textures[.logos] {
+                commandEncoder.setFragmentTexture(texture, index: 0)
+            }
+            commandEncoder.drawPrimitives(type: .triangle, vertexStart: verticesToDraw, vertexCount: 6 )
+        }
+        commandEncoder.setCullMode(MTLCullMode.none)
+
     }
     
-    func createSimple() {
+    func createSimple() -> [Vertex] {
 
         //How tall the flat-color roof is
         let cap_height = Float(1 + randomValue(4))
@@ -205,11 +235,11 @@ class Building : Model {
 
         verticesArray.append(contentsOf: cubeVertices)
         
-        self.convertQuadsToTriangles( verticesArray )
-        //[self convertQuadsToLinesForMesh]
+        let arr = self.convertQuadsToTriangles( verticesArray )
+        return arr
     }
     
-    func createModern() {
+    func createModern() -> [Vertex] {
         //How many 10-degree segments to build before the next skip.
         let skip_interval = 1 + randomValue(8)
         //When a skip happens, how many degrees should be skipped
@@ -327,10 +357,11 @@ class Building : Model {
             v2.texCoords = float2(0, 0)
             vlist.append( contentsOf:[v, v1, v2] )
         }
-        createVertexBufforFromVertexArray( array:vlist )
+        
+        return vlist
     }
     
-    func createBlocky() {
+    func createBlocky() -> [Vertex] {
         //Choose if the corners of the building are to be windowless.
         let blank_corners = flipCoinIsHeads()
         
@@ -463,15 +494,15 @@ class Building : Model {
         tmpV = constructCube(left: Float(mid_x - half_width), right: Float(mid_x + half_width), front: Float(mid_z - half_depth), back: Float(mid_z + half_depth), bottom: 0, top: 2, textured: false)
         vertices.append(contentsOf: tmpV)
         
-        convertQuadsToTriangles(vertices)
+        let arr = self.convertQuadsToTriangles( vertices )
+        return arr
     }
     
-    func createTower() {
+    func createTower() -> [Vertex] {
         
         var vertices = [Vertex]()
         var tmpV : [Vertex]
 
-        
         //How much ledges protrude from the building
         let ledge = Float(randomValue(3)) * 0.25
         //How tall the ledges are, in stories
@@ -570,8 +601,8 @@ class Building : Model {
         tmpV = constructRoof(left: Float(left), right:Float(right), front:Float(front), back:Float(back), bottom:Float(bottom), roofTiers: 0)
         vertices.append(contentsOf: tmpV)
         
-        convertQuadsToTriangles(vertices)
-
+        let arr = self.convertQuadsToTriangles( vertices )
+        return arr
     }
     
     func constructWall( atX startX:Int, y startY:Int, z startZ:Int, dir:Direction, length:Int, height:Int, windowGroups:Int, uvStart: Float, blankCorners:Bool) -> (Float, [Vertex]) {
@@ -664,7 +695,7 @@ class Building : Model {
         let width = Int(right - left)
         let depth = Int(back - front)
         let roofHeight = Float(5 - roof_tiers)
-        //    logo_offset = 0.2f
+        let logo_offset :Float = 0.2
         
         
         //See if this building is special and worthy of fancy roof decorations.
@@ -677,38 +708,44 @@ class Building : Model {
         var tmpV = constructCube(left: left, right: right, front: front, back: back, bottom: bottom, top: bottom + roofHeight, textured: false)
         vertices.append(contentsOf: tmpV)
         
-        /*
+        
          //Consider putting a logo on the roof, if it's tall enough
-         if (addon == ADDON_LOGO && !_have_logo)
-         {
-         d = new CDeco(_state)
-         if (width > depth)
-         face = COIN_FLIP ? NORTH : SOUTH
-         else
-         face = COIN_FLIP ? EAST : WEST
-         switch (face)
-         {
-         case NORTH:
-         start = glVector ((float)left, (float)back + logo_offset)
-         end = glVector ((float)right, (float)back + logo_offset)
-         break
-         case SOUTH:
-         start = glVector ((float)right, (float)front - logo_offset)
-         end = glVector ((float)left, (float)front - logo_offset)
-         break
-         case EAST:
-         start = glVector ((float)right + logo_offset, (float)back)
-         end = glVector ((float)right + logo_offset, (float)front)
-         break
-         case WEST:
-         default:
-         start = glVector ((float)left - logo_offset, (float)front)
-         end = glVector ((float)left - logo_offset, (float)back)
-         break
+        if addon == .logo && !have_logo {
+//            d = new CDeco(_state)
+            let face:Direction
+            if width > depth {
+                face = flipCoinIsHeads() ? .north : .south
+            } else {
+                face = flipCoinIsHeads() ? .east : .west
+            }
+            
+            let start : float2
+            let end : float2
+            switch (face)
+            {
+            case .north:
+                start = float2(left, back + logo_offset)
+                end = float2(right, back + logo_offset)
+                break
+            case .south:
+                start = float2(right, front - logo_offset)
+                end = float2(left, front - logo_offset)
+                break
+            case .east:
+                start = float2(right + logo_offset, back)
+                end = float2(right + logo_offset, front)
+                break
+            case .west:
+                start = float2(left - logo_offset, front)
+                end = float2(left - logo_offset, back)
+                break
+            }
+            
+            createLogo( start:start, end:end, bottom:bottom, seed:1, color:trim_color)
+//            d->CreateLogo (start, end, bottom, WorldLogoIndex (_state), _trim_color)
+            have_logo = true
          }
-         d->CreateLogo (start, end, bottom, WorldLogoIndex (_state), _trim_color)
-         _have_logo = true
-         }
+/*
          else if (addon == ADDON_TRIM)
          {
          d = new CDeco(_state)
@@ -719,7 +756,7 @@ class Building : Model {
          d->CreateLightTrim (_state->building.vector_buffer, 4, (float)randomValue(_state, 2) + 1.0f, _seed, _trim_color)
          }
          else
-         */
+ */
 
 /*
         if addon == ADDON_LIGHTS && !_haveLights {
@@ -841,7 +878,7 @@ class Building : Model {
         return vlist
     }
     
-    func convertQuadsToTriangles( _ vlist : [Vertex] ) {
+    func convertQuadsToTriangles( _ vlist : [Vertex], useMainColor:Bool = true ) -> [Vertex] {
         var vertices = [Vertex]()
         
         // generate triangles
@@ -852,10 +889,12 @@ class Building : Model {
             var v3 = vlist[i+2]
             var v4 = vlist[i+3]
             
-            v1.color = self.color
-            v2.color = self.color
-            v3.color = self.color
-            v4.color = self.color
+            if useMainColor {
+                v1.color = self.color
+                v2.color = self.color
+                v3.color = self.color
+                v4.color = self.color
+            }
             
             // Triangle1 = v1, v2, v3
             // Triangle2 = v2, v4, v3
@@ -874,7 +913,8 @@ class Building : Model {
             vertices.append( contentsOf:[v2, v4, v3] )
         }
         
-        createVertexBufforFromVertexArray( array:vertices )
+        return vertices
+//        createVertexBufforFromVertexArray( array:vertices )
     }
 
     func createVertexBufforFromVertexArray( array:[Vertex] ) {
@@ -883,4 +923,31 @@ class Building : Model {
         vertexBuffer.label = "vertices building"
     }
     
+    func createLogo( start:float2, end:float2, bottom:Float, seed:Int, color:float4 ) {
+        let LOGO_ROWS : Float = 12
+        let LOGO_OFFSET :Float = 0.2
+        
+        var to = float3(start.x, 0.0, start.y) - float3(end.x, 0.0, end.y)
+        to = normalize(to)
+        var outtmp = cross(float3(0.0, 1.0, 0.0), to) * LOGO_OFFSET
+        let out = float4(outtmp.x, outtmp.y, outtmp.z, 0)
+        
+        
+        let len = length(start - end);
+        let height = (len / 8.0) * 1.5
+        let top = bottom + height
+        let u1 : Float = 0.0
+        let u2 : Float = 0.5 //We actually only use the left half of the texture
+        let v1 : Float = Float(1) / LOGO_ROWS
+        let v2 : Float = v1 + (1.0 / LOGO_ROWS)
+        
+        let ver1 = Vertex(position: float4(start.x, bottom, start.y, 1) + out, normal: float4(0,1,0,1), color: color, texCoords: float2(u1,v2))
+        let ver2 = Vertex(position: float4(end.x, bottom, end.y, 1) + out, normal: float4(0,1,0,1), color: color, texCoords: float2(u2,v2))
+        let ver3 = Vertex(position: float4(start.x, top, start.y, 1) + out, normal: float4(0,1,0,1), color: color, texCoords: float2(u1,v1))
+        let ver4 = Vertex(position: float4(end.x, top, end.y, 1) + out, normal: float4(0,1,0,1), color: color, texCoords: float2(u2,v1))
+
+        logoVertices.append(contentsOf: convertQuadsToTriangles([ver1, ver2, ver3, ver4], useMainColor:false))
+        print( "Created LOGO - \(color.x), \(color.y), \(color.z)" )
+    }
+
 }

@@ -44,6 +44,7 @@ enum TextureType
     case light
     case clouds
     case city
+    case logos
     case building1
     case building2
     case building3

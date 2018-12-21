@@ -52,7 +52,20 @@ extension Image {
         let flipVertical = CGAffineTransform( a: 1, b: 0, c: 0, d: -1, tx: 0, ty: size.height )
         context!.concatenate(flipVertical)
 
+#if os(OSX)
+        let gc = NSGraphicsContext(cgContext:context!, flipped:true)
+        NSGraphicsContext.saveGraphicsState()
+        NSGraphicsContext.current = gc
+#else
+        UIGraphicsPushContext(context!)
+#endif
         doDrawing(context!)
+        
+#if os(OSX)
+        NSGraphicsContext.restoreGraphicsState()
+#else
+        UIGraphicsPopContext()
+#endif
         
         let image = context!.makeImage()
         return Image(cgImage: image!)

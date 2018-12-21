@@ -75,7 +75,7 @@ class Renderer: NSObject, MTKViewDelegate {
         
         camera = Camera(pos: [0, 85, 0], lookAt: [10, 80, 10])
         autoCam = AutoCamera(camera: camera)
-        autoCam.isEnabled = true
+        autoCam.isEnabled = false
         city = City(device:device)
         
         super.init()

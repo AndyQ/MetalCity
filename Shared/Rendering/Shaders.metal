@@ -126,11 +126,11 @@ vertex ProjectedVertex indexedVertexShader( const device InVertex *vertices [[bu
 */
  
 fragment half4 indexedFragmentShader(ProjectedVertex fragments [[stage_in]],
-                                 texture2d<float> textures [[texture(0)]])
+                                     texture2d<float> textures [[texture(0)]])
 {
     constexpr sampler samplers(coord::normalized,
-                        address::repeat,
-                        filter::linear);
+                               address::repeat,
+                               filter::linear);
     float4 texture = textures.sample(samplers, fragments.texCoords);
     
     float4 baseColor = fragments.color * 0.25;// * 0.075;
@@ -138,8 +138,24 @@ fragment half4 indexedFragmentShader(ProjectedVertex fragments [[stage_in]],
     
     if ( texture.x > 0.5 || texture.y > 0.5 || texture.z > 0.5 ) {
         return half4(baseColor + texture);
-
+        
     }
+    
+    return half4(texture);
+}
+
+fragment half4 logoFragmentShader(ProjectedVertex fragments [[stage_in]],
+                                     texture2d<float> textures [[texture(0)]])
+{
+    constexpr sampler samplers(coord::normalized,
+                               address::repeat,
+                               filter::linear);
+    float4 texture = textures.sample(samplers, fragments.texCoords);
+    
+    float4 baseColor = fragments.color;
+    baseColor.a = 1;
+    
+    return half4(baseColor * texture);
     
     return half4(texture);
 }

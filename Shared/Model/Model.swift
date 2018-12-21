@@ -10,14 +10,15 @@ import Metal
 
 class Model: NSObject {
     var renderPipelineState: MTLRenderPipelineState!
+
     let vertexDescriptor = MTLVertexDescriptor()
     var uniformsBuffer: MTLBuffer!
     
     var vertexBuffer : MTLBuffer!
     var indexBuffer : MTLBuffer!
 
-    func createLibraryAndRenderPipeline( device : MTLDevice, vertexFunction : String, fragmentFunction : String ) {
-        
+    func createLibraryAndRenderPipeline( device : MTLDevice, vertexFunction : String, fragmentFunction : String ) -> MTLRenderPipelineState {
+
         let library = device.makeDefaultLibrary()
         
         let vertexFunction = library?.makeFunction(name: vertexFunction)
@@ -55,12 +56,15 @@ class Model: NSObject {
         renderbufferAttachment.destinationAlphaBlendFactor = MTLBlendFactor.oneMinusSourceAlpha
         renderPipelineDescriptor.colorAttachments[0] = renderbufferAttachment
 
+        var rps: MTLRenderPipelineState!
         do {
-            renderPipelineState = try device.makeRenderPipelineState(descriptor: renderPipelineDescriptor)
+            rps = try device.makeRenderPipelineState(descriptor: renderPipelineDescriptor)
         }
         catch let error {
             fatalError("\(error)")
         }
+        
+        return rps
     }
     
     func draw( commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer ) {

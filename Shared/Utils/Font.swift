@@ -6,8 +6,11 @@
 //  Copyright © 2018 Andy Qua. All rights reserved.
 //
 
+#if os(OSX)
+
+import AppKit
+public typealias Font = NSFont
+#else
 import UIKit
-
-class Font: NSObject {
-
-}
+public typealias Font = UIFont
+#endif

@@ -54,6 +54,10 @@
 		A12F600C21CC2C3E000E920B /* WorldMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F600B21CC2C3E000E920B /* WorldMap.swift */; };
 		A12F600D21CC2E8E000E920B /* WorldMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F600B21CC2C3E000E920B /* WorldMap.swift */; };
 		A12F600E21CC325A000E920B /* Cars.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F600921CC26FB000E920B /* Cars.swift */; };
+		A12F601221CD2859000E920B /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F601121CD2859000E920B /* Font.swift */; };
+		A12F601321CD28A3000E920B /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F601121CD2859000E920B /* Font.swift */; };
+		A12F601521CD2B9D000E920B /* TextTextureAtlas.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F601421CD2B9D000E920B /* TextTextureAtlas.swift */; };
+		A12F601621CD2D4C000E920B /* TextTextureAtlas.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F601421CD2B9D000E920B /* TextTextureAtlas.swift */; };
 		A1B7655521C66A610043139A /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655421C66A610043139A /* State.swift */; };
 		A1B7655721C6818B0043139A /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655621C6818B0043139A /* Utils.swift */; };
 		A1B7655B21C698D70043139A /* BoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655A21C698D70043139A /* BoundingBox.swift */; };
@@ -95,6 +99,8 @@
 		A12F600621CBC63F000E920B /* Sky.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sky.swift; sourceTree = "<group>"; };
 		A12F600921CC26FB000E920B /* Cars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cars.swift; sourceTree = "<group>"; };
 		A12F600B21CC2C3E000E920B /* WorldMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldMap.swift; sourceTree = "<group>"; };
+		A12F601121CD2859000E920B /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		A12F601421CD2B9D000E920B /* TextTextureAtlas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTextureAtlas.swift; sourceTree = "<group>"; };
 		A1B7655421C66A610043139A /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		A1B7655621C6818B0043139A /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A1B7655A21C698D70043139A /* BoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundingBox.swift; sourceTree = "<group>"; };
@@ -179,6 +185,7 @@
 				A1B7655E21C7BFD10043139A /* TextureManager.swift */,
 				A117A85921CA7A06008FFC94 /* Color.swift */,
 				A117A85B21CA7A55008FFC94 /* Image.swift */,
+				A12F601121CD2859000E920B /* Font.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -202,6 +209,7 @@
 				A12CDB3121C2EC74001A3DA2 /* BufferProvider.swift */,
 				A12CDB3221C2EC74001A3DA2 /* ShaderTypes.h */,
 				A12CDB3021C2EC74001A3DA2 /* Shaders.metal */,
+				A12F601421CD2B9D000E920B /* TextTextureAtlas.swift */,
 			);
 			path = Rendering;
 			sourceTree = "<group>";
@@ -344,9 +352,11 @@
 				A117A85D21CA7A96008FFC94 /* Color.swift in Sources */,
 				A117A84C21CA7935008FFC94 /* Camera.swift in Sources */,
 				A117A85521CA793B008FFC94 /* Renderer.swift in Sources */,
+				A12F601321CD28A3000E920B /* Font.swift in Sources */,
 				A117A84921CA7931008FFC94 /* Streetlights.swift in Sources */,
 				A117A85221CA7935008FFC94 /* TextureManager.swift in Sources */,
 				A117A83321CA78C3008FFC94 /* AppDelegate.swift in Sources */,
+				A12F601621CD2D4C000E920B /* TextTextureAtlas.swift in Sources */,
 				A117A84721CA7931008FFC94 /* PlaneModel.swift in Sources */,
 				A117A84E21CA7935008FFC94 /* Math.swift in Sources */,
 			);
@@ -376,7 +386,9 @@
 				A12CDB3A21C2F0FD001A3DA2 /* Cube.swift in Sources */,
 				A1B7655521C66A610043139A /* State.swift in Sources */,
 				A12CDB4021C2F13F001A3DA2 /* CubeModel.swift in Sources */,
+				A12F601221CD2859000E920B /* Font.swift in Sources */,
 				A12CDB2D21C2EC23001A3DA2 /* GameViewController.swift in Sources */,
+				A12F601521CD2B9D000E920B /* TextTextureAtlas.swift in Sources */,
 				A12CDB3E21C2F13C001A3DA2 /* Model.swift in Sources */,
 				A1B7656121C7D3430043139A /* Streetlights.swift in Sources */,
 				A12CDB1B21C2EBDC001A3DA2 /* AppDelegate.swift in Sources */,

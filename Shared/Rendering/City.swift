@@ -123,7 +123,6 @@ class City {
         buildRoads()
 
         if let image = genTextureImage() {
-            print( "image - \(image)" )
             floor.setTexture(image: image)
         }
 

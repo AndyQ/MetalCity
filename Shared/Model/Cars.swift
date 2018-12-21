@@ -80,7 +80,7 @@ class Cars: Model {
 
         super.init()
         
-        createLibraryAndRenderPipeline( device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader  )
+        self.renderPipelineState = createLibraryAndRenderPipeline( device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader  )
     }
     
     func addCar( ) {

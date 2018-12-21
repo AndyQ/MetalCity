@@ -8,6 +8,7 @@
 
 import Foundation
 import MetalKit
+import CoreGraphics
 
 class TextureManager {
     public static let instance = TextureManager()
@@ -23,6 +24,7 @@ class TextureManager {
         createHeadlightTexture(device:device)
         createBuildingTextures(device:device)
         createSkyTexture(device:device)
+        createLogoTexture(device:device)
     }
     
     func createStreetlightTexture(device:MTLDevice) {
@@ -39,29 +41,24 @@ class TextureManager {
         textures[.headlight] = t
     }
     
-
-    
     func createBuildingTextures(device:MTLDevice) {
         let buildingTextures : [TextureType] = [.building1, .building2, .building3, .building4, .building5, .building6, .building7, .building8, .building9]
         
         var i = 0
+        let size = CGSize(width:256, height:256)
         for t in buildingTextures {
             i += 1
-            guard let image = createBuildingTexture(textureType: t) else { print( "Invalid image created for t" ); continue }
             
-            let texture = imageToTexture(image: image, named:"building\(i)", device: device)
-            textures[t] = texture
-/*
-            guard let data = image.pngData() else { return }
-            let loader = MTKTextureLoader(device: device)
-            do {
-                let texture = try loader.newTexture(data: data, options: nil)
+            let image = Image.createImageFromDrawing( size:size, doDrawing: { [unowned self] (ctx) in
+                self.drawBuildingTexture( context: ctx, size:Int(size.width), textureType: t )
+            })
+
+            if let image = image {
+                let texture = imageToTexture(image: image, named:"building\(i)", device: device)
                 textures[t] = texture
+            } else {
+                print( "Invalid image created for \(t)" )
             }
-            catch let error {
-                fatalError("\(error)")
-            }
-*/
         }
     }
 
@@ -77,21 +74,36 @@ class TextureManager {
             textures[.sky] = t
         }
     }
-
-    func createBuildingTexture( textureType: TextureType ) -> Image? {
-        
-        let size = CGSize(width:256, height:256)
-
-        let image = Image.createImageFromDrawing( size:size, doDrawing: { [unowned self] (ctx) in
-            ctx.setFillColor( Color.black.cgColor )
-            ctx.fill(CGRect( x:0, y:0, width:size.width, height:size.height ) )
+    
+    func createLogoTexture(device:MTLDevice) {
+        let size = CGSize(width:512, height:512)
+        let image = Image.createImageFromDrawing( size:size, doDrawing: { (ctx) in
             
-            self.drawBuildingTexture( context: ctx, size:Int(size.width), textureType: textureType )
-
+            // Draw text
+            var i : CGFloat = 0
+            let nrRows : CGFloat = 12
+            let logoHeight : CGFloat = size.height/nrRows
+            while i < size.height {
+                let string = "MyLogo"
+                let attrs = [NSAttributedString.Key.font: Font(name: "HelveticaNeue", size: 36)!, NSAttributedString.Key.strokeColor: Color.white, NSAttributedString.Key.foregroundColor: Color.white]
+                string.draw(with: CGRect(x: 2, y: i, width: 448, height: logoHeight), options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
+//                let textSize = string.size(withAttributes:attrs)
+                
+                i += logoHeight
+            }
         })
 
-        return image
+        if let image = image {
+            let t = imageToTexture(image: image, named:"Logos", device: device, flip:false)
+            textures[.logos] = t
+        }
+
     }
+}
+
+// MARK: Draw the textures
+extension TextureManager {
+    
 
     func drawBuildingTexture( context ctx : CGContext, size:Int, textureType: TextureType ) {
         var run = 0
@@ -297,7 +309,7 @@ class TextureManager {
         }
     }
     
-    func imageToTexture(image: Image, named:String, device: MTLDevice) -> MTLTexture {
+    func imageToTexture(image: Image, named:String, device: MTLDevice, flip:Bool = true) -> MTLTexture {
         let bytesPerPixel = 4
         let bitsPerComponent = 8
         
@@ -311,8 +323,10 @@ class TextureManager {
         let context = CGContext(data: nil, width: Int(width), height: Int(height), bitsPerComponent: bitsPerComponent, bytesPerRow: rowBytes, space: colorSpace, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
         
         context.clear( bounds)
-        context.translateBy(x: width, y: height)
-        context.scaleBy(x: -1, y: -1)
+        if flip {
+            context.translateBy(x: width, y: height)
+            context.scaleBy(x: -1, y: -1)
+        }
         context.draw(image.cgImage!, in: bounds)
         
         let texDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .rgba8Unorm, width: Int(width), height: Int(height), mipmapped: false)
