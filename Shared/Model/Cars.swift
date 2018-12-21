@@ -24,7 +24,6 @@ class Car {
     var m_row : Int = 0
     var m_col : Int = 0
     var m_direction : Int = 0
-    var m_change : Int = 0
     var m_stuck : Int = 0
     var m_speed : Float = 0
     var m_max_speed : Float = 0
@@ -74,8 +73,8 @@ class Cars: Model {
 
         for i in 0 ..< 360 {
             var v = float2(0, 0)
-            v.x = cosf(Float(i) * DEGREES_TO_RADIANS) * CAR_SIZE
-            v.y = sinf(Float(i) * DEGREES_TO_RADIANS) * CAR_SIZE
+            v.x = cosf(Float(i) * DEGREES_TO_RADIANS) * CAR_SIZE/2
+            v.y = sinf(Float(i) * DEGREES_TO_RADIANS) * CAR_SIZE/2
             carAngles.append(v)
         }
 
@@ -124,6 +123,8 @@ class Cars: Model {
         }
     }
     
+
+    
     func updateCar( car: Car, vertexPtr: UnsafeMutablePointer<Vertex> ) {
         var camera : float3
         
@@ -131,19 +132,21 @@ class Cars: Model {
         camera = appState.cameraState.position
         if (!car.m_ready)
         {
-            let rv = WORLD_SIZE - DEAD_ZONE * 2
-            
-            //if the car isn't ready, we need to place it somewhere on the map
-            car.m_row = 50 + randomValue(rv)
-            car.m_col = DEAD_ZONE + randomValue(rv)
-            
+            car.m_row = DEAD_ZONE + randomValue(WORLD_SIZE - DEAD_ZONE * 2)
+            car.m_col = DEAD_ZONE + randomValue(WORLD_SIZE - DEAD_ZONE * 2)
+            //if there is already a car here, forget it.
+            if carMap[car.m_row][car.m_col] > 0 {
+                return
+            }
+
             //if there is already a car here, forget it.
             if !testPosition(atRow: car.m_row, col: car.m_col, forCar:car) {
                 return
             }
-//            if !VisibleVect(GLKVector3Make ((float)m_row, 0.0f, (float)m_col)) {
-//                return
-//            }
+            
+            if !WorldMap.instance.isVisible(x:car.m_row, y:car.m_col) {
+                return
+            }
             
             //good spot. place the car
             var l : Int = 0
@@ -211,7 +214,6 @@ class Cars: Model {
             car.m_drive_angle = dangles[car.m_direction]
             car.m_max_speed = Float(4 + randomValue(6)) / 10.0
             car.m_speed = 0.0
-            car.m_change = 3
             car.m_stuck = 0
             carMap[car.m_row][car.m_col] += 1
         }
@@ -221,11 +223,12 @@ class Cars: Model {
         car.m_speed += car.m_max_speed * 0.05
         car.m_speed = min(car.m_speed, car.m_max_speed)
         car.m_position = car.m_position + ( direction[car.m_direction] * MOVEMENT_SPEED * car.m_speed )
-        
+        let futurePos = car.m_position + ( direction[car.m_direction] * MOVEMENT_SPEED * car.m_speed * 5 )
+
         //If the car has moved out of view, there's no need to keep simulating it.
-//        if (!VisibleVect (GLKVector3Make ((float)m_row, 0.0f, (float)m_col))) {
-//            m_ready = false
-//        }
+        if !WorldMap.instance.isVisible( x:car.m_row,y: car.m_col) {
+            car.m_ready = false
+        }
         
         //if the car is far away, remove it.  We use manhattan units because buildings almost always
         //block views of cars on the diagonal.
@@ -246,6 +249,13 @@ class Cars: Model {
             return
         }
         
+        if carMap[Int(futurePos.x)][Int(futurePos.z)] > 0 {
+            // Slow down
+            if car.m_max_speed > 0.3 {
+                car.m_max_speed -= 0.1
+            }
+        }
+        
         //Check the new position and make sure its not in another car
         let new_row = Int(car.m_position.x)
         let new_col = Int(car.m_position.z)
@@ -255,11 +265,13 @@ class Cars: Model {
                 car.m_position = old_pos
                 car.m_speed = 0.0
                 car.m_stuck += 1
+                if car.m_max_speed > 0.3 {
+                    car.m_max_speed -= 0.1
+                }
             } else {
                 //look at the new position and decide if we're heading towards or away from the camera
                 car.m_row = new_row
                 car.m_col = new_col
-                car.m_change -= 1
                 car.m_stuck = 0
                 if car.m_direction == NORTH {
                     car.m_front = camera.z < car.m_position.z
@@ -281,9 +293,10 @@ class Cars: Model {
         if !car.m_ready {
             return
         }
-//        if !VisibleVect(car.m_drive_position) {
-//            return
-//        }
+        
+        if !WorldMap.instance.isVisible( pos: car.m_drive_position ) {
+            return
+        }
 
         let top = CAR_SIZE
         

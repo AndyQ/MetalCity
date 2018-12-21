@@ -23,16 +23,6 @@ class Plot {
 }
 
 
-func worldToGrid( _ x : Int ) -> Int {
-    return (x/GRID_RESOLUTION).clamped(to: 0 ... GRID_SIZE-1)
-}
-
-func gridToWorld( _ x: Int ) -> Int {
-    return x * GRID_RESOLUTION
-}
-
-
-
 class City {
     var sky : Sky
     var floor : PlaneModel
@@ -73,6 +63,9 @@ class City {
     
     func update(  )
     {
+        WorldMap.instance.updateVisibilityGrid()
+        
+        
         sky.update()
         floor.update()
         cars.update()

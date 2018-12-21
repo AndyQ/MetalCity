@@ -74,8 +74,8 @@ class Building : Model {
 
         self.trim_color = worldLightColor(seed)
         
-        self.gridX = worldToGrid( x + width/2 )
-        self.gridY = worldToGrid( y + depth / 2)
+        self.gridX = WorldMap.worldToGrid( x + width/2 )
+        self.gridY = WorldMap.worldToGrid( y + depth / 2)
         
         
         // Generate a random texture
@@ -95,13 +95,13 @@ class Building : Model {
             createModern()
             break
         case .simple:
-//            createSimple()
+            createSimple()
             break
         case .blocky:
-//            createBlocky()
+            createBlocky()
             break
         case .tower:
-//            createTower()
+            createTower()
             break
         }
         
@@ -231,7 +231,7 @@ class Building : Model {
 
         var pos = float4(0, 0, 0, 1)
         var angle = 0
-        while angle < 360 {
+        while angle <= 360 {
             if (skip_counter >= skip_interval && (angle + skip_delta < 360))
             {
                 angle += skip_delta

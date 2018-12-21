@@ -13,12 +13,6 @@ import CoreGraphics
 var appState = AppState()
 
 
-let WORLD_SIZE : Int = 1024//512
-let WORLD_HALF = WORLD_SIZE / 2
-let WORLD_EDGE = 100
-let GRID_RESOLUTION = 32
-let GRID_CELL = GRID_RESOLUTION / 2
-let GRID_SIZE = WORLD_SIZE / GRID_RESOLUTION
 
 struct MapItem: OptionSet {
     

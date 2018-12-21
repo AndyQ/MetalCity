@@ -32,8 +32,8 @@ class Streetlights : Model {
     }
     
     func addLightStrip( atX x:Float, z:Float, width:Float, depth:Float, height:Float, color:float4 ) {
-        gridX = worldToGrid( Int(x + (width / 2)) )
-        gridY = worldToGrid( Int(z + (depth / 2)) )
+        gridX = WorldMap.worldToGrid( Int(x + (width / 2)) )
+        gridY = WorldMap.worldToGrid( Int(z + (depth / 2)) )
         
         textureType = .light
 
