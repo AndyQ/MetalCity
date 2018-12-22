@@ -87,21 +87,21 @@ class Building : Model {
 
         super.init()
 
-        let vertexShader : String = "indexedVertexShader"
-        let fragmentShader : String = "indexedFragmentShader"
+        let vertexShader : String = "buildingVertexShader"
+        let fragmentShader : String = "buildingFragmentShader"
 //        let vertexShader : String = "objectVertexShader"
 //        let fragmentShader : String = "objectFragmentShader"
         self.renderPipelineState = createLibraryAndRenderPipeline( device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader  )
-        self.logoRenderPipelineState = createLibraryAndRenderPipeline( device: device, vertexFunction:"indexedVertexShader", fragmentFunction:"logoFragmentShader"  )
+        self.logoRenderPipelineState = createLibraryAndRenderPipeline( device: device, vertexFunction:"logoVertexShader", fragmentFunction:"logoFragmentShader"  )
 
 
         var arr : [Vertex]?
         switch type {
-        case .modern:
-            arr = createModern()
-            break
         case .simple:
             arr = createSimple()
+            break
+        case .modern:
+            arr = createModern()
             break
         case .blocky:
             arr = createBlocky()
@@ -493,7 +493,8 @@ class Building : Model {
                 }
                 vertices.append(contentsOf: tmpV)
 
-                height -= (randomValue() % 10) + 1
+                // Make sure that other tiers don't obstruct the roof (they were covering up the logo sometimes)
+                h -= max(5, (randomValue() % 10) + 2)
                 tiers += 1
             }
             h -= 1
@@ -703,7 +704,7 @@ class Building : Model {
         let width = Int(right - left)
         let depth = Int(back - front)
         let roofHeight = Float(5 - roof_tiers)
-        let logo_offset :Float = 0.2
+        let logo_offset :Float = 0.1
         
         
         //See if this building is special and worthy of fancy roof decorations.
@@ -933,8 +934,7 @@ class Building : Model {
     }
     
     func createLogo( start:float2, end:float2, bottom:Float, seed:Int, color:float4 ) {
-        let LOGO_ROWS : Float = 12
-        let LOGO_OFFSET :Float = 0.2
+        let LOGO_OFFSET :Float = 1 //0.2
         
         let logo_index = seed % TextureManager.instance.textAtlas.nrItems
 

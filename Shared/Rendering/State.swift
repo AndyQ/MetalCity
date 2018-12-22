@@ -76,7 +76,6 @@ struct CameraState {
     var cam_auto : Bool = false
     var tracker : Float = 0
     var Int = 0
-    var camera_behavior : CameraBehaviour = .manual
     var last_update : UInt64 = 0
 }
 
@@ -92,7 +91,7 @@ struct AppState {
         let index = randomValue(light_colors.count)
         let hue = light_colors[index].hueComponent
         
-        bloom_color = Color(hue: hue, saturation: 0.5 + CGFloat(randomValue(10)) / 20, brightness: 0.75, alpha: 1.0).rgba()!
+        bloom_color = Color(hue: hue, saturation: 0.5 + CGFloat(randomValue(10)) / 20, brightness: 0.75, alpha: 1.0).rgba()
     }
 }
 

@@ -35,7 +35,7 @@ func randomValue( _ range : Int) -> Int {
 
 func randomColor() -> float4 {
     let h = CGFloat(randomValue(255))/255.0
-    let c = Color( hue:h, saturation:1.0, brightness:0.75, alpha:1).rgba()!
+    let c = Color( hue:h, saturation:1.0, brightness:0.75, alpha:1).rgba()
 
     return c
 }
@@ -77,7 +77,7 @@ var light_colors : [Color] = [
 
 func worldLightColor( _ index : Int ) -> float4 {
     let ci = index % light_colors.count
-    return light_colors[ci].rgba()!
+    return light_colors[ci].rgba()
 }
 
 

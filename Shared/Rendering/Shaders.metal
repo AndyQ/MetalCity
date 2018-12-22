@@ -102,29 +102,7 @@ vertex ProjectedVertex indexedVertexShader( const device InVertex *vertices [[bu
     return outVert;
 }
 
-/*
-vertex ProjectedVertex indexedVertexShader( const device InVertex *vertices [[buffer(0)]],
-                                       const device Uniforms &uniforms [[buffer(1)]],
-                                           const device PerInstanceUniforms *perInstanceUniforms [[buffer(2)]],
-                                           unsigned int  vertexId [[vertex_id]],
-                                           unsigned int iid [[instance_id]])
-{
-    
-    PerInstanceUniforms pu = perInstanceUniforms[iid];
-    InVertex v = vertices[vertexId];
 
-    float4x4 instanceModelMatrix = pu.modelMatrix;
-    float3x3 instanceNormalMatrix = pu.normalMatrix;
-
-    ProjectedVertex outVert;
-    
-    outVert.position = uniforms.viewProjectionMatrix * instanceModelMatrix * float4(v.position);
-    outVert.normal = instanceNormalMatrix * float4(v.normal).xyz;
-    outVert.texCoords = vertices[vertexId].texCoords;
-    return outVert;
-}
-*/
- 
 fragment half4 indexedFragmentShader(ProjectedVertex fragments [[stage_in]],
                                      texture2d<float> textures [[texture(0)]])
 {
@@ -138,10 +116,63 @@ fragment half4 indexedFragmentShader(ProjectedVertex fragments [[stage_in]],
     
     if ( texture.x > 0.5 || texture.y > 0.5 || texture.z > 0.5 ) {
         return half4(baseColor + texture);
-        
     }
     
     return half4(texture);
+}
+
+// Building Shader
+vertex ProjectedVertex buildingVertexShader( const device InVertex *vertices [[buffer(0)]],
+                                           const device Uniforms &uniforms [[buffer(1)]],
+                                           unsigned int  vertexId [[vertex_id]],
+                                           unsigned int iid [[instance_id]])
+{
+    
+    InVertex v = vertices[vertexId];
+    
+    ProjectedVertex outVert;
+    
+    outVert.position = uniforms.viewProjectionMatrix * float4(v.position);
+    outVert.normal = float4(v.normal).xyz;
+    outVert.texCoords = vertices[vertexId].texCoords;
+    outVert.color = v.color;
+    
+    return outVert;
+}
+
+fragment half4 buildingFragmentShader(ProjectedVertex fragments [[stage_in]],
+                                     texture2d<float> textures [[texture(0)]])
+{
+    constexpr sampler samplers(coord::normalized,
+                               address::repeat,
+                               filter::linear);
+    float4 texture = textures.sample(samplers, fragments.texCoords);
+    
+    float4 baseColor = float4(0.075, 0.075, 0.075, 0);
+    if ( texture.x > 0.5 || texture.y > 0.5 || texture.z > 0.5 ) {
+        baseColor = fragments.color * 0.25;// * 0.075;
+        baseColor.a = 1;
+    }
+    return half4(baseColor + texture);
+}
+
+// Logo Shader
+vertex ProjectedVertex logoVertexShader( const device InVertex *vertices [[buffer(0)]],
+                                           const device Uniforms &uniforms [[buffer(1)]],
+                                           unsigned int  vertexId [[vertex_id]],
+                                           unsigned int iid [[instance_id]])
+{
+    
+    InVertex v = vertices[vertexId];
+    
+    ProjectedVertex outVert;
+    
+    outVert.position = uniforms.viewProjectionMatrix * float4(v.position);
+    outVert.normal = float4(v.normal).xyz;
+    outVert.texCoords = vertices[vertexId].texCoords;
+    outVert.color = v.color;
+    
+    return outVert;
 }
 
 fragment half4 logoFragmentShader(ProjectedVertex fragments [[stage_in]],

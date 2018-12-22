@@ -61,7 +61,7 @@ class City {
         
         // Add in 100 cars
         print( "Creating cars" )
-        for _ in 0 ..< 500 {
+        for _ in 0 ..< 100 {
             cars.addCar()
         }
         print( "City Built" )
@@ -126,6 +126,7 @@ class City {
     }
 
     func  buildCity() {
+        WorldMap.instance.reset()
         buildRoads()
 
         if let image = genTextureImage() {
@@ -466,9 +467,7 @@ class City {
         let size_adjust : Float = 2.5//.5
         
         //We adjust the size of the lights with this.
-        if let rgba = Color(hue: 0.09, saturation: 0.99, brightness: 0.85, alpha: 1.0).rgba() {
-            color = rgba
-        }
+        color = Color(hue: 0.09, saturation: 0.99, brightness: 0.85, alpha: 1.0).rgba()
         
         switch (direction) {
         case .north:

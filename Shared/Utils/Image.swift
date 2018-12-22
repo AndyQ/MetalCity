@@ -16,7 +16,7 @@ extension Image {
         return cgImage(forProposedRect: nil, context: nil, hints: nil)
     }
     
-    public convenience init?(cgImage: CGImage) {
+    public convenience init(cgImage: CGImage) {
         self.init(cgImage: cgImage, size: .zero)
     }
     
@@ -35,7 +35,7 @@ public typealias Image = UIImage
 
 
 extension Image {
-    class func createImageFromDrawing( size: CGSize,  doDrawing : ((CGContext)->()) ) -> Image? {
+    class func createImageFromDrawing( size: CGSize, doDrawing : ((CGContext)->()) ) -> Image? {
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let context = CGContext(
             data: nil,

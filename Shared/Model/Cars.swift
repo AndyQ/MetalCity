@@ -38,7 +38,7 @@ class Cars: Model {
     
     let dangles : [Int] = [ 0, 90, 180, 270]
 
-    let CAR_SIZE : Float = 1
+    let CAR_SIZE : Float = 0.5
     let DEAD_ZONE = 25
     let STUCK_TIME = 230
     let MOVEMENT_SPEED : Float = 0.61
@@ -163,7 +163,7 @@ class Cars: Model {
                 while WorldMap.instance.cellAt(r, car.m_col).contains(.roadNorth) {
                     r += 1
                 }
-                car.m_row = r-l > 4 ? l+2 : l+1
+                car.m_row = l+2 //r-l > 4 ? l+2 : l+1
             }
             if WorldMap.instance.cellAt(car.m_row, car.m_col).contains(.roadEast) {
                 car.m_direction = EAST
@@ -177,7 +177,7 @@ class Cars: Model {
                 while ( WorldMap.instance.cellAt(car.m_row, r).contains(.roadEast) ) {
                     r += 1
                 }
-                car.m_col =  r-l > 4 ?l+2 : l+1
+                car.m_col = l+2// r-l > 4 ?l+2 : l+1
             }
             if WorldMap.instance.cellAt(car.m_row, car.m_col).contains(.roadSouth) {
                 car.m_direction = SOUTH
@@ -190,7 +190,7 @@ class Cars: Model {
                 while WorldMap.instance.cellAt(r, car.m_col).contains(.roadSouth) {
                     r += 1
                 }
-                car.m_row = r-l > 4 ? r-2 : r-1
+                car.m_row = r-2//r-l > 4 ? r-2 : r-1
             }
             if (WorldMap.instance.cellAt(car.m_row, car.m_col).contains(.roadWest))
             {
@@ -204,7 +204,7 @@ class Cars: Model {
                 while WorldMap.instance.cellAt(car.m_row, r).contains(.roadWest) {
                     r += 1
                 }
-                car.m_col = r-l > 4 ? r-2 : r-1
+                car.m_col = r-2//r-l > 4 ? r-2 : r-1
             }
             
             car.m_position = float3(Float(car.m_row), 0.1, Float(car.m_col))
@@ -298,7 +298,7 @@ class Cars: Model {
             return
         }
 
-        let top = CAR_SIZE
+        let top = CAR_SIZE * 2
         
         var pos = car.m_drive_position
         let angle = (360 - Int(angleBetweenPoints(car.m_position.x, car.m_position.z, pos.x, pos.z))) % 360

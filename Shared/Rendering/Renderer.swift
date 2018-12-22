@@ -77,7 +77,8 @@ class Renderer: NSObject, MTKViewDelegate {
         
         camera = Camera(pos: [0, 85, 0], lookAt: [10, 80, 10])
         autoCam = AutoCamera(camera: camera)
-        autoCam.isEnabled = true
+        autoCam.isEnabled = false
+        
         city = City(device:device)
         
         super.init()
@@ -124,9 +125,7 @@ class Renderer: NSObject, MTKViewDelegate {
 
         projectionMatrix = float4x4(perspectiveWithAspect: aspect, fovy: fov, near: 0.1, far: 2000)
         
-        if autoCam.isEnabled {
-            autoCam.update()
-        }
+        autoCam.update()
 
         let modelViewMatrix = camera.look()
         let modelViewProjectionMatrix = projectionMatrix * modelViewMatrix
@@ -202,6 +201,24 @@ class Renderer: NSObject, MTKViewDelegate {
         
         //let aspect = Float(size.width) / Float(size.height)
         //projectionMatrix = matrix_perspective_projection(aspect: aspect, fovy: radians_from_degrees(65), near: 0.1, far: 100.0)
+    }
+}
+
+extension Renderer {
+    func rebuildCity() {
+        city = City(device:device)
+    }
+    
+    func regenerateTextures() {
+        TextureManager.instance.createTextures(device:device)
+    }
+    
+    func toggleAutoCam() {
+        autoCam.isEnabled = !autoCam.isEnabled
+    }
+
+    func changeAutocamMode() {
+        self.autoCam.nextBehaviour( manuallyChanged: true )
     }
 }
 #endif

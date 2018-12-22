@@ -62,10 +62,10 @@ class TextureManager {
             ctx.clear(CGRect(x:0, y:0, width:size.width, height:size.height))
             ctx.setFillColor(Color.white.cgColor)
             
-            let r1 = CGRect( x:50, y:56, width:10, height:10 )
+            let r1 = CGRect( x:20, y:(size.height/2) - 5, width:10, height:10 )
             ctx.fill(r1)
             
-            let r2 = CGRect( x:73, y:56, width:10, height:10 )
+            let r2 = CGRect( x:size.width-30, y:(size.height/2) - 5, width:10, height:10 )
             ctx.fill(r2)
             
         })
@@ -74,38 +74,53 @@ class TextureManager {
             
             ctx.clear(CGRect(x:0, y:0, width:size.width, height:size.height))
             ctx.setFillColor(Color.white.cgColor)
-//            ctx.fill(CGRect(x:0, y:0, width:size.width, height:size.height))
 
-            let r1 = CGRect( x:45, y:51, width:20, height:20 )
+            //ctx.fill(CGRect(x:0, y:0, width:size.width, height:size.height))
+
+            let r1 = CGRect( x:15, y:(size.height/2) - 10, width:20, height:20 )
             ctx.fill(r1)
             
-            let r2 = CGRect( x:68, y:51, width:20, height:20 )
+            let r2 = CGRect( x:size.width-35, y:(size.height/2) - 10, width:20, height:20 )
             ctx.fill(r2)
             
         })
         
-        if let image = image, let blurImage = blurImage {
+        if let image = image, let blurImage = blurImage ,
+            let cgimage = image.cgImage, let cgblurImage = blurImage.cgImage {
             // Blur image
-            let inputImage = CIImage(cgImage:image.cgImage)
-            let blurInputImage = CIImage(cgImage:blurImage.cgImage)
+            let inputImage = CIImage(cgImage:cgimage)
+            let blurInputImage = CIImage(cgImage:cgblurImage)
 
             // Apply gaussian blur filter with radius of 30
-            let gaussianBlurFilter = CIFilter(name:"CIGaussianBlur")!
+            guard let gaussianBlurFilter = CIFilter(name:"CIGaussianBlur") else {
+                print( "Unable to create Gaussian blur filter" )
+                return
+            }
             gaussianBlurFilter.setValue(blurInputImage, forKey:"inputImage")
             gaussianBlurFilter.setValue(10, forKey:"inputRadius")
             
-            let overlay = CIFilter(name:"CIOverlayBlendMode")!
+            guard let overlay = CIFilter(name:"CIOverlayBlendMode") else {
+                print( "Unable to create OverlayBlend filter" )
+                return
+            }
+            
+            guard let gaussianBlurCIImage = gaussianBlurFilter.outputImage else {
+                print( "Gaussian Blur didn't provide image" )
+                return
+            }
             overlay.setValue(inputImage, forKey:"inputImage")
-            overlay.setValue(gaussianBlurFilter.outputImage!, forKey:"inputBackgroundImage")
+            overlay.setValue(gaussianBlurCIImage, forKey:"inputBackgroundImage")
 
-            let ci = overlay.outputImage!
+            guard let overlayBlendCIImage = overlay.outputImage else {
+                print( "OverlayBlend didn't provide image" )
+                return
+            }
             let ciContext = CIContext(options:nil)
-            let cgImage = ciContext.createCGImage(ci, from:inputImage.extent)
-
-            let finalImage = Image(cgImage: cgImage!)!
-
-            let texture = imageToTexture(image: finalImage, named:"headlight", device: device)
-            textures[.headlight] = texture
+            if let cgImage = ciContext.createCGImage(overlayBlendCIImage, from:inputImage.extent) {
+                let finalImage = Image(cgImage: cgImage)
+                let texture = imageToTexture(image: finalImage, named:"headlight", device: device)
+                textures[.headlight] = texture
+            }
         } else {
             print( "Invalid image created for light" )
         }
@@ -158,41 +173,6 @@ class TextureManager {
         textAtlas = TextTextureAtlas(device:device)
         textAtlas.buildAtlas()
         textures[.logos] = textAtlas.texture
-
-/*
-        let size = CGSize(width:512, height:512)
-        let image = Image.createImageFromDrawing( size:size, doDrawing: { (ctx) in
-            
-            // Draw text
-            var i : CGFloat = 0
-            let nrRows : CGFloat = 16
-            let logoHeight : CGFloat = size.height/nrRows
-            while i < size.height {
-                let name_num = randomValue(logoName.count)
-                let prefix_num = randomValue(logoPrefix.count)
-                let suffix_num = randomValue(logoSuffix.count)
-
-                let string : String
-                if flipCoinIsHeads() {
-                    string = "\(logoPrefix[prefix_num])\(logoName[name_num])"
-                } else {
-                    string = "\(logoName[name_num])\(logoSuffix[suffix_num])"
-                }
-                print( string)
-
-                let attrs = [NSAttributedString.Key.font: Font(name: "HelveticaNeue", size: 24)!, NSAttributedString.Key.strokeColor: Color.white, NSAttributedString.Key.foregroundColor: Color.white]
-                string.draw(with: CGRect(x: 2, y: i, width: 448, height: logoHeight), options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
-//                let textSize = string.size(withAttributes:attrs)
-                
-                i += logoHeight
-            }
-        })
-
-        if let image = image {
-            let t = imageToTexture(image: image, named:"Logos", device: device, flip:false)
-            textures[.logos] = t
-        }
-*/
     }
 }
 
@@ -313,7 +293,7 @@ extension TextureManager {
                 for i in left+1 ..< right-1 {
                     for j in top+1 ..< bottom {
                         let hue = 0.2 + CGFloat(randomValue(100)) / 300.0 + CGFloat(randomValue(100)) / 300.0 + CGFloat(randomValue(100)) / 300.0
-                        var color_noise = Color( hue:hue, saturation:0.4, brightness:0.5, alpha:1).rgba()!
+                        var color_noise = Color( hue:hue, saturation:0.4, brightness:0.5, alpha:1).rgba()
                         color_noise.w = Float(randomValue(potential)) / 144.0
                         
                         let c = Color(red: CGFloat(color_noise.x), green: CGFloat(color_noise.y), blue: CGFloat(color_noise.z), alpha: CGFloat(color_noise.w))

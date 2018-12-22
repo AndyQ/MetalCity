@@ -25,7 +25,7 @@ class TextTextureAtlas {
     
     private let logoSuffix  = ["Corp", " Inc.", "co", "World", ".com", " USA", " Ltd.", "Net", " Tech", " Labs", " Mfg", " UK", " Unlimited", " One", " LLC"]
     
-    private let fontNames = ["Copperplate","KohinoorTelugu-Regular","Thonburi","GillSans","AppleSDGothicNeo-UltraLight","MarkerFelt-Thin","HelveticaNeue-Light","HelveticaNeue","ArialRoundedMTBold","ChalkboardSE-Regular","PingFangTC-Regular","DamascusLight","Avenir-Medium","AcademyEngravedLetPlain","Futura-Medium","PartyLetPlain","Chalkduster","Helvetica","SnellRoundhand","AmericanTypewriter","Menlo-Bold"]
+    private let fontNames = ["Copperplate","KohinoorTelugu-Regular","Thonburi","GillSans","AppleSDGothicNeo-UltraLight","MarkerFelt-Thin","HelveticaNeue-Light","HelveticaNeue","ArialRoundedMTBold","ChalkboardSE-Regular","PingFangTC-Regular","Avenir-Medium","AcademyEngravedLetPlain","Futura-Medium","PartyLetPlain","Chalkduster","Helvetica","SnellRoundhand","AmericanTypewriter","Menlo-Bold"]
     
     var textItems = [TextItem]()
     var device:MTLDevice
@@ -55,20 +55,49 @@ class TextTextureAtlas {
 
     }
     
+    // Now well :
+    // Motors LLC using PartyLetPlain
+    // Superior Med using DamascusLight
+    // Unity Industrial using PingFangTC-Regular
+    // Media.com using DamascusLight
+
     func buildAtlas() {
         let size = CGSize(width:512, height:512)
         let image = Image.createImageFromDrawing( size:size, doDrawing: { (ctx) in
             
+//            var names = ["Medicalco", "Motors LLC", "Superior Med", "Unity Industrial", "Media.com", "END" ]
+//            var fonts = ["PartyLetPlain", "PartyLetPlain", "PartyLetPlain", "PingFangTC-Regular", "PartyLetPlain", "Menlo-Bold"]
+            // Motors LLC using PartyLetPlain
+            // Superior Med using DamascusLight
+            // Unity Industrial using PingFangTC-Regular
+            // Media.com using DamascusLight
+
             // Draw text
             var i : CGFloat = 0
-            let nrRows : CGFloat = 16
-            let logoHeight : CGFloat = size.height/nrRows
+            print( "Generating building names..." )
             while i < size.height {
                 let string = generateName()
                 let fontName = fontNames.randomElement()!
+//            for j in 0 ..< names.count {
+//                let string = names[j]
+//                let fontName = fonts[j]
+
+                print( "   \(string) using \(fontName)" )
+
                 let attrs = [NSAttributedString.Key.font: Font(name:fontName, size: 24)!, NSAttributedString.Key.strokeColor: Color.white, NSAttributedString.Key.foregroundColor: Color.white]
                 let textSize = string.size(withAttributes:attrs)
-                string.draw(with: CGRect(x: 2, y: i, width: textSize.width, height: textSize.height), options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
+                
+                if i + textSize.height > size.height {
+                    break
+                }
+
+                
+                let textRect = CGRect(x: 2, y: i, width: textSize.width, height: textSize.height)
+                string.draw(with: textRect, options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
+                
+                // Outline text - useful for debugging font drawing issues
+//                ctx.setStrokeColor(Color.white.cgColor)
+//                ctx.stroke(textRect)
                 
                 let ti = TextItem()
                 ti.text = string
@@ -80,15 +109,8 @@ class TextTextureAtlas {
                 textItems.append(ti)
                 
                 i += textSize.height
+                
             }
-            /*
-             #define LOGO_RESOLUTION       512
-             #define LOGO_ROWS             16
-             #define LOGO_SIZE             (1.0f / LOGO_ROWS)
-             #define LOGO_PIXELS           (LOGO_RESOLUTION / LOGO_ROWS)
-             #define FONT_SIZE           (LOGO_PIXELS - LOGO_PIXELS / 8)
-             RenderPrint (render_width / 2 - LOGO_PIXELS, render_height / 2 + LOGO_PIXELS, 0, glRgba (0.5f), "%1.2f%%", EntityProgress () * 100.0f);
-             */
         })
         
         if let image = image {

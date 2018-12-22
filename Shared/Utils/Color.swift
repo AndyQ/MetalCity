@@ -29,18 +29,13 @@ extension Color {
     
 #if !os(OSX)
     
-    func rgba() -> float4? {
+    func rgba() -> float4 {
         var fRed : CGFloat = 0
         var fGreen : CGFloat = 0
         var fBlue : CGFloat = 0
         var fAlpha : CGFloat = 0
-        if self.getRed(&fRed, green: &fGreen, blue: &fBlue, alpha: &fAlpha) {
-            
-            return float4(Float(fRed), Float(fGreen), Float(fBlue), 1.0)
-        } else {
-            // Could not extract RGBA components:
-            return nil
-        }
+        self.getRed(&fRed, green: &fGreen, blue: &fBlue, alpha: &fAlpha)
+        return float4(Float(fRed), Float(fGreen), Float(fBlue), 1.0)
     }
 
     public var hueComponent: CGFloat {
@@ -52,11 +47,12 @@ extension Color {
 
 #else
 
-    func rgba() -> float4? {
+    func rgba() -> float4 {
         var fRed : CGFloat = 0
         var fGreen : CGFloat = 0
         var fBlue : CGFloat = 0
         var fAlpha : CGFloat = 0
+        
         self.getRed(&fRed, green: &fGreen, blue: &fBlue, alpha: &fAlpha)
         return float4(Float(fRed), Float(fGreen), Float(fBlue), 1.0)
     }

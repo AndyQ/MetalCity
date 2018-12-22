@@ -8,16 +8,19 @@
 
 import Foundation
 
-enum CameraBehaviour : Int {
-    case manual
+enum CameraBehaviour : Int, CaseIterable {
     case flycam1
-    case flycam2
-    case flycam3
     case orbitInward
     case orbitOutward
     case orbitElliptical
+    case flycam2
     case speed
     case spin
+    case flycam3
+    
+    static func random() -> CameraBehaviour {
+        return CameraBehaviour.allCases.randomElement()!
+    }
 }
 
 
@@ -26,19 +29,20 @@ let FLYCAM_CIRCUT = 60000
 let FLYCAM_CIRCUT_HALF = (FLYCAM_CIRCUT / 2)
 let FLYCAM_LEG = (FLYCAM_CIRCUT / 4)
 let ONE_SECOND = 1000
-let CAMERA_CHANGE_INTERVAL = 15
+let CAMERA_CHANGE_INTERVAL :UInt64 = 15 * 1000
 let CAMERA_CYCLE_LENGTH = (10 * CAMERA_CHANGE_INTERVAL)
 
 class AutoCamera {
     var camera : Camera
     var isEnabled : Bool = false
-    var behaviour : CameraBehaviour = .manual
+    var behaviour : CameraBehaviour = .flycam1
+    var timeUntilNextChange :UInt64 = 0
     var randomBehaviour = true {
         didSet {
-            
+            timeUntilNextChange = getTickCount() + CAMERA_CHANGE_INTERVAL
         }
     }
-
+    
     init( camera:Camera ) {
         self.camera = camera
         behaviour = .speed
@@ -47,13 +51,12 @@ class AutoCamera {
 
     func setCameraBehaviour( behaviour:CameraBehaviour ) {
         self.behaviour = behaviour
+        timeUntilNextChange = getTickCount() + CAMERA_CHANGE_INTERVAL
         randomBehaviour = false
     }
     
     func update() {
-        appState.cameraState.cam_auto = true
-        
-        if appState.cameraState.cam_auto {
+        if isEnabled {
             doAutoCam()
         }
         
@@ -107,10 +110,27 @@ class AutoCamera {
         return float3.lerp(vectorStart: start, vectorEnd: end, t: delta)
     }
     
+    func nextBehaviour( manuallyChanged:Bool = false ) {
+        let behaviours = CameraBehaviour.allCases
+        if let i = behaviours.firstIndex(of: behaviour) {
+            if i+1 >= behaviours.count {
+                behaviour = behaviours[1]
+            } else {
+                behaviour = behaviours[i+1]
+            }
+        } else {
+            behaviour = behaviours[1]
+        }
+        
+        if manuallyChanged {
+            timeUntilNextChange = 0
+        }
+    }
     
     func doAutoCam() {
         
         let now = getTickCount()
+        
         var elapsed = now - appState.cameraState.last_update
         elapsed = min(elapsed, 50) //limit to 1/20th second worth of time
         if elapsed == 0 {
@@ -118,14 +138,12 @@ class AutoCamera {
         }
         
         appState.cameraState.last_update = now
-        let t = (now/1000) % UInt64(CAMERA_CYCLE_LENGTH)
-        if randomBehaviour {
-            if let b = CameraBehaviour(rawValue:Int(t) / CAMERA_CHANGE_INTERVAL) {
-                behaviour = b
-            }
+        if timeUntilNextChange != 0 && now > timeUntilNextChange {
+            nextBehaviour()
+            timeUntilNextChange = now + CAMERA_CHANGE_INTERVAL
         }
+            
         appState.cameraState.tracker += Float(elapsed) / 300.0
-        //behavior = .flycam1
 
         let worldHalf = Float(WORLD_HALF)
         var target : float3

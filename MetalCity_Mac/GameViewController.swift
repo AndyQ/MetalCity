@@ -9,6 +9,12 @@
 import Cocoa
 import MetalKit
 
+extension MTKView {
+    open override var acceptsFirstResponder: Bool {
+        return true
+    }
+}
+
 // Our macOS specific view controller
 class GameViewController: NSViewController {
 
@@ -46,6 +52,25 @@ class GameViewController: NSViewController {
     var prevPoint = CGPoint()
     var nrTouches = 0
     
+    override func keyDown(with event: NSEvent) {
+        if let c = event.charactersIgnoringModifiers?.lowercased() {
+            print( "Hit char - \(c)" )
+            if c == "r" {
+                // Rebuild city
+                renderer.rebuildCity()
+            } else if c == "c" {
+                // Toggle Autocam
+                renderer.toggleAutoCam()
+            } else if c == " " {
+                // Change autocam mode (if running)
+                renderer.changeAutocamMode()
+            } else if c == "t" {
+                // Change autocam mode (if running)
+                renderer.regenerateTextures()
+            }
+        }
+    }
+    
     override func mouseDown(with event: NSEvent) {
         let p = event.locationInWindow
         prevPoint = p
@@ -76,42 +101,4 @@ class GameViewController: NSViewController {
         }
         prevPoint = p
     }
-    
-
-/*
-    @objc func pan( _ gr: NSPanGestureRecognizer ) {
-        let p = gr.location(in: self.view)
-        let buttonMask = gr.buttonMask
-        
-        print( "ButtonMask \(buttonMask)"   )
-        if gr.state == .began {
-            lastButtonMask = buttonMask
-            prevPoint = p
-        } else if gr.state == .changed {
-            if buttonMask != lastButtonMask {
-                prevPoint = p
-                lastButtonMask = buttonMask
-            }
-            let dx = Float(p.x - prevPoint.x)
-            let dy = Float(p.y - prevPoint.y)
-            if buttonMask == 1 {
-                
-                renderer.camera.rotateViewRound(x: 0, y: dx / 100.0, z: 0)
-                
-                renderer.camera.moveCamera(speed: -dy * 0.05)
-            } else if buttonMask == 2 {
-                let deltaY = -dy / 100.0
-                var v = renderer.camera.getView()
-                v.y += deltaY * 30
-                renderer.camera.setView(view:v)
-                
-            } else if buttonMask == 3 {
-                renderer.camera.raiseCamera(amount: dy*0.5)
-                renderer.camera.strafeCamera(speed: -dx * 0.05)
-            }
-            prevPoint = p
-        }
-    }
-*/
-
 }

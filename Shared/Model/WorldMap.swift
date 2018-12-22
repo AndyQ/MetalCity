@@ -18,8 +18,8 @@ let GRID_SIZE = WORLD_SIZE / GRID_RESOLUTION
 class WorldMap {
     static let instance : WorldMap = WorldMap()
     
-    var world : [[MapItem]]
-    var visGrid : [[Bool]]
+    var world = [[MapItem]]()
+    var visGrid = [[Bool]]()
 
     static func worldToGrid( _ x : Int, _ y : Int ) -> (Int,Int) {
         return (worldToGrid(x), worldToGrid(y))
@@ -40,6 +40,9 @@ class WorldMap {
 
     
     private init() {
+    }
+
+    func reset() {
         world = Array(repeating: Array(repeating: .unclaimed, count: WORLD_SIZE), count: WORLD_SIZE)
         visGrid = Array(repeating: Array(repeating: false, count: GRID_SIZE), count: GRID_SIZE)
     }
