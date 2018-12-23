@@ -28,14 +28,12 @@ enum BuildingAddOns : CaseIterable
 }
 
 
-
 class Building : Model {
     
     static var logoIndex = 0
 
-    var bufferProvider : BufferProvider!
     var device : MTLDevice
-    var logoRenderPipelineState : MTLRenderPipelineState!
+    var logoRenderPipelineState : MTLRenderPipelineState?
 
     var x : Int
     var y : Int
@@ -53,9 +51,9 @@ class Building : Model {
     var color : float4
     var trim_color : float4
     
-    var haveLights = false
-    var have_trim = false
-    var have_logo = false
+    var hasTower = false
+    var hasTrim = false
+    var hasLogo = false
     
     var vertexCount : Int = 0
     
@@ -92,7 +90,6 @@ class Building : Model {
 //        let vertexShader : String = "objectVertexShader"
 //        let fragmentShader : String = "objectFragmentShader"
         self.renderPipelineState = createLibraryAndRenderPipeline( device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader  )
-        self.logoRenderPipelineState = createLibraryAndRenderPipeline( device: device, vertexFunction:"logoVertexShader", fragmentFunction:"logoFragmentShader"  )
 
 
         var arr : [Vertex]?
@@ -112,7 +109,8 @@ class Building : Model {
         }
         
         if var arr = arr {
-            if have_logo {
+            if hasLogo {
+                self.logoRenderPipelineState = createLibraryAndRenderPipeline( device: device, vertexFunction:"logoVertexShader", fragmentFunction:"logoFragmentShader"  )
                 arr.append(contentsOf: logoVertices)
             }
             
@@ -122,29 +120,12 @@ class Building : Model {
     
     func update( )
     {
-        self.uniformsBuffer = bufferProvider.nextBuffer()
-        
-        let translation = float4x4(translate: [0,0,0])
-        
-        // copy matrices into uniform buffers
-        var uniform = PerInstanceUniforms()
-        uniform.modelMatrix = translation
-        uniform.normalMatrix = uniform.modelMatrix.upper_left3x3()
-        
-        uniform.r = 1
-        uniform.g = 1
-        uniform.b = 1
-        uniform.a = 1.0
-        
-        memcpy(self.uniformsBuffer.contents() + MemoryLayout<PerInstanceUniforms>.stride*0, &uniform, MemoryLayout<PerInstanceUniforms>.stride)
     }
     
     func prepareToDraw() {
-//        _ = bufferProvider.avaliableResourcesSemaphore.wait(timeout: DispatchTime.distantFuture)
     }
     
     func finishDrawing() {
-//        self.bufferProvider.avaliableResourcesSemaphore.signal()
     }
     
     override func draw( commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer ) {
@@ -163,23 +144,23 @@ class Building : Model {
         }
         
         var verticesToDraw = vertexCount
-        if have_logo {
+        if hasLogo {
             verticesToDraw -= 6
         }
         
         commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: verticesToDraw )
         
-        commandEncoder.setRenderPipelineState(self.logoRenderPipelineState)
-        commandEncoder.setCullMode(MTLCullMode.back)
+        guard let logoRenderPipelineState = logoRenderPipelineState else { return }
+        if hasLogo {
+            commandEncoder.setRenderPipelineState(logoRenderPipelineState)
+            commandEncoder.setCullMode(MTLCullMode.back)
 
-        if have_logo {
             if let texture = TextureManager.instance.textures[.logos] {
                 commandEncoder.setFragmentTexture(texture, index: 0)
             }
             commandEncoder.drawPrimitives(type: .triangle, vertexStart: verticesToDraw, vertexCount: 6 )
+            commandEncoder.setCullMode(MTLCullMode.none)
         }
-        commandEncoder.setCullMode(MTLCullMode.none)
-
     }
     
     func createSimple() -> [Vertex] {
@@ -278,8 +259,8 @@ class Building : Model {
             {
                 length = distance(p, pos)
                 windows += Int(length)
-                if length > 10 && !have_logo {
-                    have_logo = true
+                if length > 10 && !hasLogo {
+                    hasLogo = true
                     let start = float2(pos.x, pos.z);
                     let end = float2(p.x, p.z);
                     createLogo(start: start, end: end, bottom: Float(height), seed: Building.logoIndex, color: randomColor())
@@ -719,7 +700,7 @@ class Building : Model {
         
         
          //Consider putting a logo on the roof, if it's tall enough
-        if addon == .logo && !have_logo {
+        if addon == .logo && !hasLogo {
 //            d = new CDeco(_state)
             let face:Direction
             if width > depth {
@@ -753,7 +734,7 @@ class Building : Model {
             createLogo( start:start, end:end, bottom:bottom, seed:Building.logoIndex, color:trim_color)
             Building.logoIndex += 1
 //            d->CreateLogo (start, end, bottom, WorldLogoIndex (_state), _trim_color)
-            have_logo = true
+            hasLogo = true
          }
 /*
          else if (addon == ADDON_TRIM)
@@ -813,13 +794,11 @@ class Building : Model {
             vertices.append(contentsOf: tmpV)
         }
         
+        //print( self.height )
         if (self.height > 45 && flipCoinIsHeads())
         {
-/*
-            Decoration *d = [[Decoration alloc] init]
-            [d createRadioTower:GLKVector3Make(Float(left + right) / 2.0f, (float)newBottom, Float(front + back) / 2.0f) height:15.0f]
-            [state.decorations addObject:d]
-*/
+            let center = float3((left + right) / 2.0, newBottom, (front + back) / 2.0)
+            DecorationManager.instance.addRadioTower( center:center, height:15 )
         }
         
         return vertices
@@ -960,8 +939,7 @@ class Building : Model {
         let ver3 = Vertex(position: float4(start.x, top, start.y, 1) + out, normal: float4(0,1,0,1), color: color, texCoords: float2(u1,v1))
         let ver4 = Vertex(position: float4(end.x, top, end.y, 1) + out, normal: float4(0,1,0,1), color: color, texCoords: float2(u2,v1))
 
-        print( "Creating logo" )
+        //print( "Creating logo" )
         logoVertices.append(contentsOf: convertQuadsToTriangles([ver1, ver2, ver3, ver4], useMainColor:false))
     }
-
 }

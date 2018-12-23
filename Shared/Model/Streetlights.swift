@@ -65,12 +65,12 @@ class Streetlights : Model {
         guard vertices.count > 0 else { return }
 
         vertexBuffer = device.makeBuffer(bytes:vertices, length: vertices.count * MemoryLayout<Vertex>.stride, options: [])!
-        vertexBuffer.label = "vertices plane"
+        vertexBuffer.label = "vertices streetlights"
         
         indexBuffer = device.makeBuffer(bytes: indices,
                                         length: MemoryLayout<UInt16>.stride * indices.count,
                                         options: [])
-        indexBuffer.label = "indices plane"
+        indexBuffer.label = "indices streetlights"
     }
 
     func update(  )

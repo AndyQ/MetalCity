@@ -71,6 +71,9 @@ class TextTextureAtlas {
             // Superior Med using DamascusLight
             // Unity Industrial using PingFangTC-Regular
             // Media.com using DamascusLight
+            
+            ctx.setFillColor(red: 0.075, green: 0.075, blue: 0.075, alpha: 1)
+            ctx.fill(CGRect(x:0, y:0, width:size.width, height:size.height))
 
             // Draw text
             var i : CGFloat = 0

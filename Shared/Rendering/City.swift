@@ -27,7 +27,6 @@ class City {
     var sky : Sky
     var floor : PlaneModel
     var buildings = [Building]()
-    var decoration : Streetlights
     var cars : Cars
     var texture : Int = 0
 
@@ -45,7 +44,6 @@ class City {
     
     init(device: MTLDevice) {
         self.device = device
-        decoration = Streetlights(device:device)
         
         vlist = [Int]()
         
@@ -75,6 +73,7 @@ class City {
         sky.update()
         floor.update()
         cars.update()
+        DecorationManager.instance.update()
 /*
         for b in buildings {
             b.update()
@@ -120,7 +119,7 @@ class City {
             b.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)
         }
 
-        decoration.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)
+        DecorationManager.instance.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)
 
         cars.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)
     }
@@ -514,17 +513,15 @@ class City {
         let fwidth = Float(width)
         let fdepth = Float(depth)
         if direction == .east {
-            decoration.addLightStrip( atX:fx1, z:fz1 - size_adjust + 1, width:fwidth, depth:fdepth + size_adjust, height:height, color:color)
+            DecorationManager.instance.addStreetLightStrip( atX:fx1, z:fz1 - size_adjust + 1, width:fwidth, depth:fdepth + size_adjust, height:height, color:color)
         } else if direction == .west {
-            decoration.addLightStrip( atX:fx1, z:fz1 - 1, width:fwidth, depth:fdepth + size_adjust, height:height, color:color)
+            DecorationManager.instance.addStreetLightStrip( atX:fx1, z:fz1 - 1, width:fwidth, depth:fdepth + size_adjust, height:height, color:color)
         } else if direction == .north {
-            decoration.addLightStrip( atX:fx1-1, z:fz1, width:fwidth + size_adjust, depth:fdepth, height:height, color:color)
+            DecorationManager.instance.addStreetLightStrip( atX:fx1-1, z:fz1, width:fwidth + size_adjust, depth:fdepth, height:height, color:color)
         } else {
-            decoration.addLightStrip( atX:fx1 - size_adjust+1, z:fz1, width:fwidth + size_adjust, depth:fdepth, height:height, color:color)
+            DecorationManager.instance.addStreetLightStrip( atX:fx1 - size_adjust+1, z:fz1, width:fwidth + size_adjust, depth:fdepth, height:height, color:color)
         }
         
-        //self.decorations.append(d)
-
         return length
     }
 

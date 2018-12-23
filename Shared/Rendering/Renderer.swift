@@ -74,7 +74,8 @@ class Renderer: NSObject, MTKViewDelegate {
         self.drawableSize = metalKitView.drawableSize
         
         TextureManager.instance.createTextures(device:device)
-        
+        DecorationManager.instance.setup(device:device)
+
         camera = Camera(pos: [0, 85, 0], lookAt: [10, 80, 10])
         autoCam = AutoCamera(camera: camera)
         autoCam.isEnabled = false
@@ -206,6 +207,7 @@ class Renderer: NSObject, MTKViewDelegate {
 
 extension Renderer {
     func rebuildCity() {
+        DecorationManager.instance.reset()
         city = City(device:device)
     }
     

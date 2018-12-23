@@ -8,7 +8,7 @@
 
 import Metal
 
-class Model: NSObject {
+class Model {
     var renderPipelineState: MTLRenderPipelineState!
 
     let vertexDescriptor = MTLVertexDescriptor()

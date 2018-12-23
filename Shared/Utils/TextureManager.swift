@@ -28,6 +28,7 @@ class TextureManager {
         createBuildingTextures(device:device)
         createSkyTexture(device:device)
         createLogoTexture(device:device)
+        createLatticeTexture(device:device)
     }
     
     func createStreetlightTexture(device:MTLDevice) {
@@ -127,13 +128,6 @@ class TextureManager {
         
     }
 
-    func createHeadlightTexture2(device:MTLDevice) {
-        guard let image = Image(named: "headlight") else { print( "Failed to load image: headlight.png"); return }
-        
-        let t = imageToTexture(image: image, named:"headlight", device: device)
-        textures[.headlight] = t
-    }
-    
     func createBuildingTextures(device:MTLDevice) {
         let buildingTextures : [TextureType] = [.building1, .building2, .building3, .building4, .building5, .building6, .building7, .building8, .building9]
         
@@ -167,7 +161,53 @@ class TextureManager {
             textures[.sky] = t
         }
     }
-    
+
+    func createLatticeTexture(device:MTLDevice) {
+        let size = CGSize(width:128, height:128)
+        
+        let image = Image.createImageFromDrawing( size:size, doDrawing: { (ctx) in
+            ctx.clear(CGRect(x:0, y:0, width:size.width, height:size.height))
+            ctx.setLineWidth(2)
+            ctx.setAlpha(1)
+            ctx.setStrokeColor(red: 0.075, green: 0.075, blue: 0.075, alpha: 1)
+//            ctx.setStrokeColor(red: 1, green: 1, blue: 1, alpha: 1)
+
+            ctx.beginPath()
+            ctx.move(to: CGPoint(x:0, y:0))
+            ctx.addLine(to: CGPoint(x:size.width, y:size.height))
+            ctx.move(to: CGPoint(x:0, y:0))
+            ctx.addLine(to: CGPoint(x:0, y:size.height))
+            ctx.move(to: CGPoint(x:0, y:0))
+            ctx.addLine(to: CGPoint(x:size.width, y:0))
+            ctx.strokePath()
+
+            ctx.beginPath()
+            ctx.move(to: CGPoint(x:0, y:0))
+
+            for i in stride(from:0, to:Int(size.width), by:9 ) {
+                if i % 2 != 0 {
+                    ctx.addLine(to: CGPoint(x:0, y:i))
+                } else {
+                    ctx.addLine(to: CGPoint(x:i, y:i))
+                }
+            }
+            
+            for i in stride(from:0, to:Int(size.width), by:9 ) {
+                if i % 2 != 0 {
+                    ctx.addLine(to: CGPoint(x:i, y:0))
+                } else {
+                    ctx.addLine(to: CGPoint(x:i, y:i))
+                }
+            }
+            ctx.strokePath()
+        })
+        
+        if let image = image {
+            let t = imageToTexture(image: image, named:"Lattice", device: device, flip: false)
+            textures[.lattice] = t
+        }
+    }
+
     func createLogoTexture(device:MTLDevice) {
         
         textAtlas = TextTextureAtlas(device:device)
