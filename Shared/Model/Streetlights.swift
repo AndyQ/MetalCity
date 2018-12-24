@@ -118,5 +118,4 @@ class Streetlights : Model {
                                              indexBuffer: indexBuffer,
                                              indexBufferOffset: 0)
     }
-
 }

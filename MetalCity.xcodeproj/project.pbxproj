@@ -13,7 +13,6 @@
 		A117A83C21CA78C4008FFC94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A117A83B21CA78C4008FFC94 /* Assets.xcassets */; };
 		A117A83F21CA78C4008FFC94 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A117A83D21CA78C4008FFC94 /* Main.storyboard */; };
 		A117A84521CA7931008FFC94 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12CDB3D21C2F13C001A3DA2 /* Model.swift */; };
-		A117A84621CA7931008FFC94 /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D9BCFD21C57A4400D7204A /* Plane.swift */; };
 		A117A84721CA7931008FFC94 /* PlaneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D9BD0021C57A7800D7204A /* PlaneModel.swift */; };
 		A117A84821CA7931008FFC94 /* Building.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655C21C6A5C30043139A /* Building.swift */; };
 		A117A84921CA7931008FFC94 /* Streetlights.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7656021C7D3430043139A /* Streetlights.swift */; };
@@ -78,7 +77,6 @@
 		A1B7655D21C6A5C30043139A /* Building.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655C21C6A5C30043139A /* Building.swift */; };
 		A1B7655F21C7BFD10043139A /* TextureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655E21C7BFD10043139A /* TextureManager.swift */; };
 		A1B7656121C7D3430043139A /* Streetlights.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7656021C7D3430043139A /* Streetlights.swift */; };
-		A1D9BCFE21C57A4400D7204A /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D9BCFD21C57A4400D7204A /* Plane.swift */; };
 		A1D9BD0121C57A7800D7204A /* PlaneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D9BD0021C57A7800D7204A /* PlaneModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -129,7 +127,6 @@
 		A1B7655C21C6A5C30043139A /* Building.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Building.swift; sourceTree = "<group>"; };
 		A1B7655E21C7BFD10043139A /* TextureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureManager.swift; sourceTree = "<group>"; };
 		A1B7656021C7D3430043139A /* Streetlights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Streetlights.swift; sourceTree = "<group>"; };
-		A1D9BCFD21C57A4400D7204A /* Plane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; };
 		A1D9BD0021C57A7800D7204A /* PlaneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -254,15 +251,14 @@
 		A1D9BCFF21C57A4D00D7204A /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A130695621CE88DE0087E182 /* DecorationManager.swift */,
 				A12CDB3D21C2F13C001A3DA2 /* Model.swift */,
-				A1D9BCFD21C57A4400D7204A /* Plane.swift */,
 				A1D9BD0021C57A7800D7204A /* PlaneModel.swift */,
 				A1B7655C21C6A5C30043139A /* Building.swift */,
 				A130695421CE84EC0087E182 /* Towers.swift */,
 				A1B7656021C7D3430043139A /* Streetlights.swift */,
 				A130695A21CEFB2B0087E182 /* Lights.swift */,
 				A12F600621CBC63F000E920B /* Sky.swift */,
-				A130695621CE88DE0087E182 /* DecorationManager.swift */,
 				A12F600921CC26FB000E920B /* Cars.swift */,
 				A12F600B21CC2C3E000E920B /* WorldMap.swift */,
 			);
@@ -387,7 +383,6 @@
 				A117A85821CA793B008FFC94 /* Shaders.metal in Sources */,
 				A117A84F21CA7935008FFC94 /* Utils.swift in Sources */,
 				A12F600821CBC76A000E920B /* Sky.swift in Sources */,
-				A117A84621CA7931008FFC94 /* Plane.swift in Sources */,
 				A117A85321CA793B008FFC94 /* City.swift in Sources */,
 				A117A85D21CA7A96008FFC94 /* Color.swift in Sources */,
 				A117A84C21CA7935008FFC94 /* Camera.swift in Sources */,
@@ -425,7 +420,6 @@
 				A1B7655B21C698D70043139A /* BoundingBox.swift in Sources */,
 				A130695521CE84EC0087E182 /* Towers.swift in Sources */,
 				A12CDB4321C30AC2001A3DA2 /* City.swift in Sources */,
-				A1D9BCFE21C57A4400D7204A /* Plane.swift in Sources */,
 				A1B7655F21C7BFD10043139A /* TextureManager.swift in Sources */,
 				A12CDB3521C2EC74001A3DA2 /* BufferProvider.swift in Sources */,
 				A12F600721CBC63F000E920B /* Sky.swift in Sources */,

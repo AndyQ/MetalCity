@@ -23,17 +23,6 @@ enum RendererError: Error {
 }
 
 
-func randomInt( ) -> Int {
-    return GKRandomSource.sharedRandom().nextInt()
-}
-
-func randomInt( upperBound: Int ) -> Int {
-    return GKRandomSource.sharedRandom().nextInt(upperBound:upperBound)
-}
-func random_unit_float() -> Float {
-    return GKRandomSource.sharedRandom().nextUniform()
-}
-
 
 #if targetEnvironment(simulator)
 class Renderer: NSObject {

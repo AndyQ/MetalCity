@@ -15,17 +15,15 @@ let ONE_SEGMENT : Float = 0.015625 //1.0 / Float(SEGMENTS_PER_TEXTURE)
 let DEGREES_TO_RADIANS : Float = 0.017453292
 let RADIANS_TO_DEGREES : Float = 57.29577951
 
-let RANDOM_COLOR_SHIFT = Float(randomValue(10)) / 50.0
-let RANDOM_COLOR_VAL = Float(randomValue(256)) / 256.0
+let RANDOM_COLOR_SHIFT = Float(randomInt(10)) / 50.0
+let RANDOM_COLOR_VAL = Float(randomInt(256)) / 256.0
 
-func randomValue( ) -> Int{
+func randomInt( ) -> Int{
     let i = abs(GKRandomSource.sharedRandom().nextInt())
     return i
 }
 
-
-var vals = [1,18,1,11,0,24,1,12,2,2,9,5,1,0,1,4,11,1,7]
-func randomValue( _ range : Int) -> Int {
+func randomInt( _ range : Int) -> Int {
     //let i = vals.removeFirst()
 
     let i = GKRandomSource.sharedRandom().nextInt(upperBound: range)
@@ -34,7 +32,7 @@ func randomValue( _ range : Int) -> Int {
 }
 
 func randomColor() -> float4 {
-    let h = CGFloat(randomValue(255))/255.0
+    let h = CGFloat(randomInt(255))/255.0
     let c = Color( hue:h, saturation:1.0, brightness:0.75, alpha:1).rgba()
 
     return c

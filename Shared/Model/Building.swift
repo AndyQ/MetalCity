@@ -166,10 +166,10 @@ class Building : Model {
     func createSimple() -> [Vertex] {
 
         //How tall the flat-color roof is
-        let cap_height = Float(1 + randomValue(4))
+        let cap_height = Float(1 + randomInt(4))
         
         //how much the ledge sticks out
-        let ledge = Float(randomValue(10)) / 30.0
+        let ledge = Float(randomInt(10)) / 30.0
         
         let x1 = Float(x)
         let x2 = Float(x + width)
@@ -178,9 +178,9 @@ class Building : Model {
         let z2 = Float(y)
         let z1 = Float(y + depth)
         
-        var u = Float(randomValue(SEGMENTS_PER_TEXTURE)) / Float(SEGMENTS_PER_TEXTURE)
+        var u = Float(randomInt(SEGMENTS_PER_TEXTURE)) / Float(SEGMENTS_PER_TEXTURE)
         
-        let v1 = Float(randomValue(SEGMENTS_PER_TEXTURE)) / Float(SEGMENTS_PER_TEXTURE)
+        let v1 = Float(randomInt(SEGMENTS_PER_TEXTURE)) / Float(SEGMENTS_PER_TEXTURE)
         let v2 = v1 + Float(height) * ONE_SEGMENT
         
         var verticesArray = [Vertex]()
@@ -223,9 +223,9 @@ class Building : Model {
     
     func createModern() -> [Vertex] {
         //How many 10-degree segments to build before the next skip.
-        let skip_interval = 1 + randomValue(8)
+        let skip_interval = 1 + randomInt(8)
         //When a skip happens, how many degrees should be skipped
-        let skip_delta = (1 + randomValue(2)) * 30 //30 60 or 90
+        let skip_delta = (1 + randomInt(2)) * 30 //30 60 or 90
         
         //See if this is eligible for fancy lighting trim on top
         
@@ -355,13 +355,13 @@ class Building : Model {
         let blank_corners = flipCoinIsHeads()
         
         //Choose a random column on our texture
-        var uv_start = Float(randomValue(SEGMENTS_PER_TEXTURE)) / Float(SEGMENTS_PER_TEXTURE)
+        var uv_start = Float(randomInt(SEGMENTS_PER_TEXTURE)) / Float(SEGMENTS_PER_TEXTURE)
             
         //Choose how the windows are grouped
-        let grouping = 2 + randomValue(4)
+        let grouping = 2 + randomInt(4)
         
         //Choose how tall the lid should be on top of each section
-        let lid_height = Float(randomValue(3) + 1)
+        let lid_height = Float(randomInt(3) + 1)
         
         //find the center of the building.
         let mid_x = x + width / 2
@@ -403,10 +403,10 @@ class Building : Model {
             }
 
             //pick new locationsfor our four outer walls
-            let left = (randomValue() % half_width) + 1
-            let right = (randomValue() % half_width) + 1
-            let front = (randomValue() % half_depth) + 1
-            let back = (randomValue() % half_depth) + 1
+            let left = (randomInt() % half_width) + 1
+            let right = (randomInt() % half_width) + 1
+            let front = (randomInt() % half_depth) + 1
+            let back = (randomInt() % half_depth) + 1
             var skip = false
             
             //At least ONE of the walls must reach out beyond a previous maximum.
@@ -475,7 +475,7 @@ class Building : Model {
                 vertices.append(contentsOf: tmpV)
 
                 // Make sure that other tiers don't obstruct the roof (they were covering up the logo sometimes)
-                h -= max(5, (randomValue() % 10) + 2)
+                h -= max(5, (randomInt() % 10) + 2)
                 tiers += 1
             }
             h -= 1
@@ -494,23 +494,23 @@ class Building : Model {
         var tmpV : [Vertex]
 
         //How much ledges protrude from the building
-        let ledge = Float(randomValue(3)) * 0.25
+        let ledge = Float(randomInt(3)) * 0.25
         //How tall the ledges are, in stories
-        let ledge_height = randomValue(4) + 1
+        let ledge_height = randomInt(4) + 1
         //How the windows are grouped
-        let grouping = randomValue(3) + 2
+        let grouping = randomInt(3) + 2
         //if the corners of the building have no windows
-        let blank_corners = randomValue(4) > 0
+        let blank_corners = randomInt(4) > 0
         
         //if the roof is pointed or has infrastructure on it
         //    roof_spike = randomValue(3) == 0
         
         //What fraction of the remaining height should be given to each tier
-        let tier_fraction = 2 + randomValue(4)
+        let tier_fraction = 2 + randomInt(4)
         //How often (in tiers) does the building get narrorwer?
-        let narrowing_interval = 1 + randomValue(10)
+        let narrowing_interval = 1 + randomInt(10)
         //The height of the windowsless slab at the bottom
-        let foundation = 2 + randomValue(3)
+        let foundation = 2 + randomInt(3)
         
         //The odds that we'll have a big fancy spikey top
         //    tower = randomValue(5) != 0 && _height > 40
@@ -541,7 +541,7 @@ class Building : Model {
                 section_height = remaining_height
             }
             //Build the four walls
-            var uv_start = Float(randomValue(SEGMENTS_PER_TEXTURE)) / Float(SEGMENTS_PER_TEXTURE)
+            var uv_start = Float(randomInt(SEGMENTS_PER_TEXTURE)) / Float(SEGMENTS_PER_TEXTURE)
 
             (uv_start, tmpV) = constructWall( atX:left, y:bottom, z:back, dir:.south, length:section_depth,
                                               height:section_height, windowGroups:grouping, uvStart:uv_start, blankCorners:blank_corners)
@@ -773,10 +773,10 @@ class Building : Model {
         //1 air conditioner block for every 15 floors sounds reasonble
         let air_conditioners = self.height / 15
         for _ in 0 ..< air_conditioners {
-            let ac_size = Float(10 + randomValue(30)) / 10
-            let ac_height = Float(randomValue(20)) / 10 + 1.0
-            var ac_x = left + Float(randomValue(width))
-            var ac_y = front + Float(randomValue(depth))
+            let ac_size = Float(10 + randomInt(30)) / 10
+            let ac_height = Float(randomInt(20)) / 10 + 1.0
+            var ac_x = left + Float(randomInt(width))
+            var ac_y = front + Float(randomInt(depth))
             
             //make sure the unit doesn't hang off the right edge of the building
             if ac_x + ac_size > right {
@@ -813,7 +813,7 @@ class Building : Model {
         let z2 = back
         
         let mapping = Float(SEGMENTS_PER_TEXTURE)
-        let u = Float(randomValue() % SEGMENTS_PER_TEXTURE) / Float(SEGMENTS_PER_TEXTURE)
+        let u = Float(randomInt() % SEGMENTS_PER_TEXTURE) / Float(SEGMENTS_PER_TEXTURE)
         let u1 = u + Float(width) / Float(SEGMENTS_PER_TEXTURE)
         let u2 = u1 + Float(depth) / Float(SEGMENTS_PER_TEXTURE)
         let u3 = u2 + Float(width) / Float(SEGMENTS_PER_TEXTURE)

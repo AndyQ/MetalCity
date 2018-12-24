@@ -74,41 +74,16 @@ class City {
         floor.update()
         cars.update()
         DecorationManager.instance.update()
-/*
-        for b in buildings {
-            b.update()
-        }
-        for d in decorations {
-            //d.update()
-        }
-*/
     }
     
     func prepareToDraw() {
         sky.prepareToDraw()
         floor.prepareToDraw()
-
-/*
-        for b in buildings {
-            b.prepareToDraw()
-        }
-        for d in decorations {
-            d.prepareToDraw()
-        }
-*/
     }
     
     func finishDrawing() {
         sky.finishDrawing()
         floor.finishDrawing()
-/*
-        for b in buildings {
-            b.finishDrawing()
-        }
-        for d in decorations {
-            d.finishDrawing()
-        }
-*/
     }
     
     func draw( commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer ) {
@@ -213,7 +188,7 @@ class City {
             }
             else
             {
-                depth = 6 + randomValue(6)
+                depth = 6 + randomInt(6)
                 if y < WORLD_HALF / 2 {
                     north_street = Float(y + depth / 2)
                 }
@@ -223,7 +198,7 @@ class City {
                 
                 self.buildRoad(fromX1: 0, y1: y, width: WORLD_SIZE, depth: depth)
             }
-            y += randomValue(25) + 25
+            y += randomInt(25) + 25
         }
                     
         // Generate North/south roads
@@ -236,7 +211,7 @@ class City {
                 x += 20
                 broadway_done = true
             } else {
-                width = 6 + randomValue(6)
+                width = 6 + randomInt(6)
                 if x <= WORLD_HALF / 2 {
                     west_street = Float(x + width / 2)
                 }
@@ -246,7 +221,7 @@ class City {
                 }
                 self.buildRoad(fromX1:x, y1: 0, width: width, depth: WORLD_SIZE)
             }
-            x += randomValue(25) + 25
+            x += randomInt(25) + 25
         }
         
         //Scan for places to put runs of streetlights on the east & west side of the road
@@ -264,7 +239,6 @@ class City {
                     //if the cell to our east AND west is road, then we're on a median. skip it
                     if road_left != road_right {
                         y += self.buildLightStrip(atX: x, z: y, direction: road_right ? .south : .north, height:0)
-//                        y += self.buildLightStrip(atX: x, z: y, direction: .north, height:0)
                     }
                 }
                 
@@ -288,7 +262,6 @@ class City {
                     //if the cell to our east AND west is road, then we're on a median. skip it
                     if road_left != road_right {
                        x += self.buildLightStrip(atX: x, z: y, direction: road_right ? .east : .west, height:0.01)
-//                        x += self.buildLightStrip(atX: x, z: y, direction: .west, height:0.01)
                     }
                 }
                 
@@ -309,8 +282,8 @@ class City {
         //Scan over the center area of the map and place the big buildings
         attempts = 0
         while self.skyscrapers < 50 && attempts < 350 {
-            let x = (WORLD_HALF / 2) + (randomValue() % WORLD_HALF)
-            let y = (WORLD_HALF / 2) + (randomValue() % WORLD_HALF)
+            let x = (WORLD_HALF / 2) + (randomInt() % WORLD_HALF)
+            let y = (WORLD_HALF / 2) + (randomInt() % WORLD_HALF)
             if !self.claimed( atX:x, y:y, width:1, depth:1) {
                 self.doBuilding( atPlot:self.findPlot(atX:x, andY:y) )
                 self.skyscrapers += 1
@@ -328,12 +301,12 @@ class City {
                     y += 1
                     continue
                 }
-                width = 12 + randomValue(20)
-                depth = 12 + randomValue(20)
+                width = 12 + randomInt(20)
+                depth = 12 + randomInt(20)
                 height = min(width, depth)
                 
                 if x < 30 || y < 30 || x > WORLD_SIZE - 30 || y > WORLD_SIZE - 30 {
-                    height = randomValue(15) + 20
+                    height = randomInt(15) + 20
                 } else if x < WORLD_HALF / 2 {
                     height /= 2
                 }
@@ -342,26 +315,26 @@ class City {
                     if !self.claimed( atX:x, y:y, width:width, depth:depth) {
                         self.claimPatch( atX:x, y:y, width:width, depth:depth, value:.claimBuilding )
                         
-                        let color = worldLightColor(randomValue())
+                        let color = worldLightColor(randomInt())
                         
                         //if we're out of the hot zone, use simple buildings
                         var building : Building?
                         if x < Int(appState.hot_zone.minPoint.x) || x > Int(appState.hot_zone.maxPoint.x) || y < Int(appState.hot_zone.minPoint.z) || y > Int(appState.hot_zone.maxPoint.z) {
 
-                            height = 5 + randomValue(height) + randomValue(height)
-                            building = Building( device:device, type:.simple, x:x + 1, y:y + 1, height:height, width:width - 2, depth:depth - 2, seed:randomValue(), color:color)
+                            height = 5 + randomInt(height) + randomInt(height)
+                            building = Building( device:device, type:.simple, x:x + 1, y:y + 1, height:height, width:width - 2, depth:depth - 2, seed:randomInt(), color:color)
                         }
                         else
                         {
                             //use fancy buildings.
-                            height = 15 + randomValue(15)
+                            height = 15 + randomInt(15)
                             width -= 2
                             depth -= 2
                             
                             if flipCoinIsHeads() {
-                                building = Building( device:device, type:.tower, x:x + 1, y:y + 1, height:height, width:width, depth:depth, seed:randomValue(), color:color)
+                                building = Building( device:device, type:.tower, x:x + 1, y:y + 1, height:height, width:width, depth:depth, seed:randomInt(), color:color)
                             } else {
-                                building = Building( device:device, type:.blocky, x:x + 1, y:y + 1, height:height, width:width, depth:depth, seed:randomValue(), color:color)
+                                building = Building( device:device, type:.blocky, x:x + 1, y:y + 1, height:height, width:width, depth:depth, seed:randomInt(), color:color)
                             }
                         }
 
@@ -389,18 +362,7 @@ class City {
         }
         
         // Finally, sort the buildings by texture type
-/*
-        [self.buildings sortUsingComparator:^NSComparisonResult(id obj1, id obj2)
-        {
-        return ((Building *)obj1).textureType <= ((Building *)obj2).textureType
-        }]
-        
-        // Finally, sort the buildings by texture type
-        [state.decorations sortUsingComparator:^NSComparisonResult(id obj1, id obj2)
-        {
-        return ((Decoration *)obj1).texture <= ((Decoration *)obj2).texture
-        }]
-*/
+        buildings.sort { $0.textureType.rawValue <= $1.textureType.rawValue }
     }
 
     func buildRoad( fromX1 x1: Int, y1:Int, width : Int, depth:Int) {
@@ -505,8 +467,6 @@ class City {
         }
         let width = max(abs(x2 - x1), 1)
         let depth = max(abs(z2 - z1), 1)
-
-//        let h : Float = height
         
         let fx1 = Float(x1)
         let fz1 = Float(z1)
@@ -530,7 +490,7 @@ class City {
         
         //now we know how big the rectangle plot is.
         let area = p.width * p.depth
-        let color = worldLightColor(randomValue())
+        let color = worldLightColor(randomInt())
         
         //Make sure the plot is big enough for a building
         if p.width < 10 || p.depth < 10 {
@@ -570,8 +530,8 @@ class City {
         //mark the land as used so other buildings don't appear here, even if we don't use it all.
         self.claimPatch(atX: p.x, y: p.z, width: p.width, depth: p.depth, value: .claimBuilding)
         
-        let seed : Int = randomValue()
-        let height : Int = 45 + randomValue(10)
+        let seed : Int = randomInt()
+        let height : Int = 45 + randomInt(10)
         var type : BuildingType = .modern
 
         //The roundy mod buildings look best on square plots.

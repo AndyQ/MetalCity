@@ -132,8 +132,8 @@ class Cars: Model {
         camera = appState.cameraState.position
         if (!car.m_ready)
         {
-            car.m_row = DEAD_ZONE + randomValue(WORLD_SIZE - DEAD_ZONE * 2)
-            car.m_col = DEAD_ZONE + randomValue(WORLD_SIZE - DEAD_ZONE * 2)
+            car.m_row = DEAD_ZONE + randomInt(WORLD_SIZE - DEAD_ZONE * 2)
+            car.m_col = DEAD_ZONE + randomInt(WORLD_SIZE - DEAD_ZONE * 2)
             //if there is already a car here, forget it.
             if carMap[car.m_row][car.m_col] > 0 {
                 return
@@ -212,7 +212,7 @@ class Cars: Model {
             car.m_ready = true
             
             car.m_drive_angle = dangles[car.m_direction]
-            car.m_max_speed = Float(4 + randomValue(6)) / 10.0
+            car.m_max_speed = Float(4 + randomInt(6)) / 10.0
             car.m_speed = 0.0
             car.m_stuck = 0
             carMap[car.m_row][car.m_col] += 1

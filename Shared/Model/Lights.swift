@@ -47,7 +47,7 @@ class Lights: Model {
     func createLight(position:float3, color:float4, size:Float, blink:Bool ) {
         
         let l = Light()
-        l.blinkInterval = blink ? 1000 + randomValue(500) : 0
+        l.blinkInterval = blink ? 1000 + randomInt(500) : 0
         l.size = size
         l.position = position
         l.color = color

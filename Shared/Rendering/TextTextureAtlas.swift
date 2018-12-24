@@ -41,9 +41,9 @@ class TextTextureAtlas {
     }
     
     func generateName() -> String {
-        let name_num = randomValue(logoName.count)
-        let prefix_num = randomValue(logoPrefix.count)
-        let suffix_num = randomValue(logoSuffix.count)
+        let name_num = randomInt(logoName.count)
+        let prefix_num = randomInt(logoPrefix.count)
+        let suffix_num = randomInt(logoSuffix.count)
         
         let string : String
         if flipCoinIsHeads() {

@@ -170,7 +170,6 @@ class TextureManager {
             ctx.setLineWidth(2)
             ctx.setAlpha(1)
             ctx.setStrokeColor(red: 0.075, green: 0.075, blue: 0.075, alpha: 1)
-//            ctx.setStrokeColor(red: 1, green: 1, blue: 1, alpha: 1)
 
             ctx.beginPath()
             ctx.move(to: CGPoint(x:0, y:0))
@@ -233,22 +232,22 @@ extension TextureManager {
             //Every few floors we change the behavior
             if (y % 8) != 0 {
                 run = 0
-                run_length = randomValue( 9) + 2
-                lit_density = 2 + randomValue( 2) + randomValue( 2)
+                run_length = randomInt( 9) + 2
+                lit_density = 2 + randomInt( 2) + randomInt( 2)
                 lit = false
             }
             for x in 0 ..< SEGMENTS_PER_TEXTURE {
                 //if this run is over reroll lit and start a new one
                 if run < 1 {
-                    run = randomValue( run_length)
-                    lit = randomValue( lit_density) == 0
+                    run = randomInt( run_length)
+                    lit = randomInt( lit_density) == 0
                 }
                 
                 if lit {
-                    let luminance : Float = 0.5 + Float(randomValue() % 128) / 256.0
+                    let luminance : Float = 0.5 + Float(randomInt() % 128) / 256.0
                     color = float4( RANDOM_COLOR_SHIFT+luminance, RANDOM_COLOR_SHIFT+luminance, RANDOM_COLOR_SHIFT+luminance, 1.0)
                 } else {
-                    let v = Float(randomValue() % 40) / 256.0
+                    let v = Float(randomInt() % 40) / 256.0
                     color = float4( v, v, v, 1 )
                 }
                 
@@ -277,7 +276,7 @@ extension TextureManager {
             break
         case .building4: //windows with blinds
             drawRect( context:ctx, left:x+1, top:y+1, right:x+size-1, bottom:y+size-1, color:color)
-            let i = randomValue( size - 2)
+            let i = randomInt( size - 2)
             
             drawRect( context:ctx, left:x+1, top:y+1, right:x+size-1, bottom:y+i+1, color:color * 0.3)
             
@@ -332,9 +331,9 @@ extension TextureManager {
             if bright {
                 for i in left+1 ..< right-1 {
                     for j in top+1 ..< bottom {
-                        let hue = 0.2 + CGFloat(randomValue(100)) / 300.0 + CGFloat(randomValue(100)) / 300.0 + CGFloat(randomValue(100)) / 300.0
+                        let hue = 0.2 + CGFloat(randomInt(100)) / 300.0 + CGFloat(randomInt(100)) / 300.0 + CGFloat(randomInt(100)) / 300.0
                         var color_noise = Color( hue:hue, saturation:0.4, brightness:0.5, alpha:1).rgba()
-                        color_noise.w = Float(randomValue(potential)) / 144.0
+                        color_noise.w = Float(randomInt(potential)) / 144.0
                         
                         let c = Color(red: CGFloat(color_noise.x), green: CGFloat(color_noise.y), blue: CGFloat(color_noise.z), alpha: CGFloat(color_noise.w))
                         
@@ -345,17 +344,17 @@ extension TextureManager {
                 }
             }
             
-            var height = (bottom - top) + (randomValue(3) - 1) + (randomValue(3) - 1)
+            var height = (bottom - top) + (randomInt(3) - 1) + (randomInt(3) - 1)
             for i in left ..< right {
-                if randomValue(6) == 0 {
+                if randomInt(6) == 0 {
                     height = bottom - top
-                    height = randomValue( height)
-                    height = randomValue( height)
-                    height = randomValue( height)
+                    height = randomInt( height)
+                    height = randomInt( height)
+                    height = randomInt( height)
                     height = ((bottom - top) + height) / 2
                 }
                 for _ in 0 ..< 1 {
-                    let a = CGFloat(randomValue(256)) / 256.0
+                    let a = CGFloat(randomInt(256)) / 256.0
                     let c = Color(red: 0, green: 0, blue: 0, alpha: a)
                     ctx.setFillColor(c.cgColor)
                     ctx.setAlpha(CGFloat(a))
@@ -386,17 +385,17 @@ extension TextureManager {
         
         // Draw a bunch of little faux-buildings on the horizon.
         for i in stride( from:0, to:Int(width), by:5) {
-            drawRect(context: ctx, left: i, top: Int(bottom) - randomValue(8) - randomValue(8) - randomValue(8), right: i + randomValue(9), bottom: Int(bottom), color: float4(0,0,0,1))
+            drawRect(context: ctx, left: i, top: Int(bottom) - randomInt(8) - randomInt(8) - randomInt(8), right: i + randomInt(9), bottom: Int(bottom), color: float4(0,0,0,1))
         }
 //        return
         
         // Draw the clouds
         for i in stride(from:width-30, to:5, by: -2 ) {
-            let x = randomValue(Int(width))
+            let x = randomInt(Int(width))
             let y = i
             
             var scale = 1.0 - (Float(y) / Float(width))
-            let w = randomValue(Int(half) / 2) + Int(Float(half) * scale) / 2
+            let w = randomInt(Int(half) / 2) + Int(Float(half) * scale) / 2
             scale = 1.0 - Float(y) / Float(width)
             var height = Int(Float(w) * scale)
             height = min(height, 4)
