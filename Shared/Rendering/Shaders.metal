@@ -180,9 +180,12 @@ fragment half4 lightsFragmentShader(ProjectedVertex fragments [[stage_in]],
     
     float4 baseColor = fragments.color;
     
-//    if ( texture.a != 0 ) {
-        return half4(baseColor * texture);
-//    }
+    if ( texture.a != 0 ) {
+        half4 c = half4(baseColor * texture);
+        c.a = texture.a;
+        return c;
+    }
+    
     
     return half4(texture);
 }

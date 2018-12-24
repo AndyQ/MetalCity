@@ -180,8 +180,8 @@ class Renderer: NSObject, MTKViewDelegate {
         
         let commandBuffer = self.commandQueue.makeCommandBuffer()!
         commandBuffer.addCompletedHandler { [unowned self] (_) in
-            self.city.finishDrawing()
             self.fireworks.finishedDrawing()
+            self.city.finishDrawing()
 
         }
 
