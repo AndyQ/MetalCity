@@ -36,6 +36,35 @@ struct PerInstanceUniforms
     int textureNr;
 };
 
+
+struct FireworkVertexInOut
+{
+    float4  position [[position]];
+    float4  color;
+};
+
+// Fireworks Shader
+vertex FireworkVertexInOut passThroughVertex(uint vid [[ vertex_id ]],
+                                     constant packed_float4* position  [[ buffer(0) ]],
+                                     constant packed_float4* color    [[ buffer(1) ]],
+                                     constant Uniforms & uniforms [[ buffer(2) ]])
+{
+    FireworkVertexInOut outVertex;
+    
+    //outVertex.position = position[vid];
+    float4 pos = position[vid];
+    outVertex.position = uniforms.viewProjectionMatrix * pos;
+    outVertex.color    = color[vid];
+    
+    return outVertex;
+};
+
+fragment half4 passThroughFragment(FireworkVertexInOut inFrag [[stage_in]])
+{
+    return half4(inFrag.color);
+};
+
+
 vertex ProjectedVertex objectVertexShader(const device InVertex *vertices [[buffer(0)]],
                                           const device Uniforms &uniforms [[buffer(1)]],
                                           unsigned int vid [[vertex_id]],
@@ -222,9 +251,7 @@ fragment half4 logoFragmentShader(ProjectedVertex fragments [[stage_in]],
     
     float4 baseColor = fragments.color;
     
-//    return half4(baseColor * texture);
-    
-    return half4(texture);
+    return half4(baseColor * texture);
 }
 
 // Radio Tower Shader

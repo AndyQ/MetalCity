@@ -64,6 +64,7 @@ class Renderer: NSObject, MTKViewDelegate {
     var city : City
     var camera : Camera
     var autoCam : AutoCamera
+    var fireworks :FireworkScene
     
     init?(metalKitView: MTKView) {
         self.device = metalKitView.device!
@@ -78,9 +79,10 @@ class Renderer: NSObject, MTKViewDelegate {
 
         camera = Camera(pos: [0, 85, 0], lookAt: [10, 80, 10])
         autoCam = AutoCamera(camera: camera)
-        autoCam.isEnabled = false
-        
+        autoCam.isEnabled = true
+        autoCam.randomBehaviour = true
         city = City(device:device)
+        fireworks = FireworkScene(device:device)
         
         super.init()
 
@@ -142,6 +144,7 @@ class Renderer: NSObject, MTKViewDelegate {
     {
         updateSharedUniforms( )
         city.update()
+        fireworks.update()
     }
     
     func createRenderPassWithColorAttachmentTexture( texture : MTLTexture ) -> MTLRenderPassDescriptor {
@@ -164,7 +167,8 @@ class Renderer: NSObject, MTKViewDelegate {
     
     func draw(in view: MTKView) {
         city.prepareToDraw()
-
+        fireworks.prepareToDraw()
+        
         updateUniforms()
 
         if self.depthTexture == nil || (self.depthTexture.width != Int(metalLayer.drawableSize.width) ||
@@ -177,6 +181,8 @@ class Renderer: NSObject, MTKViewDelegate {
         let commandBuffer = self.commandQueue.makeCommandBuffer()!
         commandBuffer.addCompletedHandler { [unowned self] (_) in
             self.city.finishDrawing()
+            self.fireworks.finishedDrawing()
+
         }
 
         guard let drawable = metalLayer.nextDrawable() else { return }
@@ -190,7 +196,8 @@ class Renderer: NSObject, MTKViewDelegate {
         commandEncoder.setDepthStencilState(self.depthState)
         
         city.draw( commandEncoder: commandEncoder, sharedUniformsBuffer: self.sharedUniformBuffer )
-
+        fireworks.draw( commandEncoder: commandEncoder, sharedUniformsBuffer: self.sharedUniformBuffer )
+        
         commandEncoder.endEncoding()
 
         commandBuffer.present(drawable)
