@@ -13,6 +13,8 @@ It features:
 
 Its heavily based off Shamus Young's PixelCity - http://www.shamusyoung.com/twentysidedtale/?p=2940
 
+Also, the fireworks are based on Karl Pickett's Fireworks Graphics Demo (https://github.com/kjpgit/fireworks) - updated for Swift 4.2 and changes in Metal.
+
 This was written as a way for me to get more familiar with Metal and as its my second Metal app, I'm sure that there are many things I'm doing wrong (feedback and comments welcomed!).
 
 
