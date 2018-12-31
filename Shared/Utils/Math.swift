@@ -37,8 +37,8 @@ func calculateTriangleSurfaceNormal(v1 : Vertex, v2 : Vertex, v3 : Vertex ) -> f
 
 func distance(_ x1 : Float, _ y1: Float, _ x2: Float, _ y2: Float) -> Float {
     
-    let dx = x1 - x2;
-    let dy = y1 - y2;
+    let dx = x1 - x2
+    let dy = y1 - y2
     return sqrtf(dx * dx + dy * dy)
 }
 

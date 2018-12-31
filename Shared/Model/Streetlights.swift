@@ -80,7 +80,7 @@ class Streetlights : Model {
         
         // copy matrices into uniform buffers
         var uniform = PerInstanceUniforms()
-        uniform.modelMatrix = translation// * scale;
+        uniform.modelMatrix = translation// * scale
         uniform.normalMatrix = uniform.modelMatrix.upper_left3x3()
         
         uniform.r = 1

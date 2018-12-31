@@ -274,8 +274,8 @@ class City {
         //in the middle of the world.  Save this in a bounding box so that later we can
         //have the camera fly around without clipping through buildings.
         appState.hot_zone.clear()
-        appState.hot_zone.includePoint(point: float3(west_street, 0.0, north_street))
-        appState.hot_zone.includePoint(point: float3(east_street, 0.0, south_street))
+        appState.hot_zone.include(point: float3(west_street, 0.0, north_street))
+        appState.hot_zone.include(point: float3(east_street, 0.0, south_street))
         
 
         print( "   Placing large buildings in center of map" )

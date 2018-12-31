@@ -38,7 +38,7 @@ func random_float() -> Float {
 // Return Float in range [lower, upper]
 func random_range(lower: Float, _ upper: Float) -> Float {
     precondition(lower <= upper)
-    if RANDOM_RANGE_DEBUG { return random_choose(a:lower, upper); }
+    if RANDOM_RANGE_DEBUG { return random_choose(a:lower, upper) }
     let rand = random_float()
     let delta = upper - lower
     let ret = (rand * delta) + lower
@@ -51,7 +51,7 @@ func random_range(lower: Float, _ upper: Float) -> Float {
 // Return Int in range [lower, upper]
 func random_range(lower: Int, _ upper: Int) -> Int {
     precondition(lower <= upper)
-    if RANDOM_RANGE_DEBUG { return random_choose(a:lower, upper); }
+    if RANDOM_RANGE_DEBUG { return random_choose(a:lower, upper) }
     let delta = upper - lower
     let ret = (Int(arc4random()) % (delta + 1)) + lower
     precondition(ret >= lower)

@@ -923,7 +923,7 @@ class Building : Model {
         let out = float4(outtmp.x, outtmp.y, outtmp.z, 0)
         
 
-        let len = length(start - end);
+        let len = length(start - end)
         let height = (len / 8.0) * 1.5
         let top = bottom + height
         

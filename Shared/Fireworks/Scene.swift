@@ -35,8 +35,8 @@ class FireworkScene {
         let psd = MTLRenderPipelineDescriptor()
         psd.vertexFunction = vertexProgram
         psd.fragmentFunction = fragmentProgram
-        psd.colorAttachments[0].pixelFormat = MTLPixelFormat.bgra8Unorm //view.colorPixelFormat
-        psd.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float;
+        psd.colorAttachments[0].pixelFormat = .bgra8Unorm //view.colorPixelFormat
+        psd.depthAttachmentPixelFormat = .depth32Float
 
         // Enable blending
         psd.colorAttachments[0].isBlendingEnabled = true

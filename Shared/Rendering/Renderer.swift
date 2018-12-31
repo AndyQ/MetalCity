@@ -48,7 +48,7 @@ class Renderer: NSObject, MTKViewDelegate {
     var sharedBufferProvider : BufferProvider!
     var sharedUniformBuffer : MTLBuffer!
 
-    var frameDuration : Float = 1.0 / 60.0;
+    var frameDuration : Float = 1.0 / 60.0
     
     var city : City
     var camera : Camera
@@ -58,7 +58,7 @@ class Renderer: NSObject, MTKViewDelegate {
     init?(metalKitView: MTKView) {
         self.device = metalKitView.device!
         self.metalLayer = metalKitView.layer as! CAMetalLayer
-        self.metalLayer.pixelFormat = MTLPixelFormat.bgra8Unorm;
+        self.metalLayer.pixelFormat = .bgra8Unorm
         //self.metalLayer.framebufferOnly = false // <-- THIS
 
         self.drawableSize = metalKitView.drawableSize
@@ -85,11 +85,11 @@ class Renderer: NSObject, MTKViewDelegate {
         guard let queue = self.device.makeCommandQueue() else { return }
         self.commandQueue = queue
 
-        metalKitView.depthStencilPixelFormat = MTLPixelFormat.depth32Float_stencil8
+        metalKitView.depthStencilPixelFormat = .depth32Float_stencil8
 
         let depthDescriptor = MTLDepthStencilDescriptor()
         depthDescriptor.isDepthWriteEnabled = true
-        depthDescriptor.depthCompareFunction = MTLCompareFunction.less
+        depthDescriptor.depthCompareFunction = .less
         depthState = device.makeDepthStencilState(descriptor: depthDescriptor)!
     }
     
@@ -101,8 +101,8 @@ class Renderer: NSObject, MTKViewDelegate {
 
     func createDepthTexture(  ) {
         let drawableSize = metalLayer.drawableSize
-        let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.depth32Float, width: Int(drawableSize.width), height: Int(drawableSize.height), mipmapped: false)
-        descriptor.usage = MTLTextureUsage.renderTarget
+        let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .depth32Float, width: Int(drawableSize.width), height: Int(drawableSize.height), mipmapped: false)
+        descriptor.usage = .renderTarget
         descriptor.storageMode = .private
 
         self.depthTexture = self.device.makeTexture(descriptor: descriptor)
@@ -113,7 +113,7 @@ class Renderer: NSObject, MTKViewDelegate {
     func updateSharedUniforms( )
     {
         let aspect = Float(metalLayer.drawableSize.width / metalLayer.drawableSize.height)
-        let fov :Float = (aspect > 1) ? (Float.pi / 4) : (Float.pi / 3); //.pi_2/5
+        let fov :Float = (aspect > 1) ? (Float.pi / 4) : (Float.pi / 3) //.pi_2/5
 
         projectionMatrix = float4x4(perspectiveWithAspect: aspect, fovy: fov, near: 0.1, far: 2000)
         
@@ -138,18 +138,18 @@ class Renderer: NSObject, MTKViewDelegate {
     
     func createRenderPassWithColorAttachmentTexture( texture : MTLTexture ) -> MTLRenderPassDescriptor {
         let renderPass = MTLRenderPassDescriptor()
-        renderPass.colorAttachments[0].texture = texture;
-        renderPass.colorAttachments[0].loadAction = MTLLoadAction.clear;
-        renderPass.colorAttachments[0].storeAction = MTLStoreAction.store;
+        renderPass.colorAttachments[0].texture = texture
+        renderPass.colorAttachments[0].loadAction = .clear
+        renderPass.colorAttachments[0].storeAction = .store
         
-        renderPass.colorAttachments[0].clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0);
+        renderPass.colorAttachments[0].clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0)
         
-        renderPass.depthAttachment.texture = self.depthTexture;
-        renderPass.depthAttachment.loadAction = MTLLoadAction.clear;
-        renderPass.depthAttachment.storeAction = MTLStoreAction.store;
-        renderPass.depthAttachment.clearDepth = 1.0;
+        renderPass.depthAttachment.texture = self.depthTexture
+        renderPass.depthAttachment.loadAction = .clear
+        renderPass.depthAttachment.storeAction = .store
+        renderPass.depthAttachment.clearDepth = 1.0
         
-        return renderPass;
+        return renderPass
     }
 
     
@@ -178,9 +178,9 @@ class Renderer: NSObject, MTKViewDelegate {
         let renderPass = createRenderPassWithColorAttachmentTexture( texture: drawable.texture )
 
         let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPass)!
-        commandEncoder.setFrontFacing(MTLWinding.counterClockwise)
+        commandEncoder.setFrontFacing(.counterClockwise)
         
-        commandEncoder.setCullMode(MTLCullMode.none)
+        commandEncoder.setCullMode(.none)
 
         commandEncoder.setDepthStencilState(self.depthState)
         
