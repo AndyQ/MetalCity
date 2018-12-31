@@ -46,6 +46,8 @@ class Lights: Model {
 
     func createLight(position:float3, color:float4, size:Float, blink:Bool) {
 
+        let normal = float4(0, 1, 0, 1.0)
+        let pos = float4(position.x, position.y, position.z, 1.0)
         let l = Light()
         l.blinkInterval = blink ? 1000 + randomInt(500): 0
         l.size = size
@@ -54,10 +56,10 @@ class Lights: Model {
         lights.append(l)
 
         let v: [Vertex] = [
-            Vertex(position: float4(position.x, position.y, position.z, 1.0), normal: float4(0, 1, 0, 1.0), color: color, texCoords: float2(0, 0)),
-            Vertex(position: float4(position.x, position.y, position.z, 1.0), normal: float4(0, 1, 0, 1.0), color: color, texCoords: float2(1, 0)),
-            Vertex(position: float4(position.x, position.y, position.z, 1.0), normal: float4(0, 1, 0, 1.0), color: color, texCoords: float2(1, 1)),
-            Vertex(position: float4(position.x, position.y, position.z, 1.0), normal: float4(0, 1, 0, 1.0), color: color, texCoords: float2(0, 1))
+            Vertex(position: pos, normal: normal, color: color, texCoords: float2(0, 0)),
+            Vertex(position: pos, normal: normal, color: color, texCoords: float2(1, 0)),
+            Vertex(position: pos, normal: normal, color: color, texCoords: float2(1, 1)),
+            Vertex(position: pos, normal: normal, color: color, texCoords: float2(0, 1))
         ]
 
         let start = UInt16(vertices.count)

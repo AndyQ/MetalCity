@@ -36,7 +36,8 @@ class Streetlights: Model {
         gridY = WorldMap.worldToGrid(Int(z + (depth / 2)))
 
         textureType = .light
-
+        let normal = float4(0, 1, 0, 1.0)
+        let color = float4(1,1,1,1)
         var s: Float = 0
         var t: Float = 0
         if width < depth {
@@ -50,10 +51,10 @@ class Streetlights: Model {
         }
 
         let newVertices: [Vertex] = [
-            Vertex(position:float4(x, height, z, 1.0), normal:float4(0, 1, 0, 1.0), color:float4(1,1,1,1), texCoords:float2(0, 0)),
-            Vertex(position:float4(x, height, z + depth, 1.0), normal:float4(0, 1, 0, 1.0), color:float4(1,1,1,1), texCoords:float2(0, t)),
-            Vertex(position:float4(x + width, height, z + depth, 1.0), normal:float4(0, 1, 0, 1.0), color:float4(1,1,1,1), texCoords:float2(s, t)),
-            Vertex(position:float4(x + width, height, z, 1.0), normal:float4(0, 1, 0, 1.0), color:float4(1,1,1,1), texCoords:float2(s, 0))
+            Vertex(position:float4(x, height, z, 1.0), normal:normal, color:color, texCoords:float2(0, 0)),
+            Vertex(position:float4(x, height, z + depth, 1.0), normal:normal, color:color, texCoords:float2(0, t)),
+            Vertex(position:float4(x + width, height, z + depth, 1.0), normal:normal, color:color, texCoords:float2(s, t)),
+            Vertex(position:float4(x + width, height, z, 1.0), normal:normal, color:color, texCoords:float2(s, 0))
         ]
 
         let start = UInt16(vertices.count)

@@ -11,8 +11,8 @@ import Foundation
 class BoundingBox {
     private let maxVal: Float = 999999999999999.9
 
-    var minPoint: float3 = [0, 0, 0]
-    var maxPoint: float3 = [0, 0, 0]
+    var minPoint: float3 = .zero
+    var maxPoint: float3 = .zero
 
     init() {
         clear()
