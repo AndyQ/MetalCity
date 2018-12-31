@@ -114,9 +114,7 @@ class Camera {
         var rotateY : Float = 0.0                            // This will be the value we need to rotate around the Y axis (Left and Right)
 
         // If our cursor is still in the middle, we never moved... so don't update the screen
-        if (prevPoint.x == newPoint.x) && (prevPoint.y == newPoint.y) {
-            return
-        }
+        guard prevPoint != newPoint else { return }
 
         // Get the direction the mouse moved in, but bring the number down to a reasonable amount
         rotateY = Float( (prevPoint.x - newPoint.x) ) / 100
