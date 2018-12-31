@@ -123,10 +123,7 @@ extension CGSize {
 
 extension float3 {
     static func lerp(vectorStart: float3,  vectorEnd: float3, t: Float) -> float3 {
-        let v: float3 = float3(vectorStart.x + ((vectorEnd.x - vectorStart.x) * t),
-            vectorStart.y + ((vectorEnd.y - vectorStart.y) * t),
-            vectorStart.z + ((vectorEnd.z - vectorStart.z) * t))
-        return v
+        return vectorStart + (vectorEnd - vectorStart) * t
     }
 }
 
@@ -146,6 +143,8 @@ extension float4 {
     }
 
     static let zero = float4(0,0,0,0)
+    static let normal = float4(0, 1, 0, 1)
+    static let color = float4(1,1,1,1)
 }
 
 extension float3 {

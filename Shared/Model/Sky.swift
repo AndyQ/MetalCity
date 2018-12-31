@@ -154,8 +154,6 @@ class Sky: Model {
             indices.append(i)
             i += 1
         }
-
-
     }
 
     func createBuffers() {
@@ -170,8 +168,7 @@ class Sky: Model {
         indexBuffer.label = "indices sky"
     }
 
-    func update()
-    {
+    func update(){
 
         let translation = float4x4(translate: [0,0,0])
 
@@ -215,6 +212,4 @@ class Sky: Model {
                                              indexBuffer: indexBuffer,
                                              indexBufferOffset: 0)
     }
-
-
 }

@@ -179,38 +179,36 @@ class Building: Model {
         let v2 = v1 + Float(height) * ONE_SEGMENT
 
         var verticesArray = [Vertex]()
-        let color = vector_float4(1,1,1,1)
-        let normal = vector_float4(0, 1, 0, 1.0)
         let uv1 = vector_float2(u,v1)
         let uv2 = vector_float2(u,v2)
 
-        verticesArray.append(Vertex(position:vector_float4(x1, y1, z1, 1.0), normal: normal, color: color, texCoords: uv1))
-        verticesArray.append(Vertex(position:vector_float4(x1, y2, z1, 1.0), normal: normal, color: color, texCoords: uv2))
+        verticesArray.append(Vertex(position:vector_float4(x1, y1, z1, 1.0), normal: .normal, color: .color, texCoords: uv1))
+        verticesArray.append(Vertex(position:vector_float4(x1, y2, z1, 1.0), normal: .normal, color: .color, texCoords: uv2))
 
         u += Float(depth) / Float(SEGMENTS_PER_TEXTURE)
-        verticesArray.append(Vertex(position:vector_float4(x1, y1, z2, 1.0), normal: normal, color: color, texCoords: uv1))
-        verticesArray.append(Vertex(position:vector_float4(x1, y2, z2, 1.0), normal: normal, color: color, texCoords: uv2))
+        verticesArray.append(Vertex(position:vector_float4(x1, y1, z2, 1.0), normal: .normal, color: .color, texCoords: uv1))
+        verticesArray.append(Vertex(position:vector_float4(x1, y2, z2, 1.0), normal: .normal, color: .color, texCoords: uv2))
 
-        verticesArray.append(Vertex(position:vector_float4(x1, y1, z2, 1.0), normal: normal, color: color, texCoords: uv1))
-        verticesArray.append(Vertex(position:vector_float4(x1, y2, z2, 1.0), normal: normal, color: color, texCoords: uv2))
-
-        u += Float(depth) / Float(SEGMENTS_PER_TEXTURE)
-        verticesArray.append(Vertex(position:vector_float4(x2, y1, z2, 1.0), normal: normal, color: color, texCoords: uv1))
-        verticesArray.append(Vertex(position:vector_float4(x2, y2, z2, 1.0), normal: normal, color: color, texCoords: uv2))
-
-        verticesArray.append(Vertex(position:vector_float4(x2, y1, z2, 1.0), normal: normal, color: color, texCoords: uv1))
-        verticesArray.append(Vertex(position:vector_float4(x2, y2, z2, 1.0), normal: normal, color: color, texCoords: uv2))
+        verticesArray.append(Vertex(position:vector_float4(x1, y1, z2, 1.0), normal: .normal, color: .color, texCoords: uv1))
+        verticesArray.append(Vertex(position:vector_float4(x1, y2, z2, 1.0), normal: .normal, color: .color, texCoords: uv2))
 
         u += Float(depth) / Float(SEGMENTS_PER_TEXTURE)
-        verticesArray.append(Vertex(position:vector_float4(x2, y1, z1, 1.0), normal: normal, color: color, texCoords: uv1))
-        verticesArray.append(Vertex(position:vector_float4(x2, y2, z1, 1.0), normal: normal, color: color, texCoords: uv2))
+        verticesArray.append(Vertex(position:vector_float4(x2, y1, z2, 1.0), normal: .normal, color: .color, texCoords: uv1))
+        verticesArray.append(Vertex(position:vector_float4(x2, y2, z2, 1.0), normal: .normal, color: .color, texCoords: uv2))
 
-        verticesArray.append(Vertex(position:vector_float4(x2, y1, z1, 1.0), normal: normal, color: color, texCoords: uv1))
-        verticesArray.append(Vertex(position:vector_float4(x2, y2, z1, 1.0), normal: normal, color: color, texCoords: uv2))
+        verticesArray.append(Vertex(position:vector_float4(x2, y1, z2, 1.0), normal: .normal, color: .color, texCoords: uv1))
+        verticesArray.append(Vertex(position:vector_float4(x2, y2, z2, 1.0), normal: .normal, color: .color, texCoords: uv2))
 
         u += Float(depth) / Float(SEGMENTS_PER_TEXTURE)
-        verticesArray.append(Vertex(position:vector_float4(x1, y1, z1, 1.0), normal: normal, color: color, texCoords: uv1))
-        verticesArray.append(Vertex(position:vector_float4(x1, y2, z1, 1.0), normal: normal, color: color, texCoords: uv2))
+        verticesArray.append(Vertex(position:vector_float4(x2, y1, z1, 1.0), normal: .normal, color: .color, texCoords: uv1))
+        verticesArray.append(Vertex(position:vector_float4(x2, y2, z1, 1.0), normal: .normal, color: .color, texCoords: uv2))
+
+        verticesArray.append(Vertex(position:vector_float4(x2, y1, z1, 1.0), normal: .normal, color: .color, texCoords: uv1))
+        verticesArray.append(Vertex(position:vector_float4(x2, y2, z1, 1.0), normal: .normal, color: .color, texCoords: uv2))
+
+        u += Float(depth) / Float(SEGMENTS_PER_TEXTURE)
+        verticesArray.append(Vertex(position:vector_float4(x1, y1, z1, 1.0), normal: .normal, color: .color, texCoords: uv1))
+        verticesArray.append(Vertex(position:vector_float4(x1, y2, z1, 1.0), normal: .normal, color: .color, texCoords: uv2))
 
         let cubeVertices = self.constructCube(left: x1 - ledge, right: x2 + ledge, front: z2 - ledge, back: z1 + ledge, bottom: Float(height), top: Float(height) + cap_height, textured: false)
 
@@ -812,20 +810,17 @@ class Building: Model {
         let v1 = bottom / mapping
         let v2 = top / mapping
 
-        let color = vector_float4(1,1,1,1)
-        let normal = vector_float4(0, 1, 0, 1.0)
-
         var v: [Vertex] = [
-            Vertex(position:vector_float4(x1, y1, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(u,v1)),
-            Vertex(position:vector_float4(x1, y2, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(u,v2)),
-            Vertex(position:vector_float4(x2, y1, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(u1,v1)),
-            Vertex(position:vector_float4(x2, y2, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(u1,v2)),
-            Vertex(position:vector_float4(x2, y1, z2, 1.0), normal: normal, color: color, texCoords:vector_float2(u2,v1)),
-            Vertex(position:vector_float4(x2, y2, z2, 1.0), normal: normal, color: color, texCoords:vector_float2(u2,v2)),
-            Vertex(position:vector_float4(x1, y1, z2, 1.0), normal: normal, color: color, texCoords:vector_float2(u3,v1)),
-            Vertex(position:vector_float4(x1, y2, z2, 1.0), normal: normal, color: color, texCoords:vector_float2(u3,v2)),
-            Vertex(position:vector_float4(x1, y1, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(u4,v1)),
-            Vertex(position:vector_float4(x1, y2, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(u4,v2))]
+            Vertex(position:vector_float4(x1, y1, z1, 1.0), normal: .normal, color: .color, texCoords:vector_float2(u,v1)),
+            Vertex(position:vector_float4(x1, y2, z1, 1.0), normal: .normal, color: .color, texCoords:vector_float2(u,v2)),
+            Vertex(position:vector_float4(x2, y1, z1, 1.0), normal: .normal, color: .color, texCoords:vector_float2(u1,v1)),
+            Vertex(position:vector_float4(x2, y2, z1, 1.0), normal: .normal, color: .color, texCoords:vector_float2(u1,v2)),
+            Vertex(position:vector_float4(x2, y1, z2, 1.0), normal: .normal, color: .color, texCoords:vector_float2(u2,v1)),
+            Vertex(position:vector_float4(x2, y2, z2, 1.0), normal: .normal, color: .color, texCoords:vector_float2(u2,v2)),
+            Vertex(position:vector_float4(x1, y1, z2, 1.0), normal: .normal, color: .color, texCoords:vector_float2(u3,v1)),
+            Vertex(position:vector_float4(x1, y2, z2, 1.0), normal: .normal, color: .color, texCoords:vector_float2(u3,v2)),
+            Vertex(position:vector_float4(x1, y1, z1, 1.0), normal: .normal, color: .color, texCoords:vector_float2(u4,v1)),
+            Vertex(position:vector_float4(x1, y2, z1, 1.0), normal: .normal, color: .color, texCoords:vector_float2(u4,v2))]
 
         for i in 0 ..< 10 {
             if textured {
@@ -927,13 +922,11 @@ class Building: Model {
         let v1 = textItem.bl.y
         let u2 = textItem.tr.x
         let v2 = textItem.tr.y
-        let color = vector_float4(1,1,1,1)
-        let normal = float4(0,1,0,1)
 
-        let ver1 = Vertex(position: float4(start.x, bottom, start.y, 1) + out, normal: normal, color: color, texCoords: float2(u1,v2))
-        let ver2 = Vertex(position: float4(end.x, bottom, end.y, 1) + out, normal: normal, color: color, texCoords: float2(u2,v2))
-        let ver3 = Vertex(position: float4(start.x, top, start.y, 1) + out, normal: normal, color: color, texCoords: float2(u1,v1))
-        let ver4 = Vertex(position: float4(end.x, top, end.y, 1) + out, normal: normal, color: color, texCoords: float2(u2,v1))
+        let ver1 = Vertex(position: float4(start.x, bottom, start.y, 1) + out, normal: .normal, color: .color, texCoords: float2(u1,v2))
+        let ver2 = Vertex(position: float4(end.x, bottom, end.y, 1) + out, normal: .normal, color: .color, texCoords: float2(u2,v2))
+        let ver3 = Vertex(position: float4(start.x, top, start.y, 1) + out, normal: .normal, color: .color, texCoords: float2(u1,v1))
+        let ver4 = Vertex(position: float4(end.x, top, end.y, 1) + out, normal: .normal, color: .color, texCoords: float2(u2,v1))
 
         //print("Creating logo")
         logoVertices.append(contentsOf: convertQuadsToTriangles([ver1, ver2, ver3, ver4], useMainColor:false))
