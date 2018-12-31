@@ -125,17 +125,18 @@ class City {
             bytes[i+2] = 0 // blue
             bytes[i+3] = 255 // alpha
 */
-            if WorldMap.instance.cellAt(x, y).contains(.claimRoad) {
+            let cell = WorldMap.instance.cellAt(x, y)
+            if cell.contains(.claimRoad) {
                 bytes[i] = 75 // red
                 bytes[i+1] = 75 // green
                 bytes[i+2] = 75 // blue
                 bytes[i+3] = 255 // alpha
-            } else if WorldMap.instance.cellAt(x, y).contains(.claimBuilding) {
+            } else if cell.contains(.claimBuilding) {
                 bytes[i] = 0 // red
                 bytes[i+1] = 0 // green
                 bytes[i+2] = 0 // blue
                 bytes[i+3] = 255 // alpha
-            } else if WorldMap.instance.cellAt(x, y).contains(.claimWalk) {
+            } else if cell.contains(.claimWalk) {
                 bytes[i] = 50 // red
                 bytes[i+1] = 50 // green
                 bytes[i+2] = 50 // blue
@@ -154,7 +155,7 @@ class City {
                             bitsPerComponent: 8,
                             bytesPerRow: WORLD_SIZE*4, //imageRef.bytesPerRow,
                             space: CGColorSpaceCreateDeviceRGB(), //imageRef.colorSpace!,
-                            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue )
+                            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
 
         guard let newImageRef = ctx!.makeImage() else { return nil }
         let newImage = Image(cgImage:newImageRef)
@@ -430,23 +431,19 @@ class City {
         //We adjust the size of the lights with this.
         color = Color(hue: 0.09, saturation: 0.99, brightness: 0.85, alpha: 1.0).rgba()
 
-        switch (direction) {
+        switch direction {
         case .north:
             dir_z = 1
             dir_x = 0
-            break
         case .south:
             dir_z = 1
             dir_x = 0
-            break
         case .east:
             dir_z = 0
             dir_x = 1
-            break
         case .west:
             dir_z = 0
             dir_x = 1
-            break
         }
 
         //So we know we're on the corner of an intersection
@@ -474,13 +471,33 @@ class City {
         let fdepth = Float(depth)
         switch direction {
         case .east:
-            DecorationManager.instance.addStreetLightStrip( atX:fx1, z:fz1 - size_adjust + 1, width:fwidth, depth:fdepth + size_adjust, height:height, color:color)
+            DecorationManager.instance.addStreetLightStrip(atX:fx1,
+                                                           z:fz1 - size_adjust + 1,
+                                                           width:fwidth,
+                                                           depth:fdepth + size_adjust,
+                                                           height:height,
+                                                           color:color)
         case .west:
-            DecorationManager.instance.addStreetLightStrip( atX:fx1, z:fz1 - 1, width:fwidth, depth:fdepth + size_adjust, height:height, color:color)
+            DecorationManager.instance.addStreetLightStrip(atX:fx1,
+                                                           z:fz1 - 1,
+                                                           width:fwidth,
+                                                           depth:fdepth + size_adjust,
+                                                           height:height,
+                                                           color:color)
         case .north:
-            DecorationManager.instance.addStreetLightStrip( atX:fx1-1, z:fz1, width:fwidth + size_adjust, depth:fdepth, height:height, color:color)
+            DecorationManager.instance.addStreetLightStrip(atX:fx1 - 1,
+                                                           z:fz1,
+                                                           width:fwidth + size_adjust,
+                                                           depth:fdepth,
+                                                           height:height,
+                                                           color:color)
         case .south:
-            DecorationManager.instance.addStreetLightStrip( atX:fx1 - size_adjust+1, z:fz1, width:fwidth + size_adjust, depth:fdepth, height:height, color:color)
+            DecorationManager.instance.addStreetLightStrip(atX:fx1 - size_adjust + 1,
+                                                           z:fz1,
+                                                           width:fwidth + size_adjust,
+                                                           depth:fdepth,
+                                                           height:height,
+                                                           color:color)
         }
 
         return length
@@ -503,19 +520,18 @@ class City {
             if flipCoinIsHeads() {
                 p.width /= 2
                 if flipCoinIsHeads() {
-                    self.doBuilding(atPlot: makePlot(atX: p.x, z: p.z, width: p.width, depth: p.depth))
+                    self.doBuilding(atPlot: Plot(x: p.x, z: p.z, width: p.width, depth: p.depth))
                 } else {
-                    self.doBuilding(atPlot: makePlot(atX: p.x + p.width, z: p.z, width: p.width, depth: p.depth))
+                    self.doBuilding(atPlot: Plot(x: p.x + p.width, z: p.z, width: p.width, depth: p.depth))
                 }
                 return
             }
-            else
-            {
+            else {
                 p.depth /= 2
                 if flipCoinIsHeads() {
-                    self.doBuilding(atPlot: makePlot(atX: p.x, z: p.z, width: p.width, depth: p.depth))
+                    self.doBuilding(atPlot: Plot(x: p.x, z: p.z, width: p.width, depth: p.depth))
                 } else {
-                    self.doBuilding(atPlot: makePlot(atX: p.x, z: p.z + p.depth, width: p.width, depth: p.depth))
+                    self.doBuilding(atPlot: Plot(x: p.x, z: p.z + p.depth, width: p.width, depth: p.depth))
                 }
                 return
             }
@@ -563,11 +579,6 @@ class City {
         self.buildings.append(building)
 
         self.skyscrapers += 1
-    }
-
-    func makePlot( atX x:Int, z:Int, width:Int, depth:Int ) -> Plot {
-        let p = Plot(x:x, z:z, width:width, depth:depth)
-        return p
     }
 
     func findPlot( atX x : Int, andY z:Int ) -> Plot {
