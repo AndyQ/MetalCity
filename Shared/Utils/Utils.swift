@@ -41,13 +41,13 @@ func randomColor() -> float4 {
 func getTickCount() -> UInt64 {
     var info = mach_timebase_info_data_t()
     mach_timebase_info(&info)
-        
+
     var ticks = mach_absolute_time()
-    
+
     /* Convert to nanoseconds */
     ticks *= UInt64(info.numer)
     ticks /= UInt64(info.denom)
-    
+
     return ticks/1000000
 }
 
@@ -82,15 +82,15 @@ func worldLightColor( _ index : Int ) -> float4 {
 func drawLinearGradient( ctx:CGContext, rect:CGRect, imageSize:CGSize, startColor: CGColor, endColor: CGColor ) {
 
     let colorSpace = CGColorSpaceCreateDeviceRGB()
-    
+
     let locations : [CGFloat] = [ 0.0, 1.0 ]
     let colors = [startColor, endColor]
-    
+
     guard let gradient = CGGradient(colorsSpace: colorSpace, colors: colors as CFArray, locations: locations) else { return }
-    
+
     let startPoint = CGPoint(x:rect.midX, y:rect.minY)
     let endPoint = CGPoint(x:rect.midX, y:rect.maxY)
-    
+
     ctx.saveGState()
     ctx.addRect(rect)
     ctx.clip()

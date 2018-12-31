@@ -17,7 +17,7 @@ enum CameraBehaviour : Int, CaseIterable {
     case speed
     case spin
     case flycam3
-    
+
     static func random() -> CameraBehaviour {
         return CameraBehaviour.allCases.randomElement()!
     }
@@ -42,46 +42,46 @@ class AutoCamera {
             timeUntilNextChange = getTickCount() + CAMERA_CHANGE_INTERVAL
         }
     }
-    
+
     init( camera:Camera ) {
         self.camera = camera
         behaviour = .speed
     }
-    
+
 
     func setCameraBehaviour( behaviour:CameraBehaviour ) {
         self.behaviour = behaviour
         timeUntilNextChange = getTickCount() + CAMERA_CHANGE_INTERVAL
         randomBehaviour = false
     }
-    
+
     func update() {
         if isEnabled {
             doAutoCam()
         }
-        
+
         if appState.cameraState.moving {
             appState.cameraState.movement *= 1.1
         } else {
             appState.cameraState.movement = 0.0
         }
         appState.cameraState.movement = appState.cameraState.movement.clamped(to:0.01 ... 1.0)
-        
+
         if appState.cameraState.angle.y < 0.0 {
             appState.cameraState.angle.y = 360.0 - Float(fmod(abs(appState.cameraState.angle.y), 360.0))
         }
-        
+
         appState.cameraState.angle.y = Float(fmod(appState.cameraState.angle.y, 360.0))
         appState.cameraState.angle.x = appState.cameraState.angle.x.clamped(to: Float(-MAX_PITCH) ... Float(MAX_PITCH))
         appState.cameraState.moving = false
-        
+
     }
-    
-    
+
+
     func getPositionForTime( _ t:UInt64 ) -> float3 {
         var start : float3 = float3(0,0,0)
         var end : float3 = float3(0,0,0)
-        
+
         let hot_zone = appState.hot_zone
         let timeInCircuit = t % UInt64(FLYCAM_CIRCUT)
         let leg = timeInCircuit / UInt64(FLYCAM_LEG)
@@ -109,7 +109,7 @@ class AutoCamera {
         delta = mathScalarCurve(delta)
         return float3.lerp(vectorStart: start, vectorEnd: end, t: delta)
     }
-    
+
     func nextBehaviour( manuallyChanged:Bool = false ) {
         let behaviours = CameraBehaviour.allCases
         if let i = behaviours.firstIndex(of: behaviour) {
@@ -121,28 +121,28 @@ class AutoCamera {
         } else {
             behaviour = behaviours[1]
         }
-        
+
         if manuallyChanged {
             timeUntilNextChange = 0
         }
     }
-    
+
     func doAutoCam() {
-        
+
         let now = getTickCount()
-        
+
         var elapsed = now - appState.cameraState.last_update
         elapsed = min(elapsed, 50) //limit to 1/20th second worth of time
         if elapsed == 0 {
             return
         }
-        
+
         appState.cameraState.last_update = now
         if timeUntilNextChange != 0 && now > timeUntilNextChange {
             nextBehaviour()
             timeUntilNextChange = now + CAMERA_CHANGE_INTERVAL
         }
-            
+
         appState.cameraState.tracker += Float(elapsed) / 300.0
 
         let worldHalf = Float(WORLD_HALF)
@@ -186,21 +186,21 @@ class AutoCamera {
             appState.cameraState.auto_position.y = 60.0
             appState.cameraState.auto_position.z = worldHalf + cosf (appState.cameraState.tracker * DEGREES_TO_RADIANS) * 50.0
         }
-        
-        
+
+
         camera.setPosition(pos:appState.cameraState.auto_position)
         camera.setView(view:target)
     }
-    
-    
+
+
     /*-----------------------------------------------------------------------------
      This will take linear input values from 0.0 to 1.0 and convert them to
      values along a curve.  This could also be acomplished with sin (), but this
      way avoids converting to radians and back.
      -----------------------------------------------------------------------------*/
-    
+
     func mathScalarCurve( _ origVal:Float ) -> Float {
-        
+
         var val = (origVal - 0.5) * 2.0
         let sign : Float = val < 0 ? -1 : 1
         if val < 0.0 {
@@ -212,7 +212,7 @@ class AutoCamera {
         val *= sign
         val = (val + 1.0) / 2.0
         return val
-        
+
     }
 }
 

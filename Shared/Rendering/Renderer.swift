@@ -28,18 +28,18 @@ class Renderer: NSObject {
 }
 #else
 class Renderer: NSObject, MTKViewDelegate {
-    
+
     // Metal stuff
     public let device: MTLDevice
-    
+
     let metalLayer : CAMetalLayer
-    
+
     var commandQueue: MTLCommandQueue!
     var dynamicUniformBuffer: MTLBuffer!
     var depthState: MTLDepthStencilState!
     var colorMap: MTLTexture!
     var depthTexture: MTLTexture!
-    
+
     var drawableSize = CGSize()
 
     var projectionMatrix = float4x4()
@@ -48,12 +48,12 @@ class Renderer: NSObject, MTKViewDelegate {
     var sharedUniformBuffer : MTLBuffer!
 
     var frameDuration : Float = 1.0 / 60.0
-    
+
     var city : City
     var camera : Camera
     var autoCam : AutoCamera
     var fireworks :FireworkScene
-    
+
     init?(metalKitView: MTKView) {
         self.device = metalKitView.device!
         self.metalLayer = metalKitView.layer as! CAMetalLayer
@@ -61,7 +61,7 @@ class Renderer: NSObject, MTKViewDelegate {
         //self.metalLayer.framebufferOnly = false // <-- THIS
 
         self.drawableSize = metalKitView.drawableSize
-        
+
         TextureManager.instance.createTextures(device:device)
         DecorationManager.instance.setup(device:device)
 
@@ -71,15 +71,15 @@ class Renderer: NSObject, MTKViewDelegate {
         autoCam.randomBehaviour = true
         city = City(device:device)
         fireworks = FireworkScene(device:device)
-        
+
         super.init()
 
         buildDescriptors( metalKitView: metalKitView)
-        
+
         buildSharedUniformBuffers()
     }
-    
-    
+
+
     func buildDescriptors( metalKitView: MTKView ) {
         guard let queue = self.device.makeCommandQueue() else { return }
         self.commandQueue = queue
@@ -91,10 +91,10 @@ class Renderer: NSObject, MTKViewDelegate {
         depthDescriptor.depthCompareFunction = .less
         depthState = device.makeDepthStencilState(descriptor: depthDescriptor)!
     }
-    
-    
+
+
     func buildSharedUniformBuffers() {
-        
+
         sharedBufferProvider = BufferProvider(device: device, inflightBuffersCount: 3, sizeOfUniformsBuffer: MemoryLayout<Uniforms>.size)
     }
 
@@ -108,14 +108,14 @@ class Renderer: NSObject, MTKViewDelegate {
         self.depthTexture.label = "Depth Texture"
     }
 
-    
+
     func updateSharedUniforms( )
     {
         let aspect = Float(metalLayer.drawableSize.aspectRatio)
         let fov :Float = (aspect > 1) ? (Float.pi / 4) : (Float.pi / 3) //.pi_2/5
 
         projectionMatrix = float4x4(perspectiveWithAspect: aspect, fovy: fov, near: 0.1, far: 2000)
-        
+
         autoCam.update()
 
         let modelViewMatrix = camera.look()
@@ -134,29 +134,29 @@ class Renderer: NSObject, MTKViewDelegate {
         city.update()
         fireworks.update()
     }
-    
+
     func createRenderPassWithColorAttachmentTexture( texture : MTLTexture ) -> MTLRenderPassDescriptor {
         let renderPass = MTLRenderPassDescriptor()
         renderPass.colorAttachments[0].texture = texture
         renderPass.colorAttachments[0].loadAction = .clear
         renderPass.colorAttachments[0].storeAction = .store
-        
+
         renderPass.colorAttachments[0].clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0)
-        
+
         renderPass.depthAttachment.texture = self.depthTexture
         renderPass.depthAttachment.loadAction = .clear
         renderPass.depthAttachment.storeAction = .store
         renderPass.depthAttachment.clearDepth = 1.0
-        
+
         return renderPass
     }
 
-    
-    
+
+
     func draw(in view: MTKView) {
         city.prepareToDraw()
         fireworks.prepareToDraw()
-        
+
         updateUniforms()
 
         if self.depthTexture == nil || (self.depthTexture.width != Int(metalLayer.drawableSize.width) ||
@@ -164,8 +164,8 @@ class Renderer: NSObject, MTKViewDelegate {
 
             createDepthTexture()
         }
-        
-        
+
+
         let commandBuffer = self.commandQueue.makeCommandBuffer()!
         commandBuffer.addCompletedHandler { [unowned self] (_) in
             self.fireworks.finishedDrawing()
@@ -178,14 +178,14 @@ class Renderer: NSObject, MTKViewDelegate {
 
         let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPass)!
         commandEncoder.setFrontFacing(.counterClockwise)
-        
+
         commandEncoder.setCullMode(.none)
 
         commandEncoder.setDepthStencilState(self.depthState)
-        
+
         city.draw( commandEncoder: commandEncoder, sharedUniformsBuffer: self.sharedUniformBuffer )
         fireworks.draw( commandEncoder: commandEncoder, sharedUniformsBuffer: self.sharedUniformBuffer )
-        
+
         commandEncoder.endEncoding()
 
         commandBuffer.present(drawable)
@@ -194,7 +194,7 @@ class Renderer: NSObject, MTKViewDelegate {
 
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         /// Respond to drawable size or orientation changes here
-        
+
         //let aspect = Float(size.width) / Float(size.height)
         //projectionMatrix = matrix_perspective_projection(aspect: aspect, fovy: radians_from_degrees(65), near: 0.1, far: 100.0)
     }
@@ -205,11 +205,11 @@ extension Renderer {
         DecorationManager.instance.reset()
         city = City(device:device)
     }
-    
+
     func regenerateTextures() {
         TextureManager.instance.createTextures(device:device)
     }
-    
+
     func toggleAutoCam() {
         autoCam.isEnabled = !autoCam.isEnabled
     }

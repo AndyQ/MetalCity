@@ -23,7 +23,7 @@ class BufferProvider {
             device.makeBuffer(length: sizeOfUniformsBuffer, options: [])!
         }
     }
-    
+
     deinit{
         for _ in 0...self.inflightBuffersCount{
             self.availableResourcesSemaphore.signal()

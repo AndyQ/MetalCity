@@ -14,7 +14,7 @@ import UserNotifications
 
 // Our iOS specific view controller
 class GameViewController: UIViewController {
-    
+
     @IBOutlet weak var menuVCView: UIView!
 #if !targetEnvironment(simulator)
     var mtkView: MTKView!
@@ -24,15 +24,15 @@ class GameViewController: UIViewController {
 
 
     weak var popUpView : UIView?
-    
+
     override var prefersHomeIndicatorAutoHidden: Bool { return true }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         UIApplication.shared.isIdleTimerDisabled = true
         self.view.isMultipleTouchEnabled = true
-        
+
         menuVCView.isHidden = true
 
 #if targetEnvironment(simulator)
@@ -44,15 +44,15 @@ class GameViewController: UIViewController {
             print("View of Gameview controller is not an MTKView")
             return
         }
-        
+
         // Select the device to render with.  We choose the default device
         guard let defaultDevice = MTLCreateSystemDefaultDevice() else {
             print("Metal is not supported")
             return
         }
-        
+
         device = defaultDevice
-        
+
         mtkView.device = device
         mtkView.backgroundColor = UIColor.black
 
@@ -67,23 +67,23 @@ class GameViewController: UIViewController {
 
         mtkView.delegate = renderer
 #endif
-        
+
 #if !targetEnvironment(simulator)
         let gr = UIPanGestureRecognizer(target: self, action: #selector(pan))
         gr.delegate = self
         self.view.addGestureRecognizer(gr)
 #endif
-        
+
         let tapGr = UITapGestureRecognizer(target: self, action: #selector(tap))
         tapGr.delegate = self
         tapGr.numberOfTapsRequired = 1
         self.view.addGestureRecognizer(tapGr)
     }
-    
+
     override var prefersStatusBarHidden: Bool {
         return true
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? MenuViewController {
 #if !targetEnvironment(simulator)
@@ -122,7 +122,7 @@ class GameViewController: UIViewController {
 */
         }
     }
-    
+
 #if !targetEnvironment(simulator)
     @objc func pan( _ gr: UIPanGestureRecognizer ) {
         let p = gr.location(in: self.view)
@@ -144,7 +144,7 @@ class GameViewController: UIViewController {
                 } else {
                     rotateView( dx:dx )
                 }
-                
+
             } else if nrTouches == 2 {
                 rotateView( dx:dx )
                 moveCamera( dy:dy)
@@ -155,11 +155,11 @@ class GameViewController: UIViewController {
             prevPoint = p
         }
     }
-    
+
     func rotateView( dx : Float ) {
         renderer.camera.rotateViewRound(x: 0, y: dx * 0.01, z: 0)
     }
-    
+
     func rotateViewUpAndDown(dy : Float ) {
         let deltaY = -dy * 0.01
         var v = renderer.camera.getView()

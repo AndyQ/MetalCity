@@ -17,7 +17,7 @@ let GRID_SIZE = WORLD_SIZE / GRID_RESOLUTION
 
 class WorldMap {
     static let instance : WorldMap = WorldMap()
-    
+
     var world = [[MapItem]]()
     var visGrid = [[Bool]]()
 
@@ -32,13 +32,13 @@ class WorldMap {
     static func gridToWorld( _ x : Int, _ y : Int ) -> (Int,Int) {
         return (gridToWorld(x), gridToWorld(y))
     }
-    
+
     static func gridToWorld( _ x: Int ) -> Int {
         return x * GRID_RESOLUTION
     }
-    
 
-    
+
+
     private init() {
     }
 
@@ -48,29 +48,29 @@ class WorldMap {
     }
 
     func cellAt( _ x : Int, _ y : Int) -> MapItem {
-        
+
         let cx = x.clamped(to: 0...WORLD_SIZE-1)
         let cy = y.clamped(to: 0...WORLD_SIZE-1)
         return self.world[cx][cy]
     }
-    
+
     func addValue( _ x : Int, _ y : Int, val : MapItem ) {
         let cx = x.clamped(to: 0...WORLD_SIZE-1)
         let cy = y.clamped(to: 0...WORLD_SIZE-1)
         self.world[cx][cy].insert(val)
     }
-    
+
     func isVisible(pos : float3) -> Bool {
         return isVisible(x:Int(pos.x), y:Int(pos.z))
-    
+
     }
-    
+
     func isVisible( x : Int, y : Int ) -> Bool {
         let (x,y) = WorldMap.worldToGrid(x, y)
         return visGrid[x][y]
     }
-    
-    
+
+
     func updateVisibilityGrid( ) {
         //Clear the visibility table
         visGrid = Array(repeating: Array(repeating: false, count: GRID_SIZE), count: GRID_SIZE)
@@ -85,7 +85,7 @@ class WorldMap {
         //Rather than obsess over sorting those objects properly, it's more efficient to
         //just mark them visible.
         var left = 3, right = 3, front = 3, back = 3
-        
+
         //Looking north, can't see south.
         if angle.y < 60.0 || angle.y > 300.0 {
             front = 2
@@ -114,10 +114,10 @@ class WorldMap {
                 visGrid[x][y] = true
             }
         }
-        
+
         //Doesn't matter where we are facing, objects in current cell are always visible
         visGrid[grid_x][grid_z] = true
-        
+
         //Here, we look at the angle from the current camera position to the cell
         //on the grid, and how much that angle deviates from the current view angle.
         for x in 0 ..< GRID_SIZE {
@@ -139,9 +139,9 @@ class WorldMap {
                 } else {
                     target_z = Float((y + 1) * GRID_RESOLUTION)
                 }
-                
+
                 let angle_to = 180 - angleBetweenPoints(target_x, target_z, position.x, position.z)
-                
+
                 //Store how many degrees the cell is to the
                 let angle_diff = fabsf(mathAngleDifference(angle.y, angle_to))
                 visGrid[x][y] = angle_diff < 60

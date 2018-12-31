@@ -13,19 +13,19 @@ class Model {
 
     let vertexDescriptor = MTLVertexDescriptor()
     var uniformsBuffer: MTLBuffer!
-    
+
     var vertexBuffer : MTLBuffer!
     var indexBuffer : MTLBuffer!
 
     func createLibraryAndRenderPipeline( device : MTLDevice, vertexFunction : String, fragmentFunction : String ) -> MTLRenderPipelineState {
 
         let library = device.makeDefaultLibrary()
-        
+
         let vertexFunction = library?.makeFunction(name: vertexFunction)
         let fragmentFunction = library?.makeFunction(name: fragmentFunction)
-        
+
         // step 1: set up the render pipeline state
-        
+
         vertexDescriptor.attributes[0].offset = 0
         vertexDescriptor.attributes[0].format = .float4 // position
         var offset = MemoryLayout<vector_float4>.size
@@ -44,7 +44,7 @@ class Model {
         renderPipelineDescriptor.vertexFunction = vertexFunction
         renderPipelineDescriptor.fragmentFunction = fragmentFunction
         renderPipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
-    
+
         let renderbufferAttachment = renderPipelineDescriptor.colorAttachments[0]!
         renderbufferAttachment.pixelFormat = .bgra8Unorm
         renderbufferAttachment.isBlendingEnabled = true
@@ -63,10 +63,10 @@ class Model {
         catch let error {
             fatalError("\(error)")
         }
-        
+
         return rps
     }
-    
+
     func draw( commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer ) {
     }
 }

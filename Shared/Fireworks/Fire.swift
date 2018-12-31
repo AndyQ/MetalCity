@@ -41,7 +41,7 @@ struct Flare {
     let duration_secs: Float
 
     // How far back the trail goes (plume mode)
-    let trail_secs: Float  
+    let trail_secs: Float
 
 
     func pointAtTime(secs: Float, orig_pos: Vector3) -> Vector3 {
@@ -57,7 +57,7 @@ struct Flare {
     }
 
     func colorAtTime(secs: Float) -> Color4 {
-        // Linear fade out is fine.  Note we can start with a > 1.0, 
+        // Linear fade out is fine.  Note we can start with a > 1.0,
         // so it actually appears exponential.
         let percent = secs / duration_secs
         var ret = color
@@ -117,7 +117,7 @@ class Firework : Drawable {
 
             let f = Flare(velocity_vec: velocity,
                         size: size,
-                        color: color, 
+                        color: color,
                         duration_secs: duration_secs,
                         trail_secs: trail_secs)
             m_flares.append(f)
@@ -131,7 +131,7 @@ class Firework : Drawable {
         return Float(time - start_time) / 1_000_000
     }
 
-    func draw(time: Int64, 
+    func draw(time: Int64,
               bv: inout BufferWrapper,
                   bc: inout BufferWrapper) {
         let secs = self.getSecondsElapsed(time: time)
@@ -194,7 +194,7 @@ class Firework : Drawable {
                 draw_triangle_color(b:&bc, color)
                 first = false
             }
-            
+
             size *= 0.95
             color.a *= 0.90
             secs -= PLUME_STEP_SECS
@@ -217,12 +217,12 @@ private func draw_triangle_2d( b: inout BufferWrapper,
     b.append_raw(v: pos.y)
     b.append_raw(v: pos.z)
     b.append_raw(v: 1.0)
-    
+
     b.append_raw(v: pos.x + width)
     b.append_raw(v: pos.y)
     b.append_raw(v: pos.z)
     b.append_raw(v: 1.0)
-    
+
     b.append_raw(v: pos.x)
     b.append_raw(v: pos.y + height)
     b.append_raw(v: pos.z)
@@ -233,12 +233,12 @@ private func draw_triangle_2d( b: inout BufferWrapper,
     b.append_raw(v: pos.y)
     b.append_raw(v: pos.z - width)
     b.append_raw(v: 1.0)
-    
+
     b.append_raw(v: pos.x )
     b.append_raw(v: pos.y)
     b.append_raw(v: pos.z + width)
     b.append_raw(v: 1.0)
-    
+
     b.append_raw(v: pos.x)
     b.append_raw(v: pos.y + height)
     b.append_raw(v: pos.z)

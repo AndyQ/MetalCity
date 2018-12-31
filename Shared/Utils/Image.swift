@@ -15,11 +15,11 @@ extension Image {
     public var cgImage: CGImage! {
         return cgImage(forProposedRect: nil, context: nil, hints: nil)
     }
-    
+
     public convenience init(cgImage: CGImage) {
         self.init(cgImage: cgImage, size: .zero)
     }
-    
+
     public func pngData() -> Data? {
         let cgRef = self.cgImage!
         let newRep = NSBitmapImageRep(cgImage: cgRef)
@@ -45,7 +45,7 @@ extension Image {
             bytesPerRow: 0,
             space: colorSpace,
             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
-        
+
         context!.setFillColor(Color.black.cgColor)
         context!.fill(CGRect(x:0, y:0, width:size.width, height:size.height))
 
@@ -60,22 +60,22 @@ extension Image {
         UIGraphicsPushContext(context!)
 #endif
         doDrawing(context!)
-        
+
 #if os(OSX)
         NSGraphicsContext.restoreGraphicsState()
 #else
         UIGraphicsPopContext()
 #endif
-        
+
         let image = context!.makeImage()
         return Image(cgImage: image!)
     }
 
-    
+
     class func createImageFromDrawing2( size: CGSize, doDrawing : ((CGContext)->()) ) -> Image? {
 #if os(OSX)
         let im = NSImage.init(size: size)
-        
+
         let rep = NSBitmapImageRep.init(bitmapDataPlanes: nil,
                                         pixelsWide: Int(size.width),
                                         pixelsHigh: Int(size.height),
@@ -86,19 +86,19 @@ extension Image {
                                         colorSpaceName: .calibratedRGB,
                                         bytesPerRow: 0,
                                         bitsPerPixel: 0)
-        
-        
+
+
         im.addRepresentation(rep!)
         im.lockFocus()
-        
+
         let ctx = NSGraphicsContext.current!.cgContext
 #else
         UIGraphicsBeginImageContext(size)
         guard let ctx = UIGraphicsGetCurrentContext() else { return nil }
 #endif
-        
+
         doDrawing( ctx )
-        
+
 #if os(OSX)
         im.unlockFocus()
         let image = im
@@ -106,10 +106,10 @@ extension Image {
         guard let image = UIGraphicsGetImageFromCurrentImageContext() else { return nil }
         UIGraphicsEndImageContext()
 #endif
-        
+
         return image
     }
-    
+
     @objc func debugQuickLookObject() -> AnyObject {
 #if os(OSX)
         return self as NSImage

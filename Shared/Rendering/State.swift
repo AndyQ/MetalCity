@@ -13,9 +13,9 @@ import CoreGraphics
 var appState = AppState()
 
 struct MapItem: OptionSet {
-    
+
     let rawValue: Int
-    
+
     static let unclaimed      = MapItem(rawValue: 0 << 0)
     static let claimRoad      = MapItem(rawValue: 1 << 0)
     static let claimWalk    = MapItem(rawValue: 1 << 1)
@@ -52,7 +52,7 @@ enum TextureType : Int
     case building7
     case building8
     case building9
-    
+
     static func randomBuildingTexture() -> TextureType {
         let array : [TextureType] = [.building1,building2,building3,building4,building5,building6,building7,building8,building9]
         return array.randomElement()!
@@ -63,7 +63,7 @@ var textureCount = 1
 var textureSizes = [Int]()
 
 struct CameraState {
-    
+
     var angle : float3 = float3(0,0,0)
     var position : float3 = float3(0,0,0)
     var target : float3 = float3(0,0,0)
@@ -84,11 +84,11 @@ struct AppState {
 
     var bloom_color : float4 = float4(0,0,0,1)
     var last_update : Int = 0
-    
+
     init() {
         let index = randomInt(light_colors.count)
         let hue = light_colors[index].hueComponent
-        
+
         bloom_color = Color(hue: hue, saturation: 0.5 + CGFloat(randomInt(10)) / 20, brightness: 0.75, alpha: 1.0).rgba()
     }
 }

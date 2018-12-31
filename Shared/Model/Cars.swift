@@ -35,14 +35,14 @@ class Cars: Model {
         float3(1.0, 0.0,  0.0),
         float3(0.0, 0.0,  1.0),
         float3(-1.0, 0.0,  0.0)]
-    
+
     let dangles : [Int] = [ 0, 90, 180, 270]
 
     let CAR_SIZE : Float = 0.5
     let DEAD_ZONE = 25
     let STUCK_TIME = 230
     let MOVEMENT_SPEED : Float = 0.61
-    
+
     let NORTH = 0
     let EAST = 1
     let SOUTH = 2
@@ -53,22 +53,22 @@ class Cars: Model {
     let backColor = float4( 1, 0.2, 0, 1.0 )
 
     var device : MTLDevice
-    
+
     var vertices = [Vertex]()
     var indices = [UInt32]()
-    
-    
+
+
     var carAngles = [float2]()
     var carMap : [[UInt8]]
-    
+
     var cars = [Car]()
 
     init( device: MTLDevice ) {
         self.device = device
-        
+
         let vertexShader : String = "carVertexShader"
         let fragmentShader : String = "carFragmentShader"
-        
+
         carMap = Array(repeating: Array(repeating: 0, count: WORLD_SIZE), count: WORLD_SIZE)
 
         for i in 0 ..< 360 {
@@ -79,38 +79,38 @@ class Cars: Model {
         }
 
         super.init()
-        
+
         self.renderPipelineState = createLibraryAndRenderPipeline( device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader  )
     }
-    
+
     func addCar( ) {
-        
+
         cars.append( Car() )
-        
+
         let newVertices : [Vertex] = [
             Vertex(position:vector_float4(0,  0,  0, 1.0), normal:vector_float4(0.0, 1.0, 0.0, 1.0),  color:float4(1,1,1,1), texCoords:vector_float2(0.0, 0.0)),
             Vertex(position:vector_float4(0,  0,  0, 1.0), normal:vector_float4(0.0, 1.0, 0.0, 1.0),  color:float4(1,1,1,1), texCoords:vector_float2(1.0, 0.0)),
             Vertex(position:vector_float4(0,  0,  0, 1.0), normal:vector_float4(0.0, 1.0, 0.0, 1.0),  color:float4(1,1,1,1), texCoords:vector_float2(1.0, 1.0)),
             Vertex(position:vector_float4(0,  0,  0, 1.0), normal:vector_float4(0.0, 1.0, 0.0, 1.0),  color:float4(1,1,1,1), texCoords:vector_float2(0.0, 1.0)),
             ]
-        
+
         let start = UInt32(vertices.count)
         indices.append(contentsOf: [ 0 + start, 1 + start, 2 + start, 0 + start, 2 + start, 3 + start ])
         vertices.append(contentsOf: newVertices)
     }
-    
+
     func createBuffers() {
         guard vertices.count > 0 else { return }
 
         vertexBuffer = device.makeBuffer(bytes:vertices, length: vertices.count * MemoryLayout<Vertex>.stride, options: [])!
         vertexBuffer.label = "vertices plane"
-        
+
         indexBuffer = device.makeBuffer(bytes: indices,
                                         length: MemoryLayout<UInt32>.stride * indices.count,
                                         options: [])
         indexBuffer.label = "indices plane"
     }
-    
+
     func update(  )
     {
         guard vertexBuffer != nil else { return }
@@ -118,16 +118,16 @@ class Cars: Model {
         for car in cars {
             // 4 vertices per car
             updateCar( car:car, vertexPtr:pointer )
-            
+
             pointer = pointer.advanced(by: 4)
         }
     }
-    
 
-    
+
+
     func updateCar( car: Car, vertexPtr: UnsafeMutablePointer<Vertex> ) {
         var camera : float3
-        
+
         //If the car isn't ready, place it on the map and get it moving
         camera = appState.cameraState.position
         if (!car.m_ready)
@@ -143,17 +143,17 @@ class Cars: Model {
             if !testPosition(atRow: car.m_row, col: car.m_col, forCar:car) {
                 return
             }
-            
+
             if !WorldMap.instance.isVisible(x:car.m_row, y:car.m_col) {
                 return
             }
-            
+
             //good spot. place the car
             var l : Int = 0
             var r : Int = 0
             if WorldMap.instance.cellAt(car.m_row, car.m_col).contains(.roadNorth) {
                 car.m_direction = NORTH
-                
+
                 // Move car to middle of road
                 l = car.m_row
                 while WorldMap.instance.cellAt(l, car.m_col).contains(.roadNorth) {
@@ -167,7 +167,7 @@ class Cars: Model {
             }
             if WorldMap.instance.cellAt(car.m_row, car.m_col).contains(.roadEast) {
                 car.m_direction = EAST
-                
+
                 // Move car to middle of road
                 var l = car.m_col
                 while WorldMap.instance.cellAt(car.m_row, l).contains(.roadEast) {
@@ -206,11 +206,11 @@ class Cars: Model {
                 }
                 car.m_col = r-2//r-l > 4 ? r-2 : r-1
             }
-            
+
             car.m_position = float3(Float(car.m_row), 0.1, Float(car.m_col))
             car.m_drive_position = car.m_position
             car.m_ready = true
-            
+
             car.m_drive_angle = dangles[car.m_direction]
             car.m_max_speed = Float(4 + randomInt(6)) / 10.0
             car.m_speed = 0.0
@@ -229,7 +229,7 @@ class Cars: Model {
         if !WorldMap.instance.isVisible( x:car.m_row,y: car.m_col) {
             car.m_ready = false
         }
-        
+
         //if the car is far away, remove it.  We use manhattan units because buildings almost always
         //block views of cars on the diagonal.
 //        if fabs(camera.x - m_position.x) + fabs(camera.z - m_position.z) > state.render.fog_distance {
@@ -248,14 +248,14 @@ class Cars: Model {
         if !car.m_ready {
             return
         }
-        
+
         if carMap[Int(futurePos.x)][Int(futurePos.z)] > 0 {
             // Slow down
             if car.m_max_speed > 0.3 {
                 car.m_max_speed -= 0.1
             }
         }
-        
+
         //Check the new position and make sure its not in another car
         let new_row = Int(car.m_position.x)
         let new_col = Int(car.m_position.z)
@@ -287,26 +287,26 @@ class Cars: Model {
         car.m_drive_position = (car.m_drive_position + car.m_position) / 2.0
         //place the car back on the map
         carMap[car.m_row][car.m_col] += 1
-        
-        
-        
+
+
+
         if !car.m_ready {
             return
         }
-        
+
         if !WorldMap.instance.isVisible( pos: car.m_drive_position ) {
             return
         }
 
         let top = CAR_SIZE * 2
-        
+
         var pos = car.m_drive_position
         let angle = (360 - Int(angleBetweenPoints(car.m_position.x, car.m_position.z, pos.x, pos.z))) % 360
         let turn = Int(mathAngleDifference(Float(car.m_drive_angle), Float(angle)))
-        
+
         car.m_drive_angle += (turn > 0 ? 1 : turn < 0 ? -1 : 0)
         pos = pos + float3(0.5, 0.0, 0.5)
-        
+
         let c : float4
         if car.m_front {
             c = frontColor
@@ -329,8 +329,8 @@ class Cars: Model {
         ptr.pointee.position = float4(pos.x + xAngle,  top, pos.z + zAngle, 1)
         ptr.pointee.color = c
     }
-    
-    
+
+
     func testPosition( atRow row: Int, col: Int, forCar car:Car ) -> Bool {
         //test the given position and see if it's already occupied
         if carMap[row][col] != 0 {
@@ -353,12 +353,12 @@ class Cars: Model {
         }
 
         commandEncoder.setRenderPipelineState(self.renderPipelineState)
-        
+
         commandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, index: 0)
         commandEncoder.setVertexBuffer(sharedUniformsBuffer, offset: 0, index: 1)
         commandEncoder.setVertexBuffer(uniformsBuffer, offset: 0, index: 2)
-        
-        
+
+
         if let texture = TextureManager.instance.textures[.headlight] {
             commandEncoder.setFragmentTexture(texture, index: 0)
         } else {

@@ -25,7 +25,7 @@ class BoundingBox {
         maxPoint = [-maxVal, -maxVal, -maxVal]
         minPoint = [maxVal, maxVal, maxVal]
     }
-    
+
     /*-----------------------------------------------------------------------------
      Expand Bbox (if needed) to contain given point
      -----------------------------------------------------------------------------*/

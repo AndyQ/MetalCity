@@ -21,7 +21,7 @@ enum BuildingAddOns : CaseIterable
     case logo
     case trim
     case lights
-    
+
     static func random() -> BuildingAddOns {
         return BuildingAddOns.allCases.randomElement()!
     }
@@ -29,7 +29,7 @@ enum BuildingAddOns : CaseIterable
 
 
 class Building : Model {
-    
+
     static var logoIndex = 0
 
     var device : MTLDevice
@@ -50,36 +50,36 @@ class Building : Model {
     var roof_tiers : Int = 0
     var color : float4
     var trim_color : float4
-    
+
     var hasTower = false
     var hasTrim = false
     var hasLogo = false
-    
+
     var vertexCount : Int = 0
-    
+
     var logoVertices = [Vertex]()
-    
+
     init( device: MTLDevice, type:BuildingType, x:Int, y:Int, height:Int, width:Int, depth:Int, seed:Int, color:float4) {
         self.device = device
 
         self.x = x
         self.y = y
-        
+
         self.width = width
         self.height = height
         self.depth = depth
-        
+
         self.type = type
-        
+
         self.seed = seed
         self.color = color
 
         self.trim_color = worldLightColor(seed)
-        
+
         self.gridX = WorldMap.worldToGrid( x + width/2 )
         self.gridY = WorldMap.worldToGrid( y + depth / 2)
-        
-        
+
+
         // Generate a random texture
         self.textureType = TextureType.randomBuildingTexture()
 
@@ -107,34 +107,34 @@ class Building : Model {
             arr = createTower()
             break
         }
-        
+
         if var arr = arr {
             if hasLogo {
                 self.logoRenderPipelineState = createLibraryAndRenderPipeline( device: device, vertexFunction:"logoVertexShader", fragmentFunction:"logoFragmentShader"  )
                 arr.append(contentsOf: logoVertices)
             }
-            
+
             createVertexBufforFromVertexArray(array:arr)
         }
     }
-    
+
     func update( )
     {
     }
-    
+
     func prepareToDraw() {
     }
-    
+
     func finishDrawing() {
     }
-    
+
     override func draw( commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer ) {
         if vertexCount == 0 {
             return
         }
-        
+
         commandEncoder.setRenderPipelineState(self.renderPipelineState)
-        
+
         commandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, index: 0)
         commandEncoder.setVertexBuffer(sharedUniformsBuffer, offset: 0, index: 1)
 //        commandEncoder.setVertexBuffer(uniformsBuffer, offset: 0, index: 2)
@@ -142,14 +142,14 @@ class Building : Model {
         if let texture = TextureManager.instance.textures[textureType] {
             commandEncoder.setFragmentTexture(texture, index: 0)
         }
-        
+
         var verticesToDraw = vertexCount
         if hasLogo {
             verticesToDraw -= 6
         }
-        
+
         commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: verticesToDraw )
-        
+
         guard let logoRenderPipelineState = logoRenderPipelineState else { return }
         if hasLogo {
             commandEncoder.setRenderPipelineState(logoRenderPipelineState)
@@ -162,27 +162,27 @@ class Building : Model {
             commandEncoder.setCullMode(MTLCullMode.none)
         }
     }
-    
+
     func createSimple() -> [Vertex] {
 
         //How tall the flat-color roof is
         let cap_height = Float(1 + randomInt(4))
-        
+
         //how much the ledge sticks out
         let ledge = Float(randomInt(10)) / 30.0
-        
+
         let x1 = Float(x)
         let x2 = Float(x + width)
         let y1 = Float(0.0)
         let y2 = Float(height)
         let z2 = Float(y)
         let z1 = Float(y + depth)
-        
+
         var u = Float(randomInt(SEGMENTS_PER_TEXTURE)) / Float(SEGMENTS_PER_TEXTURE)
-        
+
         let v1 = Float(randomInt(SEGMENTS_PER_TEXTURE)) / Float(SEGMENTS_PER_TEXTURE)
         let v2 = v1 + Float(height) * ONE_SEGMENT
-        
+
         var verticesArray = [Vertex]()
 
         verticesArray.append( Vertex(position:vector_float4(x1,  y1,  z1, 1.0), normal:vector_float4(0.0, 1.0, 0.0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u, v1)) )
@@ -191,51 +191,51 @@ class Building : Model {
         u += Float(depth) / Float(SEGMENTS_PER_TEXTURE)
         verticesArray.append( Vertex(position:vector_float4(x1, y1, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v1)) )
         verticesArray.append( Vertex(position:vector_float4(x1, y2, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v2)) )
-        
+
         verticesArray.append( Vertex(position:vector_float4(x1, y1, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v1)) )
         verticesArray.append( Vertex(position:vector_float4(x1, y2, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v2)) )
 
         u += Float(depth) / Float(SEGMENTS_PER_TEXTURE)
         verticesArray.append( Vertex(position:vector_float4(x2, y1, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v1)) )
         verticesArray.append( Vertex(position:vector_float4(x2, y2, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v2)) )
-        
+
         verticesArray.append( Vertex(position:vector_float4(x2, y1, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v1)) )
         verticesArray.append( Vertex(position:vector_float4(x2, y2, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v2)) )
 
         u += Float(depth) / Float(SEGMENTS_PER_TEXTURE)
         verticesArray.append( Vertex(position:vector_float4(x2, y1, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v1)) )
         verticesArray.append( Vertex(position:vector_float4(x2, y2, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v2)) )
-        
+
         verticesArray.append( Vertex(position:vector_float4(x2, y1, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v1)) )
         verticesArray.append( Vertex(position:vector_float4(x2, y2, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v2)) )
 
         u += Float(depth) / Float(SEGMENTS_PER_TEXTURE)
         verticesArray.append( Vertex(position:vector_float4(x1, y1, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v1)) )
         verticesArray.append( Vertex(position:vector_float4(x1, y2, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u, v2)) )
-        
+
         let cubeVertices = self.constructCube(left: x1 - ledge, right: x2 + ledge, front: z2 - ledge, back: z1 + ledge, bottom: Float(height), top: Float(height) + cap_height, textured: false)
 
         verticesArray.append(contentsOf: cubeVertices)
-        
+
         let arr = self.convertQuadsToTriangles( verticesArray )
         return arr
     }
-    
+
     func createModern() -> [Vertex] {
         //How many 10-degree segments to build before the next skip.
         let skip_interval = 1 + randomInt(8)
         //When a skip happens, how many degrees should be skipped
         let skip_delta = (1 + randomInt(2)) * 30 //30 60 or 90
-        
+
         //See if this is eligible for fancy lighting trim on top
-        
+
         //Get the center and radius of the circle
         let half_depth = depth / 2
         let half_width = width / 2
         var center = float3(Float(x + half_width), 0.0, Float(y + half_depth) )
         var radius = float2(Float(half_width), Float(half_depth))
         var windows = 0
-        
+
         var points = 0
         var skip_counter = 0
         var v = Vertex()
@@ -249,11 +249,11 @@ class Building : Model {
                 angle += skip_delta
                 skip_counter = 0
             }
-            
+
             var p = pos
             pos.x = center.x - sin(Float(angle) * DEGREES_TO_RADIANS) * radius.x
             pos.z = center.z + cos(Float(angle) * DEGREES_TO_RADIANS) * radius.y
-            
+
             var length : Float = 0
             if (angle > 0 && skip_counter == 0)
             {
@@ -269,24 +269,24 @@ class Building : Model {
             } else if (skip_counter != 1) {
                 windows += 1
             }
-            
+
             p = pos
             pos.y = 0
             v.position = pos
             v.texCoords = float2(Float(windows) / Float(SEGMENTS_PER_TEXTURE), 0.0)
             verticesArray.append(v)
-            
+
             pos.y = Float(height)
             v.position = pos
             v.texCoords = float2(Float(windows) / Float(SEGMENTS_PER_TEXTURE), Float(height) / Float(SEGMENTS_PER_TEXTURE))
             verticesArray.append(v)
- 
+
             points += 2
             skip_counter += 1
-        
+
             angle += 10
         }
-        
+
         var vlist = [Vertex]()
         for i in stride( from:0, to:points, by:2 ) {
             var v1 = verticesArray[i]
@@ -303,24 +303,24 @@ class Building : Model {
                 v3 = verticesArray[i-(points-2)]
                 v4 = verticesArray[i-(points-2)+1]
             }
-            
+
             // Triangle1 = v1, v2, v3
             // Triangle2 = v2, v4, v3
-            
+
             let n1 = calculateTriangleSurfaceNormal(v1:v1, v2:v2, v3:v3 )
             let n2 = calculateTriangleSurfaceNormal(v1:v2, v2:v4, v3:v3 )
-            
+
             v1.normal = n1
             v2.normal = n1
             v3.normal = n1
             vlist.append( contentsOf:[v1, v2, v3] )
-            
+
             v2.normal = n2
             v4.normal = n2
             v3.normal = n2
             vlist.append( contentsOf:[v2, v4, v3] )
         }
-        
+
         // Now add the roof
         // v is now the centre point of the roof
         pos.x = center.x
@@ -328,15 +328,15 @@ class Building : Model {
         pos.z = center.z
 
         v.position = pos
-        
+
         for i in 0 ..< points / 2 {
             if points - (1 + (i+1) * 2) < 0 {
                 break
             }
-            
+
             var v1 = verticesArray[points - (1 + i * 2)]
             var v2 = verticesArray[points - (1 + (i+1) * 2)]
-            
+
             let n1 = calculateTriangleSurfaceNormal(v1:v, v2:v1, v3:v2 )
             v.normal = n1
             v1.normal = n1
@@ -346,23 +346,23 @@ class Building : Model {
             v2.texCoords = float2(0, 0)
             vlist.append( contentsOf:[v, v1, v2] )
         }
-        
+
         return vlist
     }
-    
+
     func createBlocky() -> [Vertex] {
         //Choose if the corners of the building are to be windowless.
         let blank_corners = flipCoinIsHeads()
-        
+
         //Choose a random column on our texture
         var uv_start = Float(randomInt(SEGMENTS_PER_TEXTURE)) / Float(SEGMENTS_PER_TEXTURE)
-            
+
         //Choose how the windows are grouped
         let grouping = 2 + randomInt(4)
-        
+
         //Choose how tall the lid should be on top of each section
         let lid_height = Float(randomInt(3) + 1)
-        
+
         //find the center of the building.
         let mid_x = x + width / 2
         let mid_z = y + depth / 2
@@ -372,7 +372,7 @@ class Building : Model {
         var max_back = 1
         var h = height
 
-        
+
         let min_height = 3
         let half_depth = depth / 2
         let half_width = width / 2
@@ -393,7 +393,7 @@ class Building : Model {
         //Viewed from above, the sections of the building are randomly sized
         //rectangles that ALWAYS include the center of the building somewhere within
         //their area.
-        
+
         var  walls : [[Int]] = Array(repeating: Array(repeating: 0, count: 4), count: max_tiers)
         var vertices = [Vertex]()
         var tmpV : [Vertex]
@@ -408,48 +408,48 @@ class Building : Model {
             let front = (randomInt() % half_depth) + 1
             let back = (randomInt() % half_depth) + 1
             var skip = false
-            
+
             //At least ONE of the walls must reach out beyond a previous maximum.
             //Otherwise, this tier would be completely hidden within a previous one.
             if left <= max_left && right <= max_right && front <= max_front && back <= max_back {
                 skip = true
             }
-            
+
             //If any of the four walls is in the same position as the previous max,then
             //skip this tier, or else the two walls will end up z-fightng.
             if left == max_left || right == max_right || front == max_front || back == max_back {
                 skip = true
             }
-            
+
             for j in 0 ..< tiers {
                 if skip {
                     break
                 }
-                
+
                 if left == walls[j][0] || right == walls[j][1] || front == walls[j][2] || back == walls[j][3] {
                     skip = true
                 }
             }
-                
+
             if !skip {
                 // Store walls
                 walls[tiers][0] = left
                 walls[tiers][1] = right
                 walls[tiers][2] = front
                 walls[tiers][3] = back
-                
+
                 //if this is the top, then put some lights up here
                 max_left = max(left, max_left)
                 max_right = max(right, max_right)
                 max_front = max(front, max_front)
                 max_back = max(back, max_back)
-                
+
                 //Now build the four walls of this part
                 (uv_start, tmpV) = constructWall( atX:mid_x - left, y:2, z:mid_z + back, dir:.south, length:front + back,
                     height:h-2, windowGroups:grouping, uvStart:uv_start, blankCorners:blank_corners)
                 uv_start -= ONE_SEGMENT
                 vertices.append(contentsOf: tmpV)
-                
+
                 (uv_start, tmpV) = constructWall( atX:mid_x - left, y:2, z:mid_z - front, dir:.east, length:right + left,
                     height:h-2, windowGroups:grouping, uvStart:uv_start, blankCorners:blank_corners)
                 uv_start -= ONE_SEGMENT
@@ -480,16 +480,16 @@ class Building : Model {
             }
             h -= 1
         }
-        
+
         tmpV = constructCube(left: Float(mid_x - half_width), right: Float(mid_x + half_width), front: Float(mid_z - half_depth), back: Float(mid_z + half_depth), bottom: 0, top: 2, textured: false)
         vertices.append(contentsOf: tmpV)
-        
+
         let arr = self.convertQuadsToTriangles( vertices )
         return arr
     }
-    
+
     func createTower() -> [Vertex] {
-        
+
         var vertices = [Vertex]()
         var tmpV : [Vertex]
 
@@ -501,20 +501,20 @@ class Building : Model {
         let grouping = randomInt(3) + 2
         //if the corners of the building have no windows
         let blank_corners = randomInt(4) > 0
-        
+
         //if the roof is pointed or has infrastructure on it
         //    roof_spike = randomValue(3) == 0
-        
+
         //What fraction of the remaining height should be given to each tier
         let tier_fraction = 2 + randomInt(4)
         //How often (in tiers) does the building get narrorwer?
         let narrowing_interval = 1 + randomInt(10)
         //The height of the windowsless slab at the bottom
         let foundation = 2 + randomInt(3)
-        
+
         //The odds that we'll have a big fancy spikey top
         //    tower = randomValue(5) != 0 && _height > 40
-        
+
         //set our initial parameters
         var left = x
         var right = x + width
@@ -522,14 +522,14 @@ class Building : Model {
         var back = y + depth
         var bottom = 0
         var tiers = 0
-        
-        
+
+
         //build the foundations.
         tmpV = constructCube(left: Float(left) - ledge, right: Float(right) + ledge, front: Float(front) - ledge, back: Float(back) + ledge, bottom: Float(bottom), top: Float(foundation), textured: true)
         vertices.append(contentsOf: tmpV)
 
         bottom += foundation
-        
+
         //now add tiers until we reach the top
         while ( true )
         {
@@ -564,14 +564,14 @@ class Building : Model {
             vertices.append(contentsOf: tmpV)
 
             bottom += section_height
-            
+
             //Build the slab / ledges to cap this section.
             if bottom + ledge_height > height {
                 break
             }
             tmpV = constructCube(left: Float(left) - ledge, right: Float(right) + ledge, front: Float(front) - ledge, back: Float(back) + ledge, bottom: Float(bottom), top: Float(bottom + ledge_height), textured: false)
             vertices.append(contentsOf: tmpV)
-            
+
             bottom += ledge_height
             if bottom > height {
                 break
@@ -590,19 +590,19 @@ class Building : Model {
         }
         tmpV = constructRoof(left: Float(left), right:Float(right), front:Float(front), back:Float(back), bottom:Float(bottom), roofTiers: 0)
         vertices.append(contentsOf: tmpV)
-        
+
         let arr = self.convertQuadsToTriangles( vertices )
         return arr
     }
-    
+
     func constructWall( atX startX:Int, y startY:Int, z startZ:Int, dir:Direction, length:Int, height:Int, windowGroups:Int, uvStart: Float, blankCorners:Bool) -> (Float, [Vertex]) {
 
-        
+
         var x = 0
         var z = 0
         var step_x = 0
         var step_z = 0
-        
+
         switch (dir)
         {
         case .north:
@@ -618,16 +618,16 @@ class Building : Model {
             step_z = 0
             step_x = 1
         }
-        
+
         x = startX
         z = startZ
-        
+
         var mid = (length / 2) - 1
         let odd = 1 - (length % 2)
         if length % 2 != 0 {
             mid += 1
         }
-        
+
         var blank = false
         var textureS = uvStart
         var vertices = [Vertex]()
@@ -639,7 +639,7 @@ class Building : Model {
             } else {
                 column = (mid) - (i - (mid))
             }
-            
+
             let last_blank = blank
             blank = (column % windowGroups) > windowGroups / 2
             if blankCorners && i == 0 {
@@ -648,7 +648,7 @@ class Building : Model {
             if blankCorners && i == (length - 1) {
                 blank = true
             }
-            
+
             if last_blank != blank || i == 0 || i == length {
                 // Sneaky, because original code used QUADStrips, and we are just simulating quads here
                 // we need to double up on the vertices for each point except the first and last pairs
@@ -659,46 +659,46 @@ class Building : Model {
                     v.position = float4( Float(x), Float(startY), Float(z), 1)
                     v.texCoords = float2( textureS, Float(startY) / Float(SEGMENTS_PER_TEXTURE))
                     vertices.append(v)
-                    
+
                     v.position = float4( Float(x), Float(startY + height), Float(z), 1)
                     v.texCoords = float2( textureS, Float(startY + height) / Float(SEGMENTS_PER_TEXTURE))
                     vertices.append(v)
                 }
             }
-            
+
             if !blank && i != length {
                 textureS += 1.0 / Float(SEGMENTS_PER_TEXTURE)
             }
             x += step_x
             z += step_z
         }
-        
+
         return (textureS, vertices)
     }
-    
+
     func constructRoof(left:Float, right:Float, front:Float, back:Float, bottom:Float, roofTiers : Int) -> [Vertex] {
-        
+
         var vertices = [Vertex]()
         let roof_tiers = roofTiers + 1
-        
+
         let max_tiers = self.height / 10
         let width = Int(right - left)
         let depth = Int(back - front)
         let roofHeight = Float(5 - roof_tiers)
         let logo_offset :Float = 0.1
-        
-        
+
+
         //See if this building is special and worthy of fancy roof decorations.
         var addon = BuildingAddOns.none
         if bottom > 35.0 {
             addon = BuildingAddOns.random()
         }
-        
+
         //Build the roof slab
         var tmpV = constructCube(left: left, right: right, front: front, back: back, bottom: bottom, top: bottom + roofHeight, textured: false)
         vertices.append(contentsOf: tmpV)
-        
-        
+
+
          //Consider putting a logo on the roof, if it's tall enough
         if addon == .logo && !hasLogo {
 //            d = new CDeco(_state)
@@ -708,7 +708,7 @@ class Building : Model {
             } else {
                 face = flipCoinIsHeads() ? .east : .west
             }
-            
+
             let start : float2
             let end : float2
             switch (face)
@@ -730,7 +730,7 @@ class Building : Model {
                 end = float2(left - logo_offset, back)
                 break
             }
-            
+
             createLogo( start:start, end:end, bottom:bottom, seed:Building.logoIndex, color:trim_color)
             Building.logoIndex += 1
 //            d->CreateLogo (start, end, bottom, WorldLogoIndex (_state), _trim_color)
@@ -759,9 +759,9 @@ class Building : Model {
             _haveLights = true
         }
 */
-        
+
         let newBottom = bottom + roofHeight
-        
+
         //If the roof is big enough, consider making another layer
         if width > 7 && depth > 7 && roof_tiers < max_tiers {
             tmpV = constructRoof(left: left+1, right: right-1, front: front+1, back: back-1, bottom: newBottom, roofTiers: roof_tiers)
@@ -777,30 +777,30 @@ class Building : Model {
             let ac_height = Float(randomInt(20)) / 10 + 1.0
             var ac_x = left + Float(randomInt(width))
             var ac_y = front + Float(randomInt(depth))
-            
+
             //make sure the unit doesn't hang off the right edge of the building
             if ac_x + ac_size > right {
                 ac_x = right - ac_size
             }
-            
+
             //make sure the unit doesn't hang off the back edge of the building
             if ac_y + ac_size > back {
                 ac_y = back - ac_size
             }
             let ac_base = newBottom
-            
+
             //make sure it doesn't hang off the edge
             tmpV = constructCube(left:ac_x , right: ac_x + ac_size, front: ac_y, back: ac_y + ac_size, bottom: ac_base, top: ac_base + ac_height, textured: false)
             vertices.append(contentsOf: tmpV)
         }
-        
+
         //print( self.height )
         if (self.height > 45 && flipCoinIsHeads())
         {
             let center = float3((left + right) / 2.0, newBottom, (front + back) / 2.0)
             DecorationManager.instance.addRadioTower( center:center, height:15 )
         }
-        
+
         return vertices
     }
 
@@ -811,7 +811,7 @@ class Building : Model {
         let y2 = top
         let z1 = front
         let z2 = back
-        
+
         let mapping = Float(SEGMENTS_PER_TEXTURE)
         let u = Float(randomInt() % SEGMENTS_PER_TEXTURE) / Float(SEGMENTS_PER_TEXTURE)
         let u1 = u + Float(width) / Float(SEGMENTS_PER_TEXTURE)
@@ -820,7 +820,7 @@ class Building : Model {
         let u4 = u3 + Float(width) / Float(SEGMENTS_PER_TEXTURE)
         let v1 = bottom / mapping
         let v2 = top / mapping
-        
+
         var v : [Vertex] = [
             Vertex(position:vector_float4(x1, y1, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v1)),
             Vertex(position:vector_float4(x1, y2, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v2)),
@@ -832,7 +832,7 @@ class Building : Model {
             Vertex(position:vector_float4(x1, y2, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u3,v2)),
             Vertex(position:vector_float4(x1, y1, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u4,v1)),
             Vertex(position:vector_float4(x1, y2, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u4,v2))]
-        
+
         for i in 0 ..< 10 {
             if textured {
                 v[i].texCoords = vector_float2( (v[i].position.x + v[i].position.z) / Float(SEGMENTS_PER_TEXTURE), v[i].texCoords.y )
@@ -840,7 +840,7 @@ class Building : Model {
                 v[i].texCoords = vector_float2( 0, 0 )
             }
         }
-        
+
         var vlist = [Vertex]()
         for i in stride( from:0, to: 10-2, by:2 ) {
             vlist.append(v[i])
@@ -848,12 +848,12 @@ class Building : Model {
             vlist.append(v[i+2])
             vlist.append(v[i+3])
         }
-        
+
         // Top and bottom should have no texture shown
         for i in 0 ..< 10 {
             v[i].texCoords = vector_float2( 0, 0 )
         }
-        
+
         vlist.append(v[1])
         vlist.append(v[7])
         vlist.append(v[3])
@@ -866,10 +866,10 @@ class Building : Model {
 
         return vlist
     }
-    
+
     func convertQuadsToTriangles( _ vlist : [Vertex], useMainColor:Bool = true ) -> [Vertex] {
         var vertices = [Vertex]()
-        
+
         // generate triangles
         let points = vlist.count
         for i in stride( from:0, to: points, by: 4 ) {
@@ -877,31 +877,31 @@ class Building : Model {
             var v2 = vlist[i+1]
             var v3 = vlist[i+2]
             var v4 = vlist[i+3]
-            
+
             if useMainColor {
                 v1.color = self.color
                 v2.color = self.color
                 v3.color = self.color
                 v4.color = self.color
             }
-            
+
             // Triangle1 = v1, v2, v3
             // Triangle2 = v2, v4, v3
-            
+
             let n1 = calculateTriangleSurfaceNormal(v1:v1, v2:v2, v3:v3 )
             let n2 = calculateTriangleSurfaceNormal(v1:v2, v2:v4, v3:v3 )
-            
+
             v1.normal = n1
             v2.normal = n1
             v3.normal = n1
             vertices.append( contentsOf:[v1, v2, v3] )
-            
+
             v2.normal = n2
             v4.normal = n2
             v3.normal = n2
             vertices.append( contentsOf:[v2, v4, v3] )
         }
-        
+
         return vertices
 //        createVertexBufforFromVertexArray( array:vertices )
     }
@@ -911,24 +911,24 @@ class Building : Model {
         vertexBuffer = device.makeBuffer(bytes:array, length: array.count * MemoryLayout<Vertex>.stride, options: [])!
         vertexBuffer.label = "vertices building"
     }
-    
+
     func createLogo( start:float2, end:float2, bottom:Float, seed:Int, color:float4 ) {
         let LOGO_OFFSET :Float = 1 //0.2
-        
+
         let logo_index = seed % TextureManager.instance.textAtlas.nrItems
 
         var to = float3(start.x, 0.0, start.y) - float3(end.x, 0.0, end.y)
         to = normalize(to)
         var outtmp = cross(float3(0.0, 1.0, 0.0), to) * LOGO_OFFSET
         let out = float4(outtmp.x, outtmp.y, outtmp.z, 0)
-        
+
 
         let len = length(start - end)
         let height = (len / 8.0) * 1.5
         let top = bottom + height
-        
+
         let textItem = TextureManager.instance.textAtlas.textItems[logo_index]
-        
+
         let u1 = textItem.bl.x
         let v1 = textItem.bl.y
         let u2 = textItem.tr.x

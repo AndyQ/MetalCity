@@ -23,15 +23,15 @@ class FireworkScene {
     init( device:MTLDevice) {
         // Launch the first firework immediately
         next_launch = get_current_timestamp()
-        
+
         createLibraryAndRenderPipeline(device: device)
     }
-    
+
     func createLibraryAndRenderPipeline( device : MTLDevice ) {
         let defaultLibrary = device.makeDefaultLibrary()!
         let fragmentProgram = defaultLibrary.makeFunction(name: "passThroughFragment")!
         let vertexProgram = defaultLibrary.makeFunction(name: "passThroughVertex")!
-        
+
         let psd = MTLRenderPipelineDescriptor()
         psd.vertexFunction = vertexProgram
         psd.fragmentFunction = fragmentProgram
@@ -46,20 +46,20 @@ class FireworkScene {
         psd.colorAttachments[0].sourceAlphaBlendFactor = .sourceAlpha
         psd.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
         psd.colorAttachments[0].destinationAlphaBlendFactor = .oneMinusSourceAlpha
-        
+
         do {
             try pipelineState = device.makeRenderPipelineState(descriptor: psd)
         } catch let error {
             print("Failed to create pipeline state, error \(error)")
         }
-        
+
         vertexBuffer = device.makeBuffer(length: BUFFER_BYTE_LEN, options: [])
         vertexBuffer.label = "vertices"
-        
+
         vertexColorBuffer = device.makeBuffer(length: BUFFER_BYTE_LEN, options: [])
         vertexColorBuffer.label = "colors"
     }
-    
+
 
     private func launch_firework(current_time: Int64) {
         let fw = Firework(time: current_time) //, aspect_x: x_aspect_ratio)
@@ -86,13 +86,13 @@ class FireworkScene {
 
         vertexCount = bv.pos / 4
     }
-    
+
     var vertexCount = 0
-    
+
     func prepareToDraw() {
         _ = inflightSemaphore.wait(timeout: .distantFuture)
     }
-    
+
     func finishedDrawing() {
         self.inflightSemaphore.signal()
     }

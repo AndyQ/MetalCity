@@ -12,7 +12,7 @@ struct BufferWrapper {
         // NB: MTLBuffer.length == bytes
         let ptr = buffer.contents().assumingMemoryBound(to: Float.self)
 
-        
+
         self.init(buffer: ptr, nr_elements: buffer.length / MemoryLayout<Float>.size)
     }
 
@@ -51,7 +51,7 @@ struct BufferWrapper {
         append(v:v.a)
     }
 
-    // No capacity checks; caller must check beforehand 
+    // No capacity checks; caller must check beforehand
     mutating func append_raw(v: Float) {
         pdata[pos] = v
         pos = pos &+ 1
