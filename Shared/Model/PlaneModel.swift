@@ -49,13 +49,14 @@ class PlaneModel : Model {
         let y1 : Float = -0.02
         let z1 : Float = 0
         let z2 : Float = Float(WORLD_SIZE)
+        let normal = vector_float4(0.0, 1.0, 0.0, 1.0)
+        let color = float4(1,1,1,1)
 
-
-        let verticesArray :[Vertex] = [
-            Vertex(position:vector_float4(x1,  y1,  z1, 1.0), normal:vector_float4(0.0, 1.0, 0.0, 1.0),  color:float4(1,1,1,1), texCoords:vector_float2(0.0, 0.0)),
-            Vertex(position:vector_float4(x2,  y1,  z1, 1.0), normal:vector_float4(0.0, 1.0, 0.0, 1.0),  color:float4(1,1,1,1), texCoords:vector_float2(1.0, 0.0)),
-            Vertex(position:vector_float4(x1,  y1,  z2, 1.0), normal:vector_float4(0.0, 1.0, 0.0, 1.0),  color:float4(1,1,1,1), texCoords:vector_float2(0.0, 1.0)),
-            Vertex(position:vector_float4(x2,  y1,  z2, 1.0), normal:vector_float4(0.0, 1.0, 0.0, 1.0),  color:float4(1,1,1,1), texCoords:vector_float2(1.0, 1.0)),
+        let verticesArray: [Vertex] = [
+            Vertex(position:vector_float4(x1, y1, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(0.0, 0.0)),
+            Vertex(position:vector_float4(x2, y1, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(1.0, 0.0)),
+            Vertex(position:vector_float4(x1, y1, z2, 1.0), normal: normal, color: color, texCoords:vector_float2(0.0, 1.0)),
+            Vertex(position:vector_float4(x2, y1, z2, 1.0), normal: normal, color: color, texCoords:vector_float2(1.0, 1.0)),
         ]
         let indices : [UInt16] = [ 0, 1, 2, 3 ]
 

@@ -80,18 +80,22 @@ class Cars: Model {
 
         super.init()
 
-        self.renderPipelineState = createLibraryAndRenderPipeline( device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader  )
+        self.renderPipelineState = createLibraryAndRenderPipeline(device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader)
     }
 
     func addCar( ) {
 
-        cars.append( Car() )
+        cars.append(Car())
+
+        let normal = vector_float4(0.0, 1.0, 0.0, 1.0)
+        let color = float4(1,1,1,1)
+        let position = vector_float4(0, 0, 0, 1.0)
 
         let newVertices : [Vertex] = [
-            Vertex(position:vector_float4(0,  0,  0, 1.0), normal:vector_float4(0.0, 1.0, 0.0, 1.0),  color:float4(1,1,1,1), texCoords:vector_float2(0.0, 0.0)),
-            Vertex(position:vector_float4(0,  0,  0, 1.0), normal:vector_float4(0.0, 1.0, 0.0, 1.0),  color:float4(1,1,1,1), texCoords:vector_float2(1.0, 0.0)),
-            Vertex(position:vector_float4(0,  0,  0, 1.0), normal:vector_float4(0.0, 1.0, 0.0, 1.0),  color:float4(1,1,1,1), texCoords:vector_float2(1.0, 1.0)),
-            Vertex(position:vector_float4(0,  0,  0, 1.0), normal:vector_float4(0.0, 1.0, 0.0, 1.0),  color:float4(1,1,1,1), texCoords:vector_float2(0.0, 1.0)),
+            Vertex(position:position, normal:normal, color:color, texCoords:vector_float2(0.0, 0.0)),
+            Vertex(position:position, normal:normal, color:color, texCoords:vector_float2(1.0, 0.0)),
+            Vertex(position:position, normal:normal, color:color, texCoords:vector_float2(1.0, 1.0)),
+            Vertex(position:position, normal:normal, color:color, texCoords:vector_float2(0.0, 1.0)),
             ]
 
         let start = UInt32(vertices.count)

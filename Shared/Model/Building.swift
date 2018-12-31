@@ -59,7 +59,7 @@ class Building : Model {
 
     var logoVertices = [Vertex]()
 
-    init( device: MTLDevice, type:BuildingType, x:Int, y:Int, height:Int, width:Int, depth:Int, seed:Int, color:float4) {
+    init(device: MTLDevice, type:BuildingType, x:Int, y:Int, height:Int, width:Int, depth:Int, seed:Int, color:float4) {
         self.device = device
 
         self.x = x
