@@ -12,37 +12,29 @@ class BufferProvider {
     let inflightBuffersCount: Int
     private var uniformsBuffers: [MTLBuffer]
     private var availableBufferIndex: Int = 0
-    var avaliableResourcesSemaphore: DispatchSemaphore
+    private(set) var availableResourcesSemaphore: DispatchSemaphore
 
     init(device:MTLDevice, inflightBuffersCount: Int, sizeOfUniformsBuffer: Int) {
 
-        avaliableResourcesSemaphore = DispatchSemaphore(value: inflightBuffersCount)
+        availableResourcesSemaphore = DispatchSemaphore(value: inflightBuffersCount)
 
         self.inflightBuffersCount = inflightBuffersCount
-        uniformsBuffers = [MTLBuffer]()
-        
-        for _ in 0..<inflightBuffersCount {
-            let uniformsBuffer = device.makeBuffer(length: sizeOfUniformsBuffer, options: [])!
-            uniformsBuffers.append(uniformsBuffer)
+        uniformsBuffers = (0..<inflightBuffersCount).map { _ in
+            device.makeBuffer(length: sizeOfUniformsBuffer, options: [])!
         }
     }
     
     deinit{
         for _ in 0...self.inflightBuffersCount{
-            self.avaliableResourcesSemaphore.signal()
+            self.availableResourcesSemaphore.signal()
         }
     }
 
 
     func nextBuffer() -> MTLBuffer {
-        
-        let buffer = uniformsBuffers[availableBufferIndex]
-                
-        availableBufferIndex += 1
-        if availableBufferIndex == inflightBuffersCount{
-            availableBufferIndex = 0
+        defer {
+            availableBufferIndex = (availableBufferIndex + 1) % inflightBuffersCount
         }
-        
-        return buffer
+        return uniformsBuffers[availableBufferIndex]
     }
 }

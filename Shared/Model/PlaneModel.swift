@@ -88,11 +88,11 @@ class PlaneModel : Model {
     }
 
     func prepareToDraw() {
-        _ = bufferProvider.avaliableResourcesSemaphore.wait(timeout: DispatchTime.distantFuture)
+        _ = bufferProvider.availableResourcesSemaphore.wait(timeout: .distantFuture)
     }
     
     func finishDrawing() {
-        self.bufferProvider.avaliableResourcesSemaphore.signal()
+        self.bufferProvider.availableResourcesSemaphore.signal()
     }
     
     override func draw( commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer ) {
