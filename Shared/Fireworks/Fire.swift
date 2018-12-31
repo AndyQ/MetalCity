@@ -59,7 +59,7 @@ struct Flare {
 }
 
 
-class Firework : Drawable {
+class Firework: Drawable {
     let pos: Vector3
     let start_time: Int64
     let type: Int

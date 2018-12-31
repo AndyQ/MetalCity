@@ -14,34 +14,34 @@ import MetalKit
 
 
 class Car {
-    var m_position : float3 = float3(0,0,0)
-    var m_drive_position : float3 = float3(0,0,0)
-    var m_frontColor : float4 = float4(0,0,0,0)
-    var m_backColor : float4 = float4(0,0,0,0)
-    var m_ready : Bool = false
-    var m_front : Bool = false
-    var m_drive_angle : Int = 0
-    var m_row : Int = 0
-    var m_col : Int = 0
-    var m_direction : Int = 0
-    var m_stuck : Int = 0
-    var m_speed : Float = 0
-    var m_max_speed : Float = 0
+    var m_position: float3 = .zero
+    var m_drive_position: float3 = .zero
+    var m_frontColor: float4 = .zero
+    var m_backColor: float4 = .zero
+    var m_ready: Bool = false
+    var m_front: Bool = false
+    var m_drive_angle: Int = 0
+    var m_row: Int = 0
+    var m_col: Int = 0
+    var m_direction: Int = 0
+    var m_stuck: Int = 0
+    var m_speed: Float = 0
+    var m_max_speed: Float = 0
 }
 
 class Cars: Model {
-    let direction : [float3] = [
+    let direction: [float3] = [
         float3(0.0, 0.0, -1.0),
         float3(1.0, 0.0,  0.0),
         float3(0.0, 0.0,  1.0),
         float3(-1.0, 0.0,  0.0)]
 
-    let dangles : [Int] = [ 0, 90, 180, 270]
+    let dangles: [Int] = [ 0, 90, 180, 270]
 
-    let CAR_SIZE : Float = 0.5
+    let CAR_SIZE: Float = 0.5
     let DEAD_ZONE = 25
     let STUCK_TIME = 230
-    let MOVEMENT_SPEED : Float = 0.61
+    let MOVEMENT_SPEED: Float = 0.61
 
     let NORTH = 0
     let EAST = 1
@@ -52,22 +52,22 @@ class Cars: Model {
     let frontColor = float4(1, 1, 0.8, 1.0)
     let backColor = float4(1, 0.2, 0, 1.0)
 
-    var device : MTLDevice
+    var device: MTLDevice
 
     var vertices = [Vertex]()
     var indices = [UInt32]()
 
 
     var carAngles = [float2]()
-    var carMap : [[UInt8]]
+    var carMap: [[UInt8]]
 
     var cars = [Car]()
 
     init(device: MTLDevice) {
         self.device = device
 
-        let vertexShader : String = "carVertexShader"
-        let fragmentShader : String = "carFragmentShader"
+        let vertexShader: String = "carVertexShader"
+        let fragmentShader: String = "carFragmentShader"
 
         carMap = Array(repeating: Array(repeating: 0, count: WORLD_SIZE), count: WORLD_SIZE)
 
@@ -91,7 +91,7 @@ class Cars: Model {
         let color = float4(1,1,1,1)
         let position = vector_float4(0, 0, 0, 1.0)
 
-        let newVertices : [Vertex] = [
+        let newVertices: [Vertex] = [
             Vertex(position:position, normal:normal, color:color, texCoords:vector_float2(0.0, 0.0)),
             Vertex(position:position, normal:normal, color:color, texCoords:vector_float2(1.0, 0.0)),
             Vertex(position:position, normal:normal, color:color, texCoords:vector_float2(1.0, 1.0)),
@@ -130,7 +130,7 @@ class Cars: Model {
 
 
     func updateCar(car: Car, vertexPtr: UnsafeMutablePointer<Vertex>) {
-        var camera : float3
+        var camera: float3
 
         //If the car isn't ready, place it on the map and get it moving
         camera = appState.cameraState.position
@@ -153,8 +153,8 @@ class Cars: Model {
             }
 
             //good spot. place the car
-            var l : Int = 0
-            var r : Int = 0
+            var l: Int = 0
+            var r: Int = 0
             if WorldMap.instance.cellAt(car.m_row, car.m_col).contains(.roadNorth) {
                 car.m_direction = NORTH
 
@@ -167,7 +167,7 @@ class Cars: Model {
                 while WorldMap.instance.cellAt(r, car.m_col).contains(.roadNorth) {
                     r += 1
                 }
-                car.m_row = l+2 //r-l > 4 ? l+2 : l+1
+                car.m_row = l+2 //r-l > 4 ? l+2: l+1
             }
             if WorldMap.instance.cellAt(car.m_row, car.m_col).contains(.roadEast) {
                 car.m_direction = EAST
@@ -181,7 +181,7 @@ class Cars: Model {
                 while (WorldMap.instance.cellAt(car.m_row, r).contains(.roadEast)) {
                     r += 1
                 }
-                car.m_col = l+2// r-l > 4 ?l+2 : l+1
+                car.m_col = l+2// r-l > 4 ?l+2: l+1
             }
             if WorldMap.instance.cellAt(car.m_row, car.m_col).contains(.roadSouth) {
                 car.m_direction = SOUTH
@@ -194,7 +194,7 @@ class Cars: Model {
                 while WorldMap.instance.cellAt(r, car.m_col).contains(.roadSouth) {
                     r += 1
                 }
-                car.m_row = r-2//r-l > 4 ? r-2 : r-1
+                car.m_row = r-2//r-l > 4 ? r-2: r-1
             }
             if (WorldMap.instance.cellAt(car.m_row, car.m_col).contains(.roadWest))
             {
@@ -208,7 +208,7 @@ class Cars: Model {
                 while WorldMap.instance.cellAt(car.m_row, r).contains(.roadWest) {
                     r += 1
                 }
-                car.m_col = r-2//r-l > 4 ? r-2 : r-1
+                car.m_col = r-2//r-l > 4 ? r-2: r-1
             }
 
             car.m_position = float3(Float(car.m_row), 0.1, Float(car.m_col))
@@ -308,10 +308,10 @@ class Cars: Model {
         let angle = (360 - Int(angleBetweenPoints(car.m_position.x, car.m_position.z, pos.x, pos.z))) % 360
         let turn = Int(mathAngleDifference(Float(car.m_drive_angle), Float(angle)))
 
-        car.m_drive_angle += (turn > 0 ? 1 : turn < 0 ? -1 : 0)
+        car.m_drive_angle += (turn > 0 ? 1: turn < 0 ? -1: 0)
         pos = pos + float3(0.5, 0.0, 0.5)
 
-        let c : float4
+        let c: float4
         if car.m_front {
             c = frontColor
         } else {
@@ -350,7 +350,7 @@ class Cars: Model {
         return true
     }
 
-    override func draw(commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer) {
+    override func draw(commandEncoder: MTLRenderCommandEncoder, sharedUniformsBuffer: MTLBuffer) {
         guard indices.count > 0 else { return }
         if vertexBuffer == nil {
             self.createBuffers()

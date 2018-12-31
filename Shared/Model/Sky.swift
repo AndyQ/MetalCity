@@ -9,7 +9,7 @@
 import MetalKit
 
 class Sky: Model {
-    var device : MTLDevice
+    var device: MTLDevice
 
     var vertices = [Vertex]()
     var indices = [UInt16]()
@@ -17,8 +17,8 @@ class Sky: Model {
     init(device: MTLDevice) {
         self.device = device
 
-        let vertexShader : String = "indexedVertexShader"
-        let fragmentShader : String = "indexedFragmentShader"
+        let vertexShader: String = "indexedVertexShader"
+        let fragmentShader: String = "indexedFragmentShader"
 
         super.init()
 
@@ -29,8 +29,8 @@ class Sky: Model {
 
     func buildDome() {
         let radius :Float = 800
-        let dtheta : Float = 15
-        let dphi : Float = 15
+        let dtheta: Float = 15
+        let dphi: Float = 15
 
         var n = 0
         var vlist = [Vertex]()
@@ -77,8 +77,8 @@ class Sky: Model {
         }
 
         // Generate texture coords
-        let hTile : Float = 1
-        let vTile : Float = 1
+        let hTile: Float = 1
+        let vTile: Float = 1
         for i in 0 ..< vlist.count {
             var vx = vlist[i].position.x
             var vy = vlist[i].position.y
@@ -143,7 +143,7 @@ class Sky: Model {
         }
 
         // Convert vertices into trianglestrip
-        var i : UInt16 = 0
+        var i: UInt16 = 0
         for var v in vlist {
             v.position.x += Float(WORLD_SIZE/2)
             v.position.z += Float(WORLD_SIZE/2)
@@ -192,7 +192,7 @@ class Sky: Model {
     func finishDrawing() {
     }
 
-    override func draw(commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer) {
+    override func draw(commandEncoder: MTLRenderCommandEncoder, sharedUniformsBuffer: MTLBuffer) {
         guard indices.count > 0 else { return }
         if vertexBuffer == nil {
             self.createBuffers()

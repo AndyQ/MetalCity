@@ -18,12 +18,12 @@ class GameViewController: UIViewController {
     @IBOutlet weak var menuVCView: UIView!
 #if !targetEnvironment(simulator)
     var mtkView: MTKView!
-    var device : MTLDevice!
+    var device: MTLDevice!
 #endif
     var renderer: Renderer!
 
 
-    weak var popUpView : UIView?
+    weak var popUpView: UIView?
 
     override var prefersHomeIndicatorAutoHidden: Bool { return true }
 
@@ -157,32 +157,32 @@ class GameViewController: UIViewController {
         }
     }
 
-    func rotateView(dx : Float) {
+    func rotateView(dx: Float) {
         renderer.camera.rotateViewRound(x: 0, y: dx * 0.01, z: 0)
     }
 
-    func rotateViewUpAndDown(dy : Float) {
+    func rotateViewUpAndDown(dy: Float) {
         let deltaY = -dy * 0.01
         var v = renderer.camera.getView()
         v.y += deltaY * 30
         renderer.camera.setView(view:v)
     }
 
-    func moveCamera(dy : Float) {
+    func moveCamera(dy: Float) {
         renderer.camera.moveCamera(speed: -dy * 0.01)
     }
 
-    func raiseCamera(dy : Float) {
+    func raiseCamera(dy: Float) {
         renderer.camera.raiseCamera(amount: dy*0.1)
     }
 
-    func strafeCamera(dx : Float) {
+    func strafeCamera(dx: Float) {
         renderer.camera.strafeCamera(speed: -dx * 0.005)
     }
 #endif
 }
 
-extension GameViewController : UIGestureRecognizerDelegate {
+extension GameViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         return !touch.view!.isDescendant(of: menuVCView)
     }

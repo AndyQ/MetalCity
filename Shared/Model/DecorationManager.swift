@@ -11,10 +11,10 @@ import MetalKit
 class DecorationManager {
     static let instance = DecorationManager()
 
-    var device : MTLDevice!
-    var towers : Towers!
-    var streetlights : Streetlights!
-    var lights : Lights!
+    var device: MTLDevice!
+    var towers: Towers!
+    var streetlights: Streetlights!
+    var lights: Lights!
 
     private init() {
 
@@ -48,7 +48,7 @@ class DecorationManager {
         lights.update()
     }
 
-    func draw(commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer) {
+    func draw(commandEncoder: MTLRenderCommandEncoder, sharedUniformsBuffer: MTLBuffer) {
         towers.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)
         streetlights.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)
         lights.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)

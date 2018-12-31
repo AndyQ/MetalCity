@@ -176,7 +176,7 @@ class Camera {
         var vCross = float3()
 
         // Get the view GLKVector3 of our camera and store it in a local variable
-        let vViewPoint : float3 = lookAt - position                            // GLKVector3 for the position/view.
+        let vViewPoint: float3 = lookAt - position                            // GLKVector3 for the position/view.
 
         // Here we calculate the cross product of our up GLKVector3 and view GLKVector3
 

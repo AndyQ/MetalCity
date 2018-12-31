@@ -8,7 +8,7 @@
 
 import Foundation
 
-let WORLD_SIZE : Int = 512
+let WORLD_SIZE: Int = 512
 let WORLD_HALF = WORLD_SIZE / 2
 let WORLD_EDGE = 100
 let GRID_RESOLUTION = 32
@@ -16,20 +16,20 @@ let GRID_CELL = GRID_RESOLUTION / 2
 let GRID_SIZE = WORLD_SIZE / GRID_RESOLUTION
 
 class WorldMap {
-    static let instance : WorldMap = WorldMap()
+    static let instance: WorldMap = WorldMap()
 
     var world = [[MapItem]]()
     var visGrid = [[Bool]]()
 
-    static func worldToGrid(_ x : Int, _ y : Int) -> (Int,Int) {
+    static func worldToGrid(_ x: Int, _ y: Int) -> (Int,Int) {
         return (worldToGrid(x), worldToGrid(y))
     }
 
-    static func worldToGrid(_ x : Int) -> Int {
+    static func worldToGrid(_ x: Int) -> Int {
         return (x/GRID_RESOLUTION).clamped(to: 0 ... GRID_SIZE-1)
     }
 
-    static func gridToWorld(_ x : Int, _ y : Int) -> (Int,Int) {
+    static func gridToWorld(_ x: Int, _ y: Int) -> (Int,Int) {
         return (gridToWorld(x), gridToWorld(y))
     }
 
@@ -47,25 +47,25 @@ class WorldMap {
         visGrid = Array(repeating: Array(repeating: false, count: GRID_SIZE), count: GRID_SIZE)
     }
 
-    func cellAt(_ x : Int, _ y : Int) -> MapItem {
+    func cellAt(_ x: Int, _ y: Int) -> MapItem {
 
         let cx = x.clamped(to: 0...WORLD_SIZE-1)
         let cy = y.clamped(to: 0...WORLD_SIZE-1)
         return self.world[cx][cy]
     }
 
-    func addValue(_ x : Int, _ y : Int, val : MapItem) {
+    func addValue(_ x: Int, _ y: Int, val: MapItem) {
         let cx = x.clamped(to: 0...WORLD_SIZE-1)
         let cy = y.clamped(to: 0...WORLD_SIZE-1)
         self.world[cx][cy].insert(val)
     }
 
-    func isVisible(pos : float3) -> Bool {
+    func isVisible(pos: float3) -> Bool {
         return isVisible(x:Int(pos.x), y:Int(pos.z))
 
     }
 
-    func isVisible(x : Int, y : Int) -> Bool {
+    func isVisible(x: Int, y: Int) -> Bool {
         let (x,y) = WorldMap.worldToGrid(x, y)
         return visGrid[x][y]
     }
@@ -127,8 +127,8 @@ class WorldMap {
                     continue
                 }
                 //if the camera is to the left of this cell, use the left edge
-                let target_x : Float
-                let target_z : Float
+                let target_x: Float
+                let target_z: Float
                 if grid_x < x {
                     target_x = Float(x * GRID_RESOLUTION)
                 } else {

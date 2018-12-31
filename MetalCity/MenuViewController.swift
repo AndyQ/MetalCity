@@ -17,10 +17,10 @@ enum MenuItem {
 
 class MenuViewController: UIViewController {
 
-    @IBOutlet weak var tableView : UITableView!
+    @IBOutlet weak var tableView: UITableView!
     var menuItems = ["Toggle autocam", "Next autocam mode", "Rebuild city", "Regenerate textures"]
 
-    var menuSelected : ((MenuItem)->())?
+    var menuSelected: ((MenuItem)->())?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,7 @@ class MenuViewController: UIViewController {
     }
 }
 
-extension MenuViewController : UITableViewDataSource {
+extension MenuViewController: UITableViewDataSource {
 
     // MARK: - Table view data source
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -46,7 +46,7 @@ extension MenuViewController : UITableViewDataSource {
     }
 }
 
-extension MenuViewController : UITableViewDelegate {
+extension MenuViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:

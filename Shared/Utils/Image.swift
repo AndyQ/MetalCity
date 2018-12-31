@@ -32,7 +32,7 @@ public typealias Image = UIImage
 
 
 extension Image {
-    class func createImageFromDrawing(size: CGSize, doDrawing : ((CGContext)->())) -> Image? {
+    class func createImageFromDrawing(size: CGSize, doDrawing: ((CGContext)->())) -> Image? {
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let context = CGContext(data: nil,
                                 width: Int(size.width),
@@ -68,7 +68,7 @@ extension Image {
     }
 
 
-    class func createImageFromDrawing2(size: CGSize, doDrawing : ((CGContext)->())) -> Image? {
+    class func createImageFromDrawing2(size: CGSize, doDrawing: ((CGContext)->())) -> Image? {
 #if os(OSX)
         let im = NSImage(size: size)
 

@@ -15,7 +15,7 @@ enum BuildingType {
     case simple
 }
 
-enum BuildingAddOns : CaseIterable
+enum BuildingAddOns: CaseIterable
 {
     case none
     case logo
@@ -28,34 +28,34 @@ enum BuildingAddOns : CaseIterable
 }
 
 
-class Building : Model {
+class Building: Model {
 
     static var logoIndex = 0
 
-    var device : MTLDevice
-    var logoRenderPipelineState : MTLRenderPipelineState?
+    var device: MTLDevice
+    var logoRenderPipelineState: MTLRenderPipelineState?
 
-    var x : Int
-    var y : Int
-    var width : Int
-    var height : Int
-    var depth : Int
+    var x: Int
+    var y: Int
+    var width: Int
+    var height: Int
+    var depth: Int
 
-    var gridX : Int
-    var gridY : Int
+    var gridX: Int
+    var gridY: Int
 
-    var textureType : TextureType
-    var type : BuildingType
-    var seed : Int
-    var roof_tiers : Int = 0
-    var color : float4
-    var trim_color : float4
+    var textureType: TextureType
+    var type: BuildingType
+    var seed: Int
+    var roof_tiers: Int = 0
+    var color: float4
+    var trim_color: float4
 
     var hasTower = false
     var hasTrim = false
     var hasLogo = false
 
-    var vertexCount : Int = 0
+    var vertexCount: Int = 0
 
     var logoVertices = [Vertex]()
 
@@ -85,14 +85,14 @@ class Building : Model {
 
         super.init()
 
-        let vertexShader : String = "buildingVertexShader"
-        let fragmentShader : String = "buildingFragmentShader"
-//        let vertexShader : String = "objectVertexShader"
-//        let fragmentShader : String = "objectFragmentShader"
+        let vertexShader: String = "buildingVertexShader"
+        let fragmentShader: String = "buildingFragmentShader"
+//        let vertexShader: String = "objectVertexShader"
+//        let fragmentShader: String = "objectFragmentShader"
         self.renderPipelineState = createLibraryAndRenderPipeline(device: device,
                                                                   vertexFunction: vertexShader,
                                                                   fragmentFunction: fragmentShader)
-        var arr : [Vertex]?
+        var arr: [Vertex]?
         switch type {
         case .simple:
             arr = createSimple()
@@ -253,7 +253,7 @@ class Building : Model {
             pos.x = center.x - sin(Float(angle) * DEGREES_TO_RADIANS) * radius.x
             pos.z = center.z + cos(Float(angle) * DEGREES_TO_RADIANS) * radius.y
 
-            var length : Float = 0
+            var length: Float = 0
             if (angle > 0 && skip_counter == 0)
             {
                 length = distance(p, pos)
@@ -290,8 +290,8 @@ class Building : Model {
         for i in stride(from:0, to:points, by:2) {
             var v1 = verticesArray[i]
             var v2 = verticesArray[i+1]
-            var v3 : Vertex
-            var v4 : Vertex
+            var v3: Vertex
+            var v4: Vertex
             if i < (points-2) {
                 v3 = verticesArray[i+2]
                 v4 = verticesArray[i+3]
@@ -391,9 +391,9 @@ class Building : Model {
         //rectangles that ALWAYS include the center of the building somewhere within
         //their area.
 
-        var  walls : [[Int]] = Array(repeating: Array(repeating: 0, count: 4), count: max_tiers)
+        var  walls: [[Int]] = Array(repeating: Array(repeating: 0, count: 4), count: max_tiers)
         var vertices = [Vertex]()
-        var tmpV : [Vertex]
+        var tmpV: [Vertex]
         while (true) {
             if h < min_height || tiers >= max_tiers {
                 break
@@ -488,7 +488,7 @@ class Building : Model {
     func createTower() -> [Vertex] {
 
         var vertices = [Vertex]()
-        var tmpV : [Vertex]
+        var tmpV: [Vertex]
 
         //How much ledges protrude from the building
         let ledge = Float(randomInt(3)) * 0.25
@@ -629,7 +629,7 @@ class Building : Model {
         var vertices = [Vertex]()
         for i in 0 ... length {
             //column counts up to the mid point, then back down, to make it symetrical
-            var column : Int
+            var column: Int
             if i <= mid {
                 column = i - odd
             } else {
@@ -649,7 +649,7 @@ class Building : Model {
                 // Sneaky, because original code used QUADStrips, and we are just simulating quads here
                 // we need to double up on the vertices for each point except the first and last pairs
                 // The first and last pair we only add once
-                let loop = (i == 0 || i == length) ? 1 : 2
+                let loop = (i == 0 || i == length) ? 1: 2
                 var v = Vertex()
                 for _ in 0 ..< loop {
                     v.position = float4(Float(x), Float(startY), Float(z), 1)
@@ -672,7 +672,7 @@ class Building : Model {
         return (textureS, vertices)
     }
 
-    func constructRoof(left:Float, right:Float, front:Float, back:Float, bottom:Float, roofTiers : Int) -> [Vertex] {
+    func constructRoof(left:Float, right:Float, front:Float, back:Float, bottom:Float, roofTiers: Int) -> [Vertex] {
 
         var vertices = [Vertex]()
         let roof_tiers = roofTiers + 1
@@ -700,13 +700,13 @@ class Building : Model {
 //            d = new CDeco(_state)
             let face:Direction
             if width > depth {
-                face = flipCoinIsHeads() ? .north : .south
+                face = flipCoinIsHeads() ? .north: .south
             } else {
-                face = flipCoinIsHeads() ? .east : .west
+                face = flipCoinIsHeads() ? .east: .west
             }
 
-            let start : float2
-            let end : float2
+            let start: float2
+            let end: float2
             switch face {
             case .north:
                 start = float2(left, back + logo_offset)
@@ -815,7 +815,7 @@ class Building : Model {
         let color = vector_float4(1,1,1,1)
         let normal = vector_float4(0, 1, 0, 1.0)
 
-        var v : [Vertex] = [
+        var v: [Vertex] = [
             Vertex(position:vector_float4(x1, y1, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(u,v1)),
             Vertex(position:vector_float4(x1, y2, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(u,v2)),
             Vertex(position:vector_float4(x2, y1, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(u1,v1)),
@@ -861,7 +861,7 @@ class Building : Model {
         return vlist
     }
 
-    func convertQuadsToTriangles(_ vlist : [Vertex], useMainColor:Bool = true) -> [Vertex] {
+    func convertQuadsToTriangles(_ vlist: [Vertex], useMainColor:Bool = true) -> [Vertex] {
         var vertices = [Vertex]()
 
         // generate triangles

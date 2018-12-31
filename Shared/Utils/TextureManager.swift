@@ -16,7 +16,7 @@ class TextureManager {
 
 
     var textures = [TextureType:MTLTexture]()
-    var textAtlas : TextTextureAtlas!
+    var textAtlas: TextTextureAtlas!
 
     private init() {
 
@@ -129,7 +129,7 @@ class TextureManager {
     }
 
     func createBuildingTextures(device:MTLDevice) {
-        let buildingTextures : [TextureType] = [.building1, .building2, .building3, .building4, .building5, .building6, .building7, .building8, .building9]
+        let buildingTextures: [TextureType] = [.building1, .building2, .building3, .building4, .building5, .building6, .building7, .building8, .building9]
 
         var i = 0
         let size = CGSize(width:256, height:256)
@@ -220,7 +220,7 @@ extension TextureManager {
 
 
 
-    func drawBuildingTexture(context ctx : CGContext, size:Int, textureType: TextureType) {
+    func drawBuildingTexture(context ctx: CGContext, size:Int, textureType: TextureType) {
         var run = 0
         var run_length = 0
         var lit_density = 0
@@ -244,7 +244,7 @@ extension TextureManager {
                 }
 
                 if lit {
-                    let luminance : Float = 0.5 + Float(randomInt() % 128) / 256.0
+                    let luminance: Float = 0.5 + Float(randomInt() % 128) / 256.0
                     color = float4(RANDOM_COLOR_SHIFT+luminance, RANDOM_COLOR_SHIFT+luminance, RANDOM_COLOR_SHIFT+luminance, 1.0)
                 } else {
                     let v = Float(randomInt() % 40) / 256.0
@@ -353,7 +353,7 @@ extension TextureManager {
         }
     }
 
-    func drawSkyTexture(context ctx:CGContext, size : CGSize) {
+    func drawSkyTexture(context ctx:CGContext, size: CGSize) {
 
         let width = size.width
         let half = width/2
@@ -391,7 +391,7 @@ extension TextureManager {
 
             for offset in stride(from:-width, to:width+1, by:width) {
                 for scale in stride(from:Float(1.0), to: 0.0, by: -0.25) {
-                    var startC : float4
+                    var startC: float4
                     let inv_scale = 1.0 - (scale)
                     if scale < 0.4 {
                         startC = appState.bloom_color * 0.1

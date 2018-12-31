@@ -14,10 +14,10 @@ class Model {
     let vertexDescriptor = MTLVertexDescriptor()
     var uniformsBuffer: MTLBuffer!
 
-    var vertexBuffer : MTLBuffer!
-    var indexBuffer : MTLBuffer!
+    var vertexBuffer: MTLBuffer!
+    var indexBuffer: MTLBuffer!
 
-    func createLibraryAndRenderPipeline(device : MTLDevice, vertexFunction : String, fragmentFunction : String) -> MTLRenderPipelineState {
+    func createLibraryAndRenderPipeline(device: MTLDevice, vertexFunction: String, fragmentFunction: String) -> MTLRenderPipelineState {
 
         let library = device.makeDefaultLibrary()
 
@@ -67,6 +67,6 @@ class Model {
         return rps
     }
 
-    func draw(commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer) {
+    func draw(commandEncoder: MTLRenderCommandEncoder, sharedUniformsBuffer: MTLBuffer) {
     }
 }

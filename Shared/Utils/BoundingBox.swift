@@ -9,10 +9,10 @@
 import Foundation
 
 class BoundingBox {
-    private let maxVal : Float = 999999999999999.9
+    private let maxVal: Float = 999999999999999.9
 
-    var minPoint : float3 = [0, 0, 0]
-    var maxPoint : float3 = [0, 0, 0]
+    var minPoint: float3 = [0, 0, 0]
+    var maxPoint: float3 = [0, 0, 0]
 
     init() {
         clear()
@@ -29,7 +29,7 @@ class BoundingBox {
     /*-----------------------------------------------------------------------------
      Expand Bbox (if needed) to contain given point
      -----------------------------------------------------------------------------*/
-    func include(point : float3) {
+    func include(point: float3) {
         minPoint.x = min(minPoint.x, point.x)
         minPoint.y = min(minPoint.y, point.y)
         minPoint.z = min(minPoint.z, point.z)

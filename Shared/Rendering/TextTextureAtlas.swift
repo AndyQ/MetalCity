@@ -10,7 +10,7 @@ import MetalKit
 import CoreGraphics
 
 class TextItem {
-    var text : String = ""
+    var text: String = ""
     var bl = float2(0, 0)
     var br = float2(1, 0)
     var tl = float2(0, 1)
@@ -30,8 +30,8 @@ class TextTextureAtlas {
     var textItems = [TextItem]()
     var device:MTLDevice
 
-    var texture : MTLTexture!
-    var nrItems : Int {
+    var texture: MTLTexture!
+    var nrItems: Int {
         get { return textItems.count }
     }
 
@@ -45,7 +45,7 @@ class TextTextureAtlas {
         let prefix_num = randomInt(logoPrefix.count)
         let suffix_num = randomInt(logoSuffix.count)
 
-        let string : String
+        let string: String
         if flipCoinIsHeads() {
             string = "\(logoPrefix[prefix_num])\(logoName[name_num])"
         } else {
@@ -76,7 +76,7 @@ class TextTextureAtlas {
             ctx.fill(CGRect(size:size))
 
             // Draw text
-            var i : CGFloat = 0
+            var i: CGFloat = 0
             print("Generating building names...")
             while i < size.height {
                 let string = generateName()

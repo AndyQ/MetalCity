@@ -11,9 +11,9 @@ import GameKit
 
 let TEXTURE_SIZE = 512
 let SEGMENTS_PER_TEXTURE = 64
-let ONE_SEGMENT : Float = 0.015625 //1.0 / Float(SEGMENTS_PER_TEXTURE)
-let DEGREES_TO_RADIANS : Float = 0.017453292
-let RADIANS_TO_DEGREES : Float = 57.29577951
+let ONE_SEGMENT: Float = 0.015625 //1.0 / Float(SEGMENTS_PER_TEXTURE)
+let DEGREES_TO_RADIANS: Float = 0.017453292
+let RADIANS_TO_DEGREES: Float = 57.29577951
 
 let RANDOM_COLOR_SHIFT = Float(randomInt(10)) / 50.0
 let RANDOM_COLOR_VAL = Float(randomInt(256)) / 256.0
@@ -23,7 +23,7 @@ func randomInt() -> Int{
     return i
 }
 
-func randomInt(_ range : Int) -> Int {
+func randomInt(_ range: Int) -> Int {
     //let i = vals.removeFirst()
 
     let i = GKRandomSource.sharedRandom().nextInt(upperBound: range)
@@ -55,7 +55,7 @@ func flipCoinIsHeads() -> Bool {
     return GKRandomSource.sharedRandom().nextBool()
 }
 
-var light_colors : [Color] = [
+var light_colors: [Color] = [
     Color(hue:0.04, saturation:0.9,  brightness:0.93, alpha:1),   //Amber / pink
     Color(hue:0.055, saturation:0.95, brightness:0.93, alpha:1),  //Slightly brighter amber
     Color(hue:0.08, saturation:0.7,  brightness:0.93, alpha:1),   //Very pale amber
@@ -73,7 +73,7 @@ var light_colors : [Color] = [
     Color(hue:0.65, saturation:0.0,  brightness:0.6, alpha:1)    //Dimmest white.
 ]
 
-func worldLightColor(_ index : Int) -> float4 {
+func worldLightColor(_ index: Int) -> float4 {
     let ci = index % light_colors.count
     return light_colors[ci].rgba()
 }
@@ -83,7 +83,7 @@ func drawLinearGradient(ctx:CGContext, rect:CGRect, imageSize:CGSize, startColor
 
     let colorSpace = CGColorSpaceCreateDeviceRGB()
 
-    let locations : [CGFloat] = [ 0.0, 1.0 ]
+    let locations: [CGFloat] = [ 0.0, 1.0 ]
     let colors = [startColor, endColor]
 
     guard let gradient = CGGradient(colorsSpace: colorSpace, colors: colors as CFArray, locations: locations) else { return }

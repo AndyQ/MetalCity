@@ -32,7 +32,7 @@ class Renderer: NSObject, MTKViewDelegate {
     // Metal stuff
     public let device: MTLDevice
 
-    let metalLayer : CAMetalLayer
+    let metalLayer: CAMetalLayer
 
     var commandQueue: MTLCommandQueue!
     var dynamicUniformBuffer: MTLBuffer!
@@ -44,14 +44,14 @@ class Renderer: NSObject, MTKViewDelegate {
 
     var projectionMatrix = float4x4()
 
-    var sharedBufferProvider : BufferProvider!
-    var sharedUniformBuffer : MTLBuffer!
+    var sharedBufferProvider: BufferProvider!
+    var sharedUniformBuffer: MTLBuffer!
 
-    var frameDuration : Float = 1.0 / 60.0
+    var frameDuration: Float = 1.0 / 60.0
 
-    var city : City
-    var camera : Camera
-    var autoCam : AutoCamera
+    var city: City
+    var camera: Camera
+    var autoCam: AutoCamera
     var fireworks :FireworkScene
 
     init?(metalKitView: MTKView) {
@@ -112,7 +112,7 @@ class Renderer: NSObject, MTKViewDelegate {
     func updateSharedUniforms()
     {
         let aspect = Float(metalLayer.drawableSize.aspectRatio)
-        let fov :Float = (aspect > 1) ? (Float.pi / 4) : (Float.pi / 3) //.pi_2/5
+        let fov :Float = (aspect > 1) ? (Float.pi / 4): (Float.pi / 3) //.pi_2/5
 
         projectionMatrix = float4x4(perspectiveWithAspect: aspect, fovy: fov, near: 0.1, far: 2000)
 
@@ -135,7 +135,7 @@ class Renderer: NSObject, MTKViewDelegate {
         fireworks.update()
     }
 
-    func createRenderPassWithColorAttachmentTexture(texture : MTLTexture) -> MTLRenderPassDescriptor {
+    func createRenderPassWithColorAttachmentTexture(texture: MTLTexture) -> MTLRenderPassDescriptor {
         let renderPass = MTLRenderPassDescriptor()
         renderPass.colorAttachments[0].texture = texture
         renderPass.colorAttachments[0].loadAction = .clear

@@ -9,14 +9,14 @@
 import MetalKit
 
 class Light {
-    var blinkInterval : Int = 0
-    var color : float4 = float4(1,0,0,1)
-    var size : Float = 0
-    var position : float3 = float3(0,0,0)
+    var blinkInterval: Int = 0
+    var color: float4 = float4(1,0,0,1)
+    var size: Float = 0
+    var position: float3 = .zero
 }
 
 class Lights: Model {
-    var device : MTLDevice
+    var device: MTLDevice
     var vertices = [Vertex]()
     var indices = [UInt16]()
 
@@ -27,8 +27,8 @@ class Lights: Model {
     init(device: MTLDevice) {
         self.device = device
 
-        let vertexShader : String = "lightsVertexShader"
-        let fragmentShader : String = "lightsFragmentShader"
+        let vertexShader: String = "lightsVertexShader"
+        let fragmentShader: String = "lightsFragmentShader"
 
         super.init()
 
@@ -47,13 +47,13 @@ class Lights: Model {
     func createLight(position:float3, color:float4, size:Float, blink:Bool) {
 
         let l = Light()
-        l.blinkInterval = blink ? 1000 + randomInt(500) : 0
+        l.blinkInterval = blink ? 1000 + randomInt(500): 0
         l.size = size
         l.position = position
         l.color = color
         lights.append(l)
 
-        let v : [Vertex] = [
+        let v: [Vertex] = [
             Vertex(position: float4(position.x, position.y, position.z, 1.0), normal: float4(0, 1, 0, 1.0), color: color, texCoords: float2(0, 0)),
             Vertex(position: float4(position.x, position.y, position.z, 1.0), normal: float4(0, 1, 0, 1.0), color: color, texCoords: float2(1, 0)),
             Vertex(position: float4(position.x, position.y, position.z, 1.0), normal: float4(0, 1, 0, 1.0), color: color, texCoords: float2(1, 1)),
@@ -109,10 +109,10 @@ class Lights: Model {
             return
         }
 */
-        let c : float4
+        let c: float4
         if light.blinkInterval != 0 && getTickCount() % UInt64(light.blinkInterval) > 300 {
             // Turn Off
-            c = float4(0,0,0,0)
+            c = .zero
         } else {
             c = light.color
         }
@@ -142,7 +142,7 @@ class Lights: Model {
     func finishDrawing() {
     }
 
-    override func draw(commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer) {
+    override func draw(commandEncoder: MTLRenderCommandEncoder, sharedUniformsBuffer: MTLBuffer) {
         guard indices.count > 0 else { return }
         if vertexBuffer == nil {
             self.createBuffers()

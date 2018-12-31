@@ -9,23 +9,21 @@
 
 import MetalKit
 
-class PlaneModel : Model {
-    var name : String = ""
+class PlaneModel: Model {
+    var name: String = ""
 
-    var bufferProvider : BufferProvider!
+    private var bufferProvider: BufferProvider
 
-    var device : MTLDevice
-    var texture : MTLTexture!
+    var device: MTLDevice
+    var texture: MTLTexture!
 
-    init(device: MTLDevice, vertexShader : String = "indexedVertexShader", fragmentShader : String = "indexedFragmentShader") {
+    init(device: MTLDevice, vertexShader: String = "indexedVertexShader", fragmentShader: String = "indexedFragmentShader") {
         self.device = device
+        bufferProvider = BufferProvider(device: device, inflightBuffersCount: 3, sizeOfUniformsBuffer: MemoryLayout<PerInstanceUniforms>.size * (1))
 
         super.init()
 
-        bufferProvider = BufferProvider(device: device, inflightBuffersCount: 3, sizeOfUniformsBuffer: MemoryLayout<PerInstanceUniforms>.size * (1))
-
-
-        self.renderPipelineState = createLibraryAndRenderPipeline(device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader)
+        self.renderPipelineState = createLibraryAndRenderPipeline(device: device, vertexFunction: vertexShader, fragmentFunction: fragmentShader)
         createAsset(device: device)
     }
 
@@ -41,14 +39,14 @@ class PlaneModel : Model {
         }
     }
 
-    func createAsset(device : MTLDevice) {
+    func createAsset(device: MTLDevice) {
         //Front
 
-        let x1 : Float = 0
-        let x2 : Float = Float(WORLD_SIZE)
-        let y1 : Float = -0.02
-        let z1 : Float = 0
-        let z2 : Float = Float(WORLD_SIZE)
+        let x1: Float = 0
+        let x2: Float = Float(WORLD_SIZE)
+        let y1: Float = -0.02
+        let z1: Float = 0
+        let z2: Float = Float(WORLD_SIZE)
         let normal = vector_float4(0.0, 1.0, 0.0, 1.0)
         let color = float4(1,1,1,1)
 
@@ -58,7 +56,7 @@ class PlaneModel : Model {
             Vertex(position:vector_float4(x1, y1, z2, 1.0), normal: normal, color: color, texCoords:vector_float2(0.0, 1.0)),
             Vertex(position:vector_float4(x2, y1, z2, 1.0), normal: normal, color: color, texCoords:vector_float2(1.0, 1.0)),
         ]
-        let indices : [UInt16] = [ 0, 1, 2, 3 ]
+        let indices: [UInt16] = [ 0, 1, 2, 3 ]
 
         vertexBuffer = device.makeBuffer(bytes:verticesArray, length: verticesArray.count * MemoryLayout<Vertex>.stride, options: [])!
         vertexBuffer.label = "vertices plane"
@@ -69,8 +67,7 @@ class PlaneModel : Model {
         indexBuffer.label = "indices plane"
     }
 
-    func update()
-    {
+    func update() {
         self.uniformsBuffer = bufferProvider.nextBuffer()
 
         let translation = float4x4(translate: [0,0,0])
@@ -96,7 +93,7 @@ class PlaneModel : Model {
         self.bufferProvider.availableResourcesSemaphore.signal()
     }
 
-    override func draw(commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer) {
+    override func draw(commandEncoder: MTLRenderCommandEncoder, sharedUniformsBuffer: MTLBuffer) {
         commandEncoder.setRenderPipelineState(self.renderPipelineState)
 
         commandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, index: 0)

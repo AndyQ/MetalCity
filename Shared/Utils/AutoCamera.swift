@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum CameraBehaviour : Int, CaseIterable {
+enum CameraBehaviour: Int, CaseIterable {
     case flycam1
     case orbitInward
     case orbitOutward
@@ -33,9 +33,9 @@ let CAMERA_CHANGE_INTERVAL :UInt64 = 15 * 1000
 let CAMERA_CYCLE_LENGTH = (10 * CAMERA_CHANGE_INTERVAL)
 
 class AutoCamera {
-    var camera : Camera
-    var isEnabled : Bool = false
-    var behaviour : CameraBehaviour = .flycam1
+    var camera: Camera
+    var isEnabled: Bool = false
+    var behaviour: CameraBehaviour = .flycam1
     var timeUntilNextChange :UInt64 = 0
     var randomBehaviour = true {
         didSet {
@@ -79,8 +79,8 @@ class AutoCamera {
 
 
     func position(for t: UInt64) -> float3 {
-        var start : float3 = float3(0,0,0)
-        var end : float3 = float3(0,0,0)
+        var start: float3 = .zero
+        var end: float3 = .zero
 
         let hot_zone = appState.hot_zone
         let timeInCircuit = t % UInt64(FLYCAM_CIRCUT)
@@ -142,7 +142,7 @@ class AutoCamera {
         appState.cameraState.tracker += Float(elapsed) / 300.0
 
         let worldHalf = Float(WORLD_HALF)
-        var target : float3
+        var target: float3
         switch behaviour {
         case .orbitInward:
             appState.cameraState.auto_position.x = worldHalf + sinf(appState.cameraState.tracker * DEGREES_TO_RADIANS) * 150.0
@@ -191,7 +191,7 @@ class AutoCamera {
     func mathScalarCurve(_ origVal:Float) -> Float {
 
         var val = (origVal - 0.5) * 2.0
-        let sign : Float = val < 0 ? -1 : 1
+        let sign: Float = val < 0 ? -1: 1
         if val < 0.0 {
             val = -val
         }

@@ -8,22 +8,22 @@
 
 import MetalKit
 
-class Streetlights : Model {
-    var type : Int = 0
-    var textureType : TextureType = .light
-    var gridX : Int = 0
-    var gridY : Int = 0
+class Streetlights: Model {
+    var type: Int = 0
+    var textureType: TextureType = .light
+    var gridX: Int = 0
+    var gridY: Int = 0
 
-    var bufferProvider : BufferProvider!
-    var device : MTLDevice
+    var bufferProvider: BufferProvider!
+    var device: MTLDevice
 
     var vertices = [Vertex]()
     var indices = [UInt16]()
     init(device: MTLDevice) {
         self.device = device
 
-        let vertexShader : String = "indexedVertexShader"
-        let fragmentShader : String = "indexedFragmentShader"
+        let vertexShader: String = "indexedVertexShader"
+        let fragmentShader: String = "indexedFragmentShader"
 
         super.init()
 
@@ -37,8 +37,8 @@ class Streetlights : Model {
 
         textureType = .light
 
-        var s : Float = 0
-        var t : Float = 0
+        var s: Float = 0
+        var t: Float = 0
         if width < depth {
             s = 1.0
             t = Float(Int(depth / width))
@@ -49,7 +49,7 @@ class Streetlights : Model {
             s = Float(Int(width / depth))
         }
 
-        let newVertices : [Vertex] = [
+        let newVertices: [Vertex] = [
             Vertex(position:float4(x, height, z, 1.0), normal:float4(0, 1, 0, 1.0), color:float4(1,1,1,1), texCoords:float2(0, 0)),
             Vertex(position:float4(x, height, z + depth, 1.0), normal:float4(0, 1, 0, 1.0), color:float4(1,1,1,1), texCoords:float2(0, t)),
             Vertex(position:float4(x + width, height, z + depth, 1.0), normal:float4(0, 1, 0, 1.0), color:float4(1,1,1,1), texCoords:float2(s, t)),
@@ -95,7 +95,7 @@ class Streetlights : Model {
     func finishDrawing() {
     }
 
-    override func draw(commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer) {
+    override func draw(commandEncoder: MTLRenderCommandEncoder, sharedUniformsBuffer: MTLBuffer) {
         guard indices.count > 0 else { return }
         if vertexBuffer == nil {
             self.createBuffers()

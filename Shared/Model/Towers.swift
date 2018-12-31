@@ -9,14 +9,14 @@
 import MetalKit
 
 class Towers: Model {
-    var device : MTLDevice
+    var device: MTLDevice
     var vertices = [Vertex]()
 
     init(device: MTLDevice) {
         self.device = device
 
-        let vertexShader : String = "radioTowerVertexShader"
-        let fragmentShader : String = "radioTowerFragmentShader"
+        let vertexShader: String = "radioTowerVertexShader"
+        let fragmentShader: String = "radioTowerFragmentShader"
 
         super.init()
 
@@ -31,7 +31,7 @@ class Towers: Model {
         let offset = height / 15.0
 
         //Radio tower
-        let v : [Vertex] = [
+        let v: [Vertex] = [
            Vertex(position: float4(center.x, center.y + height, center.z, 1.0), normal: float4(0, 1, 0, 1.0), color: color, texCoords: float2(0, 0)),
            Vertex(position: float4(center.x - offset, center.y, center.z - offset, 1.0), normal: float4(0, 1, 0, 1.0), color: color, texCoords: float2(1, 1)),
            Vertex(position: float4(center.x + offset, center.y, center.z - offset, 1.0), normal: float4(0, 1, 0, 1.0), color: color, texCoords: float2(0, 1)),
@@ -66,7 +66,7 @@ class Towers: Model {
     func finishDrawing() {
     }
 
-    override func draw(commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer) {
+    override func draw(commandEncoder: MTLRenderCommandEncoder, sharedUniformsBuffer: MTLBuffer) {
         if vertices.count == 0 {
             return
         }

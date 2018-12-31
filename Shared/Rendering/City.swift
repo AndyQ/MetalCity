@@ -9,10 +9,10 @@
 import MetalKit
 
 class Plot {
-    var x : Int = 0
-    var z : Int = 0
-    var width : Int = 0
-    var depth : Int = 0
+    var x: Int = 0
+    var z: Int = 0
+    var width: Int = 0
+    var depth: Int = 0
 
     init(x:Int, z:Int, width:Int, depth:Int) {
         self.x = x
@@ -24,14 +24,14 @@ class Plot {
 
 
 class City {
-    var sky : Sky
-    var floor : PlaneModel
+    var sky: Sky
+    var floor: PlaneModel
     var buildings = [Building]()
-    var cars : Cars
-    var texture : Int = 0
+    var cars: Cars
+    var texture: Int = 0
 
-    var vlist : [Int]
-    var nrVertices : Int = 0
+    var vlist: [Int]
+    var nrVertices: Int = 0
 
     var device: MTLDevice
 
@@ -86,7 +86,7 @@ class City {
         floor.finishDrawing()
     }
 
-    func draw(commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer) {
+    func draw(commandEncoder: MTLRenderCommandEncoder, sharedUniformsBuffer: MTLBuffer) {
         sky.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)
 
         floor.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)
@@ -113,7 +113,7 @@ class City {
 
         // Create our image
         let len = WORLD_SIZE*WORLD_SIZE*4
-        var bytes : [UInt8] = [UInt8](repeating:0, count:len)
+        var bytes: [UInt8] = [UInt8](repeating:0, count:len)
 
         // Take away the red pixel, assuming 32-bit RGBA
         for i in stride(from:0, to:len, by:4) {
@@ -172,10 +172,10 @@ class City {
         var broadway_done = false
         var road_left = false
         var road_right = false
-        var west_street : Float = 0
-        var north_street : Float = 0
-        var east_street : Float = 0
-        var south_street : Float = 0
+        var west_street: Float = 0
+        var north_street: Float = 0
+        var east_street: Float = 0
+        var south_street: Float = 0
 
         // Generate East/west roads
         print("   generating east/west roads")
@@ -239,7 +239,7 @@ class City {
                     //if the cells to our east and west are not road, then we're not on a corner.
                     //if the cell to our east AND west is road, then we're on a median. skip it
                     if road_left != road_right {
-                        y += self.buildLightStrip(atX: x, z: y, direction: road_right ? .south : .north, height:0)
+                        y += self.buildLightStrip(atX: x, z: y, direction: road_right ? .south: .north, height:0)
                     }
                 }
 
@@ -262,7 +262,7 @@ class City {
                     //if the cells to our east and west are not road, then we're not on a corner.
                     //if the cell to our east AND west is road, then we're on a median. skip it
                     if road_left != road_right {
-                       x += self.buildLightStrip(atX: x, z: y, direction: road_right ? .east : .west, height:0.01)
+                       x += self.buildLightStrip(atX: x, z: y, direction: road_right ? .east: .west, height:0.01)
                     }
                 }
 
@@ -319,7 +319,7 @@ class City {
                         let color = worldLightColor(randomInt())
 
                         //if we're out of the hot zone, use simple buildings
-                        var building : Building?
+                        var building: Building?
                         if x < Int(appState.hot_zone.minPoint.x) || x > Int(appState.hot_zone.maxPoint.x) || y < Int(appState.hot_zone.minPoint.z) || y > Int(appState.hot_zone.maxPoint.z) {
 
                             height = 5 + randomInt(height) + randomInt(height)
@@ -366,13 +366,13 @@ class City {
         buildings.sort { $0.textureType.rawValue <= $1.textureType.rawValue }
     }
 
-    func buildRoad(fromX1 x1: Int, y1:Int, width : Int, depth:Int) {
+    func buildRoad(fromX1 x1: Int, y1:Int, width: Int, depth:Int) {
         var lanes = 0
         var divider = 0
         var sidewalk = 0
 
         // the given rectangle defines a street and its sidewalk. See which way it goes.
-        lanes = width > depth ? depth : width
+        lanes = width > depth ? depth: width
 
         // if we dont have room for both lanes and sidewalk, abort
         if lanes < 4 {
@@ -423,10 +423,10 @@ class City {
     }
 
     func buildLightStrip(atX x1:Int, z z1:Int, direction:Direction, height: Float = 0) -> Int {
-        var  color : float4 = [0,0,0,1]
+        var  color: float4 = [0,0,0,1]
         var dir_x = 0
         var dir_z = 0
-        let size_adjust : Float = 2.5//.5
+        let size_adjust: Float = 2.5//.5
 
         //We adjust the size of the lights with this.
         color = Color(hue: 0.09, saturation: 0.99, brightness: 0.85, alpha: 1.0).rgba()
@@ -547,9 +547,9 @@ class City {
         //mark the land as used so other buildings don't appear here, even if we don't use it all.
         self.claimPatch(atX: p.x, y: p.z, width: p.width, depth: p.depth, value: .claimBuilding)
 
-        let seed : Int = randomInt()
-        let height : Int = 45 + randomInt(10)
-        var type : BuildingType = .modern
+        let seed: Int = randomInt()
+        let height: Int = 45 + randomInt(10)
+        var type: BuildingType = .modern
 
         //The roundy mod buildings look best on square plots.
         if square && p.width > 20 {
@@ -581,7 +581,7 @@ class City {
         self.skyscrapers += 1
     }
 
-    func findPlot(atX x : Int, andY z:Int) -> Plot {
+    func findPlot(atX x: Int, andY z:Int) -> Plot {
         var x1 = x
         var x2 = x
         var z1 = z
