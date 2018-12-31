@@ -69,12 +69,12 @@ class GameViewController: UIViewController {
 #endif
         
 #if !targetEnvironment(simulator)
-        let gr = UIPanGestureRecognizer(target: self, action: #selector(GameViewController.pan(_:)))
+        let gr = UIPanGestureRecognizer(target: self, action: #selector(pan))
         gr.delegate = self
         self.view.addGestureRecognizer(gr)
 #endif
         
-        let tapGr = UITapGestureRecognizer(target: self, action: #selector(GameViewController.tap(_:)))
+        let tapGr = UITapGestureRecognizer(target: self, action: #selector(tap))
         tapGr.delegate = self
         tapGr.numberOfTapsRequired = 1
         self.view.addGestureRecognizer(tapGr)

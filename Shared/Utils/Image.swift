@@ -83,7 +83,7 @@ extension Image {
                                         samplesPerPixel: 4,
                                         hasAlpha: true,
                                         isPlanar: false,
-                                        colorSpaceName: NSColorSpaceName.calibratedRGB,
+                                        colorSpaceName: .calibratedRGB,
                                         bytesPerRow: 0,
                                         bitsPerPixel: 0)
         

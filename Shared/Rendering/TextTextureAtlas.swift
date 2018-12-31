@@ -87,7 +87,7 @@ class TextTextureAtlas {
 
                 print( "   \(string) using \(fontName)" )
 
-                let attrs = [NSAttributedString.Key.font: Font(name:fontName, size: 24)!, NSAttributedString.Key.strokeColor: Color.white, NSAttributedString.Key.foregroundColor: Color.white]
+                let attrs = [.font: Font(name:fontName, size: 24)!, .strokeColor: Color.white, .foregroundColor: Color.white]
                 let textSize = string.size(withAttributes:attrs)
                 
                 if i + textSize.height > size.height {
