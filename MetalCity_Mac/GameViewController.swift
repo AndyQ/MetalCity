@@ -53,27 +53,19 @@ class GameViewController: NSViewController {
     var nrTouches = 0
 
     override func keyDown(with event: NSEvent) {
-        if let c = event.charactersIgnoringModifiers?.lowercased() {
-            print( "Hit char - \(c)" )
-            if c == "r" {
-                // Rebuild city
-                renderer.rebuildCity()
-            } else if c == "c" {
-                // Toggle Autocam
-                renderer.toggleAutoCam()
-            } else if c == " " {
-                // Change autocam mode (if running)
-                renderer.changeAutocamMode()
-            } else if c == "t" {
-                // Change autocam mode (if running)
-                renderer.regenerateTextures()
-            }
+        guard let c = event.charactersIgnoringModifiers?.lowercased() else { return }
+        print( "Hit char - \(c)" )
+        switch c {
+        case "r": renderer.rebuildCity()
+        case "c": renderer.toggleAutoCam()
+        case " ": renderer.changeAutocamMode()
+        case "t": renderer.regenerateTextures()
+        default: return
         }
     }
 
     override func mouseDown(with event: NSEvent) {
-        let p = event.locationInWindow
-        prevPoint = p
+        prevPoint = event.locationInWindow
     }
 
     override func mouseDragged(with event: NSEvent) {
