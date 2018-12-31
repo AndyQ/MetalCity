@@ -472,13 +472,14 @@ class City {
         let fz1 = Float(z1)
         let fwidth = Float(width)
         let fdepth = Float(depth)
-        if direction == .east {
+        switch direction {
+        case .east:
             DecorationManager.instance.addStreetLightStrip( atX:fx1, z:fz1 - size_adjust + 1, width:fwidth, depth:fdepth + size_adjust, height:height, color:color)
-        } else if direction == .west {
+        case .west:
             DecorationManager.instance.addStreetLightStrip( atX:fx1, z:fz1 - 1, width:fwidth, depth:fdepth + size_adjust, height:height, color:color)
-        } else if direction == .north {
+        case .north:
             DecorationManager.instance.addStreetLightStrip( atX:fx1-1, z:fz1, width:fwidth + size_adjust, depth:fdepth, height:height, color:color)
-        } else {
+        case .south:
             DecorationManager.instance.addStreetLightStrip( atX:fx1 - size_adjust+1, z:fz1, width:fwidth + size_adjust, depth:fdepth, height:height, color:color)
         }
 

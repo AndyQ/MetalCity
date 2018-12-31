@@ -21,11 +21,8 @@ extension Image {
     }
 
     public func pngData() -> Data? {
-        let cgRef = self.cgImage!
-        let newRep = NSBitmapImageRep(cgImage: cgRef)
-        let data = newRep.representation(using: .png, properties: [:])
-
-        return data
+        let newRep = NSBitmapImageRep(cgImage: self.cgImage!)
+        return newRep.representation(using: .png, properties: [:])
     }
 }
 #else
@@ -37,14 +34,13 @@ public typealias Image = UIImage
 extension Image {
     class func createImageFromDrawing( size: CGSize, doDrawing : ((CGContext)->()) ) -> Image? {
         let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let context = CGContext(
-            data: nil,
-            width: Int(size.width),
-            height: Int(size.height),
-            bitsPerComponent: 8,
-            bytesPerRow: 0,
-            space: colorSpace,
-            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
+        let context = CGContext(data: nil,
+                                width: Int(size.width),
+                                height: Int(size.height),
+                                bitsPerComponent: 8,
+                                bytesPerRow: 0,
+                                space: colorSpace,
+                                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
 
         context!.setFillColor(Color.black.cgColor)
         context!.fill(CGRect(size:size))
@@ -97,7 +93,7 @@ extension Image {
         guard let ctx = UIGraphicsGetCurrentContext() else { return nil }
 #endif
 
-        doDrawing( ctx )
+        doDrawing(ctx)
 
 #if os(OSX)
         im.unlockFocus()

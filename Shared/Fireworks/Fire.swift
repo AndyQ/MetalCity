@@ -125,7 +125,7 @@ class Firework : Drawable {
 
     func draw(time: Int64,
               bv: inout BufferWrapper,
-                  bc: inout BufferWrapper) {
+              bc: inout BufferWrapper) {
         let secs = self.secondsElapsed(time: time)
         if self.type == 0 {
             // classic particle only
@@ -159,7 +159,6 @@ class Firework : Drawable {
         draw_triangle_2d(b:&bv, p, width: size, height: -size)
         draw_triangle_color(b:&bc, color)
     }
-
 
     @inline(never)
     func render_flare_trail(flare: Flare, secs: Float,
@@ -201,9 +200,7 @@ class Firework : Drawable {
 
 private func draw_triangle_2d( b: inout BufferWrapper,
         _ pos: Vector3, width: Float, height: Float) {
-    guard b.has_available(len: 24) else {
-        return
-    }
+    guard b.has_available(len: 24) else { return }
 
     b.append_raw(v: pos.x - width)
     b.append_raw(v: pos.y)
