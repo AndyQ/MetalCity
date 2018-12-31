@@ -78,7 +78,7 @@ class AutoCamera {
     }
 
 
-    func getPositionForTime( _ t:UInt64 ) -> float3 {
+    func position(for t: UInt64) -> float3 {
         var start : float3 = float3(0,0,0)
         var end : float3 = float3(0,0,0)
 
@@ -86,23 +86,19 @@ class AutoCamera {
         let timeInCircuit = t % UInt64(FLYCAM_CIRCUT)
         let leg = timeInCircuit / UInt64(FLYCAM_LEG)
         var delta = Float(timeInCircuit % UInt64(FLYCAM_LEG)) / Float(FLYCAM_LEG)
-        switch (leg) {
+        switch leg {
         case 0:
             start = float3(hot_zone.minPoint.x, 25.0, hot_zone.minPoint.z)
             end = float3(hot_zone.minPoint.x, 60.0, hot_zone.maxPoint.z)
-            break
         case 1:
             start = float3(hot_zone.minPoint.x, 60.0, hot_zone.maxPoint.z)
             end = float3(hot_zone.maxPoint.x, 25.0, hot_zone.maxPoint.z)
-            break
         case 2:
             start = float3(hot_zone.maxPoint.x, 25.0, hot_zone.maxPoint.z)
             end = float3(hot_zone.maxPoint.x, 60.0, hot_zone.minPoint.z)
-            break
         case 3:
             start = float3(hot_zone.maxPoint.x, 60.0, hot_zone.minPoint.z)
             end = float3(hot_zone.minPoint.x, 25.0, hot_zone.minPoint.z)
-            break
         default:
             break
         }
@@ -147,37 +143,31 @@ class AutoCamera {
 
         let worldHalf = Float(WORLD_HALF)
         var target : float3
-        switch (behaviour)
-        {
+        switch behaviour {
         case .orbitInward:
             appState.cameraState.auto_position.x = worldHalf + sinf(appState.cameraState.tracker * DEGREES_TO_RADIANS) * 150.0
             appState.cameraState.auto_position.y = 60.0
             appState.cameraState.auto_position.z = worldHalf + cosf (appState.cameraState.tracker * DEGREES_TO_RADIANS) * 150.0
             target = float3(worldHalf, 40.0, worldHalf)
-            break
         case .orbitOutward:
             appState.cameraState.auto_position.x = worldHalf + sinf (appState.cameraState.tracker * DEGREES_TO_RADIANS) * 250.0
             appState.cameraState.auto_position.y = 60.0
             appState.cameraState.auto_position.z = worldHalf + cosf (appState.cameraState.tracker * DEGREES_TO_RADIANS) * 250.0
             target = float3 (worldHalf, 30.0, worldHalf)
-            break
         case .orbitElliptical:
             let dist = 150.0 + sinf (appState.cameraState.tracker * DEGREES_TO_RADIANS / 1.1) * 50
             appState.cameraState.auto_position.x = worldHalf + sinf (appState.cameraState.tracker * DEGREES_TO_RADIANS) * dist
             appState.cameraState.auto_position.y = 60.0
             appState.cameraState.auto_position.z = worldHalf + cosf (appState.cameraState.tracker * DEGREES_TO_RADIANS) * dist
             target = float3 (worldHalf, 50.0, worldHalf)
-            break
         case .flycam1, .flycam2, .flycam3:
-            appState.cameraState.auto_position = (getPositionForTime(now) + getPositionForTime(now + 4000)) / 2.0
-            target = getPositionForTime(now + UInt64(FLYCAM_CIRCUT_HALF - ONE_SECOND) * 3)
-            break
+            appState.cameraState.auto_position = (position(for: now) + position(for: now + 4000)) / 2.0
+            target = position(for: now + UInt64(FLYCAM_CIRCUT_HALF - ONE_SECOND) * 3)
         case .speed:
-            appState.cameraState.auto_position = (getPositionForTime(now) + getPositionForTime(now + 500)) / 2.0
-            target = getPositionForTime(now + UInt64(ONE_SECOND) * 5)
+            appState.cameraState.auto_position = (position(for: now) + position(for: now + 500)) / 2.0
+            target = position(for: now + UInt64(ONE_SECOND) * 5)
             appState.cameraState.auto_position.y /= 2
             target.y /= 2
-            break
         default:
             target = float3(worldHalf + sinf (appState.cameraState.tracker * DEGREES_TO_RADIANS) * 300.0,
                 30.0,

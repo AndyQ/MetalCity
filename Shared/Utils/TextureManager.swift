@@ -262,44 +262,33 @@ extension TextureManager {
         let margin = size / 3
         let half = size / 2
 
-        switch (textureId)
-        {
+        switch textureId {
         case .building1: //filled, 1-pixel frame
             drawRect( context:ctx, left:x+1, top:y+1, right:x+size-1, bottom:y+size-1, color:color)
-            break
         case .building2: //vertical
             drawRect( context:ctx, left:x+margin, top:y+1, right:x+size-margin, bottom:y+size-1, color:color)
-            break
         case .building3: //side-by-side pair
             drawRect( context:ctx, left:x+1, top:y+1, right:x+half-1, bottom:y+size-margin, color:color)
             drawRect( context:ctx, left:x+half+1, top:y+1, right:x+size-1, bottom:y+size-margin, color:color)
-            break
         case .building4: //windows with blinds
             drawRect( context:ctx, left:x+1, top:y+1, right:x+size-1, bottom:y+size-1, color:color)
             let i = randomInt( size - 2)
 
             drawRect( context:ctx, left:x+1, top:y+1, right:x+size-1, bottom:y+i+1, color:color * 0.3)
-
-            break
         case .building5: //vert stripes
             drawRect( context:ctx, left:x+1, top:y+1, right:x+size-1, bottom:y+size-1, color:color)
             drawRect( context:ctx, left:x+margin, top:y+1, right:x+margin, bottom:y+size-1, color:color*0.7)
             drawRect( context:ctx, left:x+size-margin-1, top:y+1, right:x+size-margin-1, bottom:y+size-1, color:color*0.3)
-            break
         case .building6: //wide horz line
             drawRect( context:ctx, left:x+1, top:y+1, right:x+size-1, bottom:y+size-1, color:color)
-            break
         case .building7: //4-pane
             drawRect( context:ctx, left:x+2, top:y+1, right:x+size-1, bottom:y+size-margin, color:color)
             drawRect( context:ctx, left:x+2, top:y+half, right:x+size-1, bottom:y+half, color:color*0.2)
             drawRect( context:ctx, left:x+half, top:y+1, right:x+half, bottom:y+size-1, color:color*0.2)
-            break
         case .building8: // Single narrow window
             drawRect( context:ctx, left:x+half-1, top:y+1, right:x+half+1, bottom:y+size-margin, color:color)
-            break
         case .building9: //horizontal
             drawRect( context:ctx, left:x+1, top:y+margin, right:x+size-1, bottom:y+size-margin-1, color:color)
-            break
         default:
             return
         }
@@ -458,3 +447,4 @@ extension TextureManager {
     }
 
 }
+

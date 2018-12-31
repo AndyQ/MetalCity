@@ -96,16 +96,12 @@ class Building : Model {
         switch type {
         case .simple:
             arr = createSimple()
-            break
         case .modern:
             arr = createModern()
-            break
         case .blocky:
             arr = createBlocky()
-            break
         case .tower:
             arr = createTower()
-            break
         }
 
         if var arr = arr {
@@ -153,13 +149,13 @@ class Building : Model {
         guard let logoRenderPipelineState = logoRenderPipelineState else { return }
         if hasLogo {
             commandEncoder.setRenderPipelineState(logoRenderPipelineState)
-            commandEncoder.setCullMode(MTLCullMode.back)
+            commandEncoder.setCullMode(.back)
 
             if let texture = TextureManager.instance.textures[.logos] {
                 commandEncoder.setFragmentTexture(texture, index: 0)
             }
             commandEncoder.drawPrimitives(type: .triangle, vertexStart: verticesToDraw, vertexCount: 6 )
-            commandEncoder.setCullMode(MTLCullMode.none)
+            commandEncoder.setCullMode(.none)
         }
     }
 
@@ -603,8 +599,7 @@ class Building : Model {
         var step_x = 0
         var step_z = 0
 
-        switch (dir)
-        {
+        switch dir {
         case .north:
             step_z = 1
             step_x = 0
@@ -711,24 +706,19 @@ class Building : Model {
 
             let start : float2
             let end : float2
-            switch (face)
-            {
+            switch face {
             case .north:
                 start = float2(left, back + logo_offset)
                 end = float2(right, back + logo_offset)
-                break
             case .south:
                 start = float2(right, front - logo_offset)
                 end = float2(left, front - logo_offset)
-                break
             case .east:
                 start = float2(right + logo_offset, back)
                 end = float2(right + logo_offset, front)
-                break
             case .west:
                 start = float2(left - logo_offset, front)
                 end = float2(left - logo_offset, back)
-                break
             }
 
             createLogo( start:start, end:end, bottom:bottom, seed:Building.logoIndex, color:trim_color)
