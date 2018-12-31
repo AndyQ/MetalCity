@@ -126,10 +126,11 @@ class GameViewController: UIViewController {
 #if !targetEnvironment(simulator)
     @objc func pan( _ gr: UIPanGestureRecognizer ) {
         let p = gr.location(in: self.view)
-        if gr.state == .began {
+        switch gr.state {
+        case .began:
             prevPoint = p
             nrTouches = gr.numberOfTouches
-        } else if gr.state == .changed {
+        case .changed:
             if gr.numberOfTouches != nrTouches {
                 prevPoint = p
                 nrTouches = gr.numberOfTouches
@@ -183,9 +184,6 @@ class GameViewController: UIViewController {
 
 extension GameViewController : UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: menuVCView) {
-            return false
-        }
-        return true
+        return !touch.view!.isDescendant(of: menuVCView)
     }
 }

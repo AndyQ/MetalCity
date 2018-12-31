@@ -187,9 +187,8 @@ class AutoCamera {
             appState.cameraState.auto_position.z = worldHalf + cosf (appState.cameraState.tracker * DEGREES_TO_RADIANS) * 50.0
         }
 
-
-        camera.setPosition(pos:appState.cameraState.auto_position)
-        camera.setView(view:target)
+        camera.position = appState.cameraState.auto_position
+        camera.lookAt = target
     }
 
 

@@ -91,9 +91,9 @@ class GameViewController: NSViewController {
             renderer.camera.moveCamera(speed: -dy * 0.05)
         } else if cmdPressed {
             let deltaY = -dy / 100.0
-            var v = renderer.camera.getView()
+            var v = renderer.camera.lookAt
             v.y += deltaY * 30
-            renderer.camera.setView(view:v)
+            renderer.camera.lookAt = v
 
         } else if optionPressed {
             renderer.camera.raiseCamera(amount: dy*0.5)
