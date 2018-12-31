@@ -33,7 +33,7 @@ func randomInt( _ range : Int) -> Int {
 
 func randomColor() -> float4 {
     let h = CGFloat(randomInt(255))/255.0
-    let c = Color( hue:h, saturation:1.0, brightness:0.75, alpha:1).rgba()
+    let c = Color(hue:h, saturation:1.0, brightness:0.75, alpha:1).rgba()
 
     return c
 }

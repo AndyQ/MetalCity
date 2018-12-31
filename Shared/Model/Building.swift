@@ -76,8 +76,8 @@ class Building : Model {
 
         self.trim_color = worldLightColor(seed)
 
-        self.gridX = WorldMap.worldToGrid( x + width/2 )
-        self.gridY = WorldMap.worldToGrid( y + depth / 2)
+        self.gridX = WorldMap.worldToGrid(x + width/2)
+        self.gridY = WorldMap.worldToGrid(y + depth / 2)
 
 
         // Generate a random texture
@@ -89,9 +89,9 @@ class Building : Model {
         let fragmentShader : String = "buildingFragmentShader"
 //        let vertexShader : String = "objectVertexShader"
 //        let fragmentShader : String = "objectFragmentShader"
-        self.renderPipelineState = createLibraryAndRenderPipeline( device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader  )
-
-
+        self.renderPipelineState = createLibraryAndRenderPipeline(device: device,
+                                                                  vertexFunction: vertexShader,
+                                                                  fragmentFunction: fragmentShader)
         var arr : [Vertex]?
         switch type {
         case .simple:
@@ -114,8 +114,7 @@ class Building : Model {
         }
     }
 
-    func update( )
-    {
+    func update() {
     }
 
     func prepareToDraw() {
@@ -124,7 +123,7 @@ class Building : Model {
     func finishDrawing() {
     }
 
-    override func draw( commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer ) {
+    override func draw(commandEncoder: MTLRenderCommandEncoder, sharedUniformsBuffer: MTLBuffer) {
         if vertexCount == 0 {
             return
         }
@@ -181,40 +180,43 @@ class Building : Model {
 
         var verticesArray = [Vertex]()
         let color = vector_float4(1,1,1,1)
+        let normal = vector_float4( 0, 1, 0, 1.0)
+        let uv1 = vector_float2(u,v1)
+        let uv2 = vector_float2(u,v2)
 
-        verticesArray.append( Vertex(position:vector_float4(x1,  y1,  z1, 1.0), normal:vector_float4(0.0, 1.0, 0.0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u, v1)) )
-        verticesArray.append( Vertex(position:vector_float4(x1,  y2,  z1, 1.0), normal:vector_float4(0.0, 1.0, 0.0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u, v2)) )
-
-        u += Float(depth) / Float(SEGMENTS_PER_TEXTURE)
-        verticesArray.append( Vertex(position:vector_float4(x1, y1, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color: color, texCoords:vector_float2(u,v1)) )
-        verticesArray.append( Vertex(position:vector_float4(x1, y2, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color: color, texCoords:vector_float2(u,v2)) )
-
-        verticesArray.append( Vertex(position:vector_float4(x1, y1, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color: color, texCoords:vector_float2(u,v1)) )
-        verticesArray.append( Vertex(position:vector_float4(x1, y2, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color: color, texCoords:vector_float2(u,v2)) )
+        verticesArray.append(Vertex(position:vector_float4(x1, y1, z1, 1.0), normal: normal, color: color, texCoords: uv1))
+        verticesArray.append(Vertex(position:vector_float4(x1, y2, z1, 1.0), normal: normal, color: color, texCoords: uv2))
 
         u += Float(depth) / Float(SEGMENTS_PER_TEXTURE)
-        verticesArray.append( Vertex(position:vector_float4(x2, y1, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color: color, texCoords:vector_float2(u,v1)) )
-        verticesArray.append( Vertex(position:vector_float4(x2, y2, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color: color, texCoords:vector_float2(u,v2)) )
+        verticesArray.append(Vertex(position:vector_float4(x1, y1, z2, 1.0), normal: normal, color: color, texCoords: uv1))
+        verticesArray.append(Vertex(position:vector_float4(x1, y2, z2, 1.0), normal: normal, color: color, texCoords: uv2))
 
-        verticesArray.append( Vertex(position:vector_float4(x2, y1, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color: color, texCoords:vector_float2(u,v1)) )
-        verticesArray.append( Vertex(position:vector_float4(x2, y2, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color: color, texCoords:vector_float2(u,v2)) )
-
-        u += Float(depth) / Float(SEGMENTS_PER_TEXTURE)
-        verticesArray.append( Vertex(position:vector_float4(x2, y1, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color: color, texCoords:vector_float2(u,v1)) )
-        verticesArray.append( Vertex(position:vector_float4(x2, y2, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color: color, texCoords:vector_float2(u,v2)) )
-
-        verticesArray.append( Vertex(position:vector_float4(x2, y1, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color: color, texCoords:vector_float2(u,v1)) )
-        verticesArray.append( Vertex(position:vector_float4(x2, y2, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color: color, texCoords:vector_float2(u,v2)) )
+        verticesArray.append(Vertex(position:vector_float4(x1, y1, z2, 1.0), normal: normal, color: color, texCoords: uv1))
+        verticesArray.append(Vertex(position:vector_float4(x1, y2, z2, 1.0), normal: normal, color: color, texCoords: uv2))
 
         u += Float(depth) / Float(SEGMENTS_PER_TEXTURE)
-        verticesArray.append( Vertex(position:vector_float4(x1, y1, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color: color, texCoords:vector_float2(u,v1)) )
-        verticesArray.append( Vertex(position:vector_float4(x1, y2, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color: color, texCoords:vector_float2(u, v2)) )
+        verticesArray.append(Vertex(position:vector_float4(x2, y1, z2, 1.0), normal: normal, color: color, texCoords: uv1))
+        verticesArray.append(Vertex(position:vector_float4(x2, y2, z2, 1.0), normal: normal, color: color, texCoords: uv2))
+
+        verticesArray.append(Vertex(position:vector_float4(x2, y1, z2, 1.0), normal: normal, color: color, texCoords: uv1))
+        verticesArray.append(Vertex(position:vector_float4(x2, y2, z2, 1.0), normal: normal, color: color, texCoords: uv2))
+
+        u += Float(depth) / Float(SEGMENTS_PER_TEXTURE)
+        verticesArray.append(Vertex(position:vector_float4(x2, y1, z1, 1.0), normal: normal, color: color, texCoords: uv1))
+        verticesArray.append(Vertex(position:vector_float4(x2, y2, z1, 1.0), normal: normal, color: color, texCoords: uv2))
+
+        verticesArray.append(Vertex(position:vector_float4(x2, y1, z1, 1.0), normal: normal, color: color, texCoords: uv1))
+        verticesArray.append(Vertex(position:vector_float4(x2, y2, z1, 1.0), normal: normal, color: color, texCoords: uv2))
+
+        u += Float(depth) / Float(SEGMENTS_PER_TEXTURE)
+        verticesArray.append(Vertex(position:vector_float4(x1, y1, z1, 1.0), normal: normal, color: color, texCoords: uv1))
+        verticesArray.append(Vertex(position:vector_float4(x1, y2, z1, 1.0), normal: normal, color: color, texCoords: uv2))
 
         let cubeVertices = self.constructCube(left: x1 - ledge, right: x2 + ledge, front: z2 - ledge, back: z1 + ledge, bottom: Float(height), top: Float(height) + cap_height, textured: false)
 
         verticesArray.append(contentsOf: cubeVertices)
 
-        let arr = self.convertQuadsToTriangles( verticesArray )
+        let arr = self.convertQuadsToTriangles(verticesArray)
         return arr
     }
 
@@ -229,7 +231,7 @@ class Building : Model {
         //Get the center and radius of the circle
         let half_depth = depth / 2
         let half_width = width / 2
-        var center = float3(Float(x + half_width), 0.0, Float(y + half_depth) )
+        var center = float3(Float(x + half_width), 0.0, Float(y + half_depth))
         var radius = float2(Float(half_width), Float(half_depth))
         var windows = 0
 
@@ -285,18 +287,16 @@ class Building : Model {
         }
 
         var vlist = [Vertex]()
-        for i in stride( from:0, to:points, by:2 ) {
+        for i in stride(from:0, to:points, by:2) {
             var v1 = verticesArray[i]
             var v2 = verticesArray[i+1]
             var v3 : Vertex
             var v4 : Vertex
-            if ( i < (points-2) )
-            {
+            if i < (points-2) {
                 v3 = verticesArray[i+2]
                 v4 = verticesArray[i+3]
             }
-            else
-            {
+            else {
                 v3 = verticesArray[i-(points-2)]
                 v4 = verticesArray[i-(points-2)+1]
             }
@@ -442,22 +442,22 @@ class Building : Model {
                 max_back = max(back, max_back)
 
                 //Now build the four walls of this part
-                (uv_start, tmpV) = constructWall( atX:mid_x - left, y:2, z:mid_z + back, dir:.south, length:front + back,
+                (uv_start, tmpV) = constructWall(atX:mid_x - left, y:2, z:mid_z + back, dir:.south, length:front + back,
                     height:h-2, windowGroups:grouping, uvStart:uv_start, blankCorners:blank_corners)
                 uv_start -= ONE_SEGMENT
                 vertices.append(contentsOf: tmpV)
 
-                (uv_start, tmpV) = constructWall( atX:mid_x - left, y:2, z:mid_z - front, dir:.east, length:right + left,
+                (uv_start, tmpV) = constructWall(atX:mid_x - left, y:2, z:mid_z - front, dir:.east, length:right + left,
                     height:h-2, windowGroups:grouping, uvStart:uv_start, blankCorners:blank_corners)
                 uv_start -= ONE_SEGMENT
                 vertices.append(contentsOf: tmpV)
 
-                (uv_start, tmpV) = constructWall( atX:mid_x + right, y:2, z:mid_z - front, dir:.north, length:front + back,
+                (uv_start, tmpV) = constructWall(atX:mid_x + right, y:2, z:mid_z - front, dir:.north, length:front + back,
                     height:h-2, windowGroups:grouping, uvStart:uv_start, blankCorners:blank_corners)
                 uv_start -= ONE_SEGMENT
                 vertices.append(contentsOf: tmpV)
 
-                (uv_start, tmpV) = constructWall( atX:mid_x + right, y:2, z:mid_z + back, dir:.west, length:right + left,
+                (uv_start, tmpV) = constructWall(atX:mid_x + right, y:2, z:mid_z + back, dir:.west, length:right + left,
                     height:h-2, windowGroups:grouping, uvStart:uv_start, blankCorners:blank_corners)
                 uv_start -= ONE_SEGMENT
                 vertices.append(contentsOf: tmpV)
@@ -540,22 +540,22 @@ class Building : Model {
             //Build the four walls
             var uv_start = Float(randomInt(SEGMENTS_PER_TEXTURE)) / Float(SEGMENTS_PER_TEXTURE)
 
-            (uv_start, tmpV) = constructWall( atX:left, y:bottom, z:back, dir:.south, length:section_depth,
+            (uv_start, tmpV) = constructWall(atX:left, y:bottom, z:back, dir:.south, length:section_depth,
                                               height:section_height, windowGroups:grouping, uvStart:uv_start, blankCorners:blank_corners)
             uv_start -= ONE_SEGMENT
             vertices.append(contentsOf: tmpV)
 
-            (uv_start, tmpV) = constructWall( atX:left, y:bottom, z:front, dir:.east, length:section_width,
+            (uv_start, tmpV) = constructWall(atX:left, y:bottom, z:front, dir:.east, length:section_width,
                                               height:section_height, windowGroups:grouping, uvStart:uv_start, blankCorners:blank_corners)
             uv_start -= ONE_SEGMENT
             vertices.append(contentsOf: tmpV)
 
-            (uv_start, tmpV) = constructWall( atX:right, y:bottom, z:front, dir:.north, length:section_depth,
+            (uv_start, tmpV) = constructWall(atX:right, y:bottom, z:front, dir:.north, length:section_depth,
                                               height:section_height, windowGroups:grouping, uvStart:uv_start, blankCorners:blank_corners)
             uv_start -= ONE_SEGMENT
             vertices.append(contentsOf: tmpV)
 
-            (uv_start, tmpV) = constructWall( atX:right, y:bottom, z:back, dir:.west, length:section_width,
+            (uv_start, tmpV) = constructWall(atX:right, y:bottom, z:back, dir:.west, length:section_width,
                                               height:section_height, windowGroups:grouping, uvStart:uv_start, blankCorners:blank_corners)
             uv_start -= ONE_SEGMENT
             vertices.append(contentsOf: tmpV)
@@ -592,7 +592,7 @@ class Building : Model {
         return arr
     }
 
-    func constructWall( atX startX:Int, y startY:Int, z startZ:Int, dir:Direction, length:Int, height:Int, windowGroups:Int, uvStart: Float, blankCorners:Bool) -> (Float, [Vertex]) {
+    func constructWall(atX startX:Int, y startY:Int, z startZ:Int, dir:Direction, length:Int, height:Int, windowGroups:Int, uvStart: Float, blankCorners:Bool) -> (Float, [Vertex]) {
 
 
         var x = 0
@@ -812,17 +812,20 @@ class Building : Model {
         let v1 = bottom / mapping
         let v2 = top / mapping
 
+        let color = vector_float4(1,1,1,1)
+        let normal = vector_float4( 0, 1, 0, 1.0)
+
         var v : [Vertex] = [
-            Vertex(position:vector_float4(x1, y1, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v1)),
-            Vertex(position:vector_float4(x1, y2, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u,v2)),
-            Vertex(position:vector_float4(x2, y1, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u1,v1)),
-            Vertex(position:vector_float4(x2, y2, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u1,v2)),
-            Vertex(position:vector_float4(x2, y1, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u2,v1)),
-            Vertex(position:vector_float4(x2, y2, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u2,v2)),
-            Vertex(position:vector_float4(x1, y1, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u3,v1)),
-            Vertex(position:vector_float4(x1, y2, z2, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u3,v2)),
-            Vertex(position:vector_float4(x1, y1, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u4,v1)),
-            Vertex(position:vector_float4(x1, y2, z1, 1.0), normal:vector_float4( 0, 1, 0, 1.0), color:vector_float4(1,1,1,1), texCoords:vector_float2(u4,v2))]
+            Vertex(position:vector_float4(x1, y1, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(u,v1)),
+            Vertex(position:vector_float4(x1, y2, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(u,v2)),
+            Vertex(position:vector_float4(x2, y1, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(u1,v1)),
+            Vertex(position:vector_float4(x2, y2, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(u1,v2)),
+            Vertex(position:vector_float4(x2, y1, z2, 1.0), normal: normal, color: color, texCoords:vector_float2(u2,v1)),
+            Vertex(position:vector_float4(x2, y2, z2, 1.0), normal: normal, color: color, texCoords:vector_float2(u2,v2)),
+            Vertex(position:vector_float4(x1, y1, z2, 1.0), normal: normal, color: color, texCoords:vector_float2(u3,v1)),
+            Vertex(position:vector_float4(x1, y2, z2, 1.0), normal: normal, color: color, texCoords:vector_float2(u3,v2)),
+            Vertex(position:vector_float4(x1, y1, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(u4,v1)),
+            Vertex(position:vector_float4(x1, y2, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(u4,v2))]
 
         for i in 0 ..< 10 {
             if textured {
@@ -924,11 +927,13 @@ class Building : Model {
         let v1 = textItem.bl.y
         let u2 = textItem.tr.x
         let v2 = textItem.tr.y
+        let color = vector_float4(1,1,1,1)
+        let normal = float4(0,1,0,1)
 
-        let ver1 = Vertex(position: float4(start.x, bottom, start.y, 1) + out, normal: float4(0,1,0,1), color: color, texCoords: float2(u1,v2))
-        let ver2 = Vertex(position: float4(end.x, bottom, end.y, 1) + out, normal: float4(0,1,0,1), color: color, texCoords: float2(u2,v2))
-        let ver3 = Vertex(position: float4(start.x, top, start.y, 1) + out, normal: float4(0,1,0,1), color: color, texCoords: float2(u1,v1))
-        let ver4 = Vertex(position: float4(end.x, top, end.y, 1) + out, normal: float4(0,1,0,1), color: color, texCoords: float2(u2,v1))
+        let ver1 = Vertex(position: float4(start.x, bottom, start.y, 1) + out, normal: normal, color: color, texCoords: float2(u1,v2))
+        let ver2 = Vertex(position: float4(end.x, bottom, end.y, 1) + out, normal: normal, color: color, texCoords: float2(u2,v2))
+        let ver3 = Vertex(position: float4(start.x, top, start.y, 1) + out, normal: normal, color: color, texCoords: float2(u1,v1))
+        let ver4 = Vertex(position: float4(end.x, top, end.y, 1) + out, normal: normal, color: color, texCoords: float2(u2,v1))
 
         //print( "Creating logo" )
         logoVertices.append(contentsOf: convertQuadsToTriangles([ver1, ver2, ver3, ver4], useMainColor:false))
