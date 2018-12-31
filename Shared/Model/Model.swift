@@ -6,7 +6,7 @@
 //  Copyright © 2018 Andy Qua. All rights reserved.
 //
 
-import Metal
+import MetalKit
 
 class Model {
     var renderPipelineState: MTLRenderPipelineState!

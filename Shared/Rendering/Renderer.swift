@@ -9,7 +9,6 @@
 // Our platform independent renderer class
 
 import GameplayKit
-import Metal
 import MetalKit
 import simd
 
@@ -112,7 +111,7 @@ class Renderer: NSObject, MTKViewDelegate {
     
     func updateSharedUniforms( )
     {
-        let aspect = Float(metalLayer.drawableSize.width / metalLayer.drawableSize.height)
+        let aspect = Float(metalLayer.drawableSize.aspectRatio)
         let fov :Float = (aspect > 1) ? (Float.pi / 4) : (Float.pi / 3) //.pi_2/5
 
         projectionMatrix = float4x4(perspectiveWithAspect: aspect, fovy: fov, near: 0.1, far: 2000)

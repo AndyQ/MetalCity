@@ -115,6 +115,10 @@ extension CGSize {
     var float2: simd.float2 {
         return simd.float2(Float(self.width), Float(self.height))
     }
+
+    var aspectRatio: CGFloat {
+        return width / height
+    }
 }
 
 extension float3 {

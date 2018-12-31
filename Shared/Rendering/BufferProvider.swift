@@ -6,12 +6,12 @@
 //  Copyright © 2018 Andy Qua. All rights reserved.
 //
 
-import Metal
+import MetalKit
 
 class BufferProvider {
     let inflightBuffersCount: Int
     private var uniformsBuffers: [MTLBuffer]
-    private var avaliableBufferIndex: Int = 0
+    private var availableBufferIndex: Int = 0
     var avaliableResourcesSemaphore: DispatchSemaphore
 
     init(device:MTLDevice, inflightBuffersCount: Int, sizeOfUniformsBuffer: Int) {
@@ -21,7 +21,7 @@ class BufferProvider {
         self.inflightBuffersCount = inflightBuffersCount
         uniformsBuffers = [MTLBuffer]()
         
-        for _ in 0...inflightBuffersCount-1 {
+        for _ in 0..<inflightBuffersCount {
             let uniformsBuffer = device.makeBuffer(length: sizeOfUniformsBuffer, options: [])!
             uniformsBuffers.append(uniformsBuffer)
         }
@@ -36,11 +36,11 @@ class BufferProvider {
 
     func nextBuffer() -> MTLBuffer {
         
-        let buffer = uniformsBuffers[avaliableBufferIndex]
+        let buffer = uniformsBuffers[availableBufferIndex]
                 
-        avaliableBufferIndex += 1
-        if avaliableBufferIndex == inflightBuffersCount{
-            avaliableBufferIndex = 0
+        availableBufferIndex += 1
+        if availableBufferIndex == inflightBuffersCount{
+            availableBufferIndex = 0
         }
         
         return buffer
