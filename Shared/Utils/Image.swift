@@ -32,7 +32,7 @@ public typealias Image = UIImage
 
 
 extension Image {
-    class func createImageFromDrawing( size: CGSize, doDrawing : ((CGContext)->()) ) -> Image? {
+    class func createImageFromDrawing(size: CGSize, doDrawing : ((CGContext)->())) -> Image? {
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let context = CGContext(data: nil,
                                 width: Int(size.width),
@@ -45,7 +45,7 @@ extension Image {
         context!.setFillColor(Color.black.cgColor)
         context!.fill(CGRect(size:size))
 
-        let flipVertical = CGAffineTransform( a: 1, b: 0, c: 0, d: -1, tx: 0, ty: size.height )
+        let flipVertical = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: size.height)
         context!.concatenate(flipVertical)
 
 #if os(OSX)
@@ -68,7 +68,7 @@ extension Image {
     }
 
 
-    class func createImageFromDrawing2( size: CGSize, doDrawing : ((CGContext)->()) ) -> Image? {
+    class func createImageFromDrawing2(size: CGSize, doDrawing : ((CGContext)->())) -> Image? {
 #if os(OSX)
         let im = NSImage(size: size)
 

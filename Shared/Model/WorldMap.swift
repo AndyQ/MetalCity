@@ -21,19 +21,19 @@ class WorldMap {
     var world = [[MapItem]]()
     var visGrid = [[Bool]]()
 
-    static func worldToGrid( _ x : Int, _ y : Int ) -> (Int,Int) {
+    static func worldToGrid(_ x : Int, _ y : Int) -> (Int,Int) {
         return (worldToGrid(x), worldToGrid(y))
     }
 
-    static func worldToGrid( _ x : Int ) -> Int {
+    static func worldToGrid(_ x : Int) -> Int {
         return (x/GRID_RESOLUTION).clamped(to: 0 ... GRID_SIZE-1)
     }
 
-    static func gridToWorld( _ x : Int, _ y : Int ) -> (Int,Int) {
+    static func gridToWorld(_ x : Int, _ y : Int) -> (Int,Int) {
         return (gridToWorld(x), gridToWorld(y))
     }
 
-    static func gridToWorld( _ x: Int ) -> Int {
+    static func gridToWorld(_ x: Int) -> Int {
         return x * GRID_RESOLUTION
     }
 
@@ -47,14 +47,14 @@ class WorldMap {
         visGrid = Array(repeating: Array(repeating: false, count: GRID_SIZE), count: GRID_SIZE)
     }
 
-    func cellAt( _ x : Int, _ y : Int) -> MapItem {
+    func cellAt(_ x : Int, _ y : Int) -> MapItem {
 
         let cx = x.clamped(to: 0...WORLD_SIZE-1)
         let cy = y.clamped(to: 0...WORLD_SIZE-1)
         return self.world[cx][cy]
     }
 
-    func addValue( _ x : Int, _ y : Int, val : MapItem ) {
+    func addValue(_ x : Int, _ y : Int, val : MapItem) {
         let cx = x.clamped(to: 0...WORLD_SIZE-1)
         let cy = y.clamped(to: 0...WORLD_SIZE-1)
         self.world[cx][cy].insert(val)
@@ -65,13 +65,13 @@ class WorldMap {
 
     }
 
-    func isVisible( x : Int, y : Int ) -> Bool {
+    func isVisible(x : Int, y : Int) -> Bool {
         let (x,y) = WorldMap.worldToGrid(x, y)
         return visGrid[x][y]
     }
 
 
-    func updateVisibilityGrid( ) {
+    func updateVisibilityGrid() {
         //Clear the visibility table
         visGrid = Array(repeating: Array(repeating: false, count: GRID_SIZE), count: GRID_SIZE)
 

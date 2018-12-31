@@ -43,13 +43,13 @@ class AutoCamera {
         }
     }
 
-    init( camera:Camera ) {
+    init(camera:Camera) {
         self.camera = camera
         behaviour = .speed
     }
 
 
-    func setCameraBehaviour( behaviour:CameraBehaviour ) {
+    func setCameraBehaviour(behaviour:CameraBehaviour) {
         self.behaviour = behaviour
         timeUntilNextChange = getTickCount() + CAMERA_CHANGE_INTERVAL
         randomBehaviour = false
@@ -106,7 +106,7 @@ class AutoCamera {
         return float3.lerp(vectorStart: start, vectorEnd: end, t: delta)
     }
 
-    func nextBehaviour( manuallyChanged:Bool = false ) {
+    func nextBehaviour(manuallyChanged:Bool = false) {
         let behaviours = CameraBehaviour.allCases
         if let i = behaviours.firstIndex(of: behaviour) {
             if i+1 >= behaviours.count {
@@ -188,7 +188,7 @@ class AutoCamera {
      way avoids converting to radians and back.
      -----------------------------------------------------------------------------*/
 
-    func mathScalarCurve( _ origVal:Float ) -> Float {
+    func mathScalarCurve(_ origVal:Float) -> Float {
 
         var val = (origVal - 0.5) * 2.0
         let sign : Float = val < 0 ? -1 : 1

@@ -29,7 +29,7 @@ class BoundingBox {
     /*-----------------------------------------------------------------------------
      Expand Bbox (if needed) to contain given point
      -----------------------------------------------------------------------------*/
-    func include(point : float3 ) {
+    func include(point : float3) {
         minPoint.x = min(minPoint.x, point.x)
         minPoint.y = min(minPoint.y, point.y)
         minPoint.z = min(minPoint.z, point.z)

@@ -20,7 +20,7 @@ class MenuViewController: UIViewController {
     @IBOutlet weak var tableView : UITableView!
     var menuItems = ["Toggle autocam", "Next autocam mode", "Rebuild city", "Regenerate textures"]
 
-    var menuSelected : ((MenuItem )->())?
+    var menuSelected : ((MenuItem)->())?
 
     override func viewDidLoad() {
         super.viewDidLoad()

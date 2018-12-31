@@ -26,7 +26,7 @@ func radians_from_degrees(_ degrees: Float) -> Float {
     return (degrees / 180) * .pi
 }
 
-func calculateTriangleSurfaceNormal(v1 : Vertex, v2 : Vertex, v3 : Vertex ) -> float4 {
+func calculateTriangleSurfaceNormal(v1 : Vertex, v2 : Vertex, v3 : Vertex) -> float4 {
     let vector1 = (v2.position - v1.position).xyz
     let vector2 = (v3.position - v1.position).xyz
     let crossProduct = cross(vector1, vector2)
@@ -46,7 +46,7 @@ func distance(_ x1 : Float, _ y1: Float, _ x2: Float, _ y2: Float) -> Float {
  Keep an angle between 0 and 360
  -----------------------------------------------------------------------------*/
 
-func clampAngle( _ angle : Float ) -> Float {
+func clampAngle(_ angle : Float) -> Float {
     let newAngle : Float
     if angle < 0.0 {
         newAngle = 360.0 - fmodf(abs(angle), 360.0)
@@ -58,7 +58,7 @@ func clampAngle( _ angle : Float ) -> Float {
 }
 
 
-func angleBetweenPoints ( _ x1 : Float, _ y1 : Float, _ x2 : Float, _ y2 : Float) -> Float
+func angleBetweenPoints (_ x1 : Float, _ y1 : Float, _ x2 : Float, _ y2 : Float) -> Float
 {
     let  z_delta = (y1 - y2)
     let x_delta = (x1 - x2)
@@ -88,7 +88,7 @@ func angleBetweenPoints ( _ x1 : Float, _ y1 : Float, _ x2 : Float, _ y2 : Float
     return angle
 }
 
-func mathAngleDifference( _ a1: Float, _ a2: Float ) -> Float {
+func mathAngleDifference(_ a1: Float, _ a2: Float) -> Float {
     let result = fmodf(a1 - a2, 360.0)
     if result > 180.0 {
         return result - 360.0
@@ -122,10 +122,10 @@ extension CGSize {
 }
 
 extension float3 {
-    static func lerp( vectorStart : float3,  vectorEnd: float3, t : Float ) -> float3 {
+    static func lerp(vectorStart : float3,  vectorEnd: float3, t : Float) -> float3 {
         let v : float3 = float3(vectorStart.x + ((vectorEnd.x - vectorStart.x) * t),
             vectorStart.y + ((vectorEnd.y - vectorStart.y) * t),
-            vectorStart.z + ((vectorEnd.z - vectorStart.z) * t) )
+            vectorStart.z + ((vectorEnd.z - vectorStart.z) * t))
         return v
     }
 }
@@ -207,7 +207,7 @@ extension float4x4 {
         self.init(vectorP, vectorQ, vectorR, vectorS)
     }
 
-    func upper_left3x3( ) -> matrix_float3x3
+    func upper_left3x3() -> matrix_float3x3
     {
         let c1 = vector_float3(self.columns.0.x, self.columns.0.y, self.columns.0.z)
         let c2 = vector_float3(self.columns.1.x, self.columns.1.y, self.columns.1.z)
@@ -226,12 +226,12 @@ extension float4x4 {
         let m : float4x4 = float4x4([ u.x, v.x, n.x, 0.0],
                                     [u.y, v.y, n.y, 0.0],
                                     [u.z, v.z, n.z, 0.0],
-                                    [dot(-u, eye), dot(-v, eye), dot(-n, eye), 1.0] )
+                                    [dot(-u, eye), dot(-v, eye), dot(-n, eye), 1.0])
 
         return m
     }
 
-    static func makeLookAt( eyeX : Float, eyeY : Float, eyeZ : Float,
+    static func makeLookAt(eyeX : Float, eyeY : Float, eyeZ : Float,
                      lookAtX : Float, lookAtY : Float, lookAtZ : Float,
                      upX : Float, upY : Float, upZ : Float) -> float4x4 {
 
@@ -239,7 +239,7 @@ extension float4x4 {
         let cv : float3 = [ lookAtX, lookAtY, lookAtZ ]
         let uv: float3 = [ upX, upY, upZ ]
 
-        return makeLookAt(eye:ev, lookAt:cv, up:uv )
+        return makeLookAt(eye:ev, lookAt:cv, up:uv)
     }
 
 

@@ -14,7 +14,7 @@ class Plot {
     var width : Int = 0
     var depth : Int = 0
 
-    init( x:Int, z:Int, width:Int, depth:Int ) {
+    init(x:Int, z:Int, width:Int, depth:Int) {
         self.x = x
         self.z = z
         self.width = width
@@ -47,25 +47,25 @@ class City {
 
         vlist = [Int]()
 
-        print( "Creating sky" )
+        print("Creating sky")
         sky = Sky(device: device)
-        print( "Creating floor" )
+        print("Creating floor")
         floor = PlaneModel(device: device)
 
         cars = Cars(device:device)
 
-        print( "Building city" )
+        print("Building city")
         buildCity()
 
         // Add in 100 cars
-        print( "Creating cars" )
+        print("Creating cars")
         for _ in 0 ..< 100 {
             cars.addCar()
         }
-        print( "City Built" )
+        print("City Built")
     }
 
-    func update(  )
+    func update()
     {
         WorldMap.instance.updateVisibilityGrid()
 
@@ -86,7 +86,7 @@ class City {
         floor.finishDrawing()
     }
 
-    func draw( commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer ) {
+    func draw(commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer) {
         sky.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)
 
         floor.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: sharedUniformsBuffer)
@@ -178,7 +178,7 @@ class City {
         var south_street : Float = 0
 
         // Generate East/west roads
-        print( "   generating east/west roads" )
+        print("   generating east/west roads")
         var y = WORLD_EDGE
         while y < WORLD_SIZE - WORLD_EDGE {
 
@@ -203,7 +203,7 @@ class City {
         }
 
         // Generate North/south roads
-        print( "   generating north/south roads" )
+        print("   generating north/south roads")
         broadway_done = false
         var x = WORLD_EDGE
         while x < WORLD_SIZE - WORLD_EDGE {
@@ -226,7 +226,7 @@ class City {
         }
 
         //Scan for places to put runs of streetlights on the east & west side of the road
-        print( "   generating east/west streetlights" )
+        print("   generating east/west streetlights")
         for x in 1 ..< WORLD_SIZE - 1 {
             var y = 0
             while y < WORLD_SIZE {
@@ -248,7 +248,7 @@ class City {
         }
 
         //Scan for places to put runs of streetlights on the north & south side of the road
-        print( "   generating north/south streetlights" )
+        print("   generating north/south streetlights")
         for y in 1 ..< WORLD_SIZE - 1 {
             var x = 0
             while x < WORLD_SIZE {
@@ -279,21 +279,21 @@ class City {
         appState.hot_zone.include(point: float3(east_street, 0.0, south_street))
 
 
-        print( "   Placing large buildings in center of map" )
+        print("   Placing large buildings in center of map")
         //Scan over the center area of the map and place the big buildings
         attempts = 0
         while self.skyscrapers < 50 && attempts < 350 {
             let x = (WORLD_HALF / 2) + (randomInt() % WORLD_HALF)
             let y = (WORLD_HALF / 2) + (randomInt() % WORLD_HALF)
-            if !self.claimed( atX:x, y:y, width:1, depth:1) {
-                self.doBuilding( atPlot:self.findPlot(atX:x, andY:y) )
+            if !self.claimed(atX:x, y:y, width:1, depth:1) {
+                self.doBuilding(atPlot:self.findPlot(atX:x, andY:y))
                 self.skyscrapers += 1
             }
             attempts += 1
         }
 
         //now blanket the rest of the world with lesser buildings
-        print( "   Placing smaller buildings around outside" )
+        print("   Placing smaller buildings around outside")
         x = 0
         while x < WORLD_SIZE {
             var y = 0
@@ -313,8 +313,8 @@ class City {
                 }
 
                 while width > 8 && depth > 8 {
-                    if !self.claimed( atX:x, y:y, width:width, depth:depth) {
-                        self.claimPatch( atX:x, y:y, width:width, depth:depth, value:.claimBuilding )
+                    if !self.claimed(atX:x, y:y, width:width, depth:depth) {
+                        self.claimPatch(atX:x, y:y, width:width, depth:depth, value:.claimBuilding)
 
                         let color = worldLightColor(randomInt())
 
@@ -323,7 +323,7 @@ class City {
                         if x < Int(appState.hot_zone.minPoint.x) || x > Int(appState.hot_zone.maxPoint.x) || y < Int(appState.hot_zone.minPoint.z) || y > Int(appState.hot_zone.maxPoint.z) {
 
                             height = 5 + randomInt(height) + randomInt(height)
-                            building = Building( device:device, type:.simple, x:x + 1, y:y + 1, height:height, width:width - 2, depth:depth - 2, seed:randomInt(), color:color)
+                            building = Building(device:device, type:.simple, x:x + 1, y:y + 1, height:height, width:width - 2, depth:depth - 2, seed:randomInt(), color:color)
                         }
                         else
                         {
@@ -333,9 +333,9 @@ class City {
                             depth -= 2
 
                             if flipCoinIsHeads() {
-                                building = Building( device:device, type:.tower, x:x + 1, y:y + 1, height:height, width:width, depth:depth, seed:randomInt(), color:color)
+                                building = Building(device:device, type:.tower, x:x + 1, y:y + 1, height:height, width:width, depth:depth, seed:randomInt(), color:color)
                             } else {
-                                building = Building( device:device, type:.blocky, x:x + 1, y:y + 1, height:height, width:width, depth:depth, seed:randomInt(), color:color)
+                                building = Building(device:device, type:.blocky, x:x + 1, y:y + 1, height:height, width:width, depth:depth, seed:randomInt(), color:color)
                             }
                         }
 
@@ -366,7 +366,7 @@ class City {
         buildings.sort { $0.textureType.rawValue <= $1.textureType.rawValue }
     }
 
-    func buildRoad( fromX1 x1: Int, y1:Int, width : Int, depth:Int) {
+    func buildRoad(fromX1 x1: Int, y1:Int, width : Int, depth:Int) {
         var lanes = 0
         var divider = 0
         var sidewalk = 0
@@ -396,22 +396,22 @@ class City {
         lanes /= 2
 
         //Mark the entire rectangle as used
-        claimPatch( atX:x1, y:y1, width:width, depth:depth, value:.claimWalk )
+        claimPatch(atX:x1, y:y1, width:width, depth:depth, value:.claimWalk)
 
         //now place the directional roads
         if (width > depth)
         {
-            claimPatch( atX:x1, y:y1 + sidewalk, width:width, depth:lanes, value:[.claimRoad, .roadWest] )
-            claimPatch( atX:x1, y:y1 + sidewalk + lanes + divider, width:width, depth:lanes, value:[.claimRoad, .roadEast] )
+            claimPatch(atX:x1, y:y1 + sidewalk, width:width, depth:lanes, value:[.claimRoad, .roadWest])
+            claimPatch(atX:x1, y:y1 + sidewalk + lanes + divider, width:width, depth:lanes, value:[.claimRoad, .roadEast])
         }
         else
         {
-            claimPatch( atX:x1 + sidewalk, y:y1, width:lanes, depth:depth, value:[.claimRoad, .roadSouth] )
-            claimPatch( atX:x1 + sidewalk + lanes + divider, y:y1, width:lanes, depth:depth, value:[.claimRoad, .roadNorth] )
+            claimPatch(atX:x1 + sidewalk, y:y1, width:lanes, depth:depth, value:[.claimRoad, .roadSouth])
+            claimPatch(atX:x1 + sidewalk + lanes + divider, y:y1, width:lanes, depth:depth, value:[.claimRoad, .roadNorth])
         }
     }
 
-    func claimPatch( atX x: Int, y:Int, width:Int, depth:Int, value:MapItem ) {
+    func claimPatch(atX x: Int, y:Int, width:Int, depth:Int, value:MapItem) {
 
         for xx in x ..< x + width {
             let x = xx.clamped(to:0...WORLD_SIZE-1)
@@ -422,7 +422,7 @@ class City {
         }
     }
 
-    func buildLightStrip( atX x1:Int, z z1:Int, direction:Direction, height: Float = 0) -> Int {
+    func buildLightStrip(atX x1:Int, z z1:Int, direction:Direction, height: Float = 0) -> Int {
         var  color : float4 = [0,0,0,1]
         var dir_x = 0
         var dir_z = 0
@@ -504,7 +504,7 @@ class City {
     }
 
 
-    func doBuilding( atPlot p:Plot ) {
+    func doBuilding(atPlot p:Plot) {
 
         //now we know how big the rectangle plot is.
         let area = p.width * p.depth
@@ -556,7 +556,7 @@ class City {
             self.modern_count += 1
             self.skyscrapers += 1
 
-            let building = Building( device:device, type:type, x:p.x, y:p.z, height:height, width:p.width, depth:p.depth, seed:seed, color:color)
+            let building = Building(device:device, type:type, x:p.x, y:p.z, height:height, width:p.width, depth:p.depth, seed:seed, color:color)
             self.buildings.append(building)
             return
         }
@@ -575,13 +575,13 @@ class City {
         }
 
 
-         let building = Building( device:device, type:type, x:p.x, y:p.z, height:height, width:p.width, depth:p.depth, seed:seed, color:color)
+         let building = Building(device:device, type:type, x:p.x, y:p.z, height:height, width:p.width, depth:p.depth, seed:seed, color:color)
         self.buildings.append(building)
 
         self.skyscrapers += 1
     }
 
-    func findPlot( atX x : Int, andY z:Int ) -> Plot {
+    func findPlot(atX x : Int, andY z:Int) -> Plot {
         var x1 = x
         var x2 = x
         var z1 = z
@@ -607,7 +607,7 @@ class City {
         return p
     }
 
-    func claimed( atX x: Int, y:Int, width:Int, depth:Int ) -> Bool {
+    func claimed(atX x: Int, y:Int, width:Int, depth:Int) -> Bool {
         for xx in x ..< x + width {
             for yy in y ..< y + depth {
                 if WorldMap.instance.cellAt(xx, yy).rawValue != 0 {

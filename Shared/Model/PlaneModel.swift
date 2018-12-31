@@ -17,7 +17,7 @@ class PlaneModel : Model {
     var device : MTLDevice
     var texture : MTLTexture!
 
-    init( device: MTLDevice, vertexShader : String = "indexedVertexShader", fragmentShader : String = "indexedFragmentShader" ) {
+    init(device: MTLDevice, vertexShader : String = "indexedVertexShader", fragmentShader : String = "indexedFragmentShader") {
         self.device = device
 
         super.init()
@@ -25,11 +25,11 @@ class PlaneModel : Model {
         bufferProvider = BufferProvider(device: device, inflightBuffersCount: 3, sizeOfUniformsBuffer: MemoryLayout<PerInstanceUniforms>.size * (1))
 
 
-        self.renderPipelineState = createLibraryAndRenderPipeline( device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader  )
-        createAsset( device: device  )
+        self.renderPipelineState = createLibraryAndRenderPipeline(device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader)
+        createAsset(device: device)
     }
 
-    func setTexture( image: Image ) {
+    func setTexture(image: Image) {
 
         guard let data = image.pngData() else { return }
         let loader = MTKTextureLoader(device: device)
@@ -41,7 +41,7 @@ class PlaneModel : Model {
         }
     }
 
-    func createAsset( device : MTLDevice ) {
+    func createAsset(device : MTLDevice) {
         //Front
 
         let x1 : Float = 0
@@ -69,7 +69,7 @@ class PlaneModel : Model {
         indexBuffer.label = "indices plane"
     }
 
-    func update(  )
+    func update()
     {
         self.uniformsBuffer = bufferProvider.nextBuffer()
 
@@ -96,7 +96,7 @@ class PlaneModel : Model {
         self.bufferProvider.availableResourcesSemaphore.signal()
     }
 
-    override func draw( commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer ) {
+    override func draw(commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer) {
         commandEncoder.setRenderPipelineState(self.renderPipelineState)
 
         commandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, index: 0)

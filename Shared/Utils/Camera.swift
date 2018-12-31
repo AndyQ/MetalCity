@@ -18,7 +18,7 @@ class Camera {
     init() {
     }
 
-    init(pos:float3, lookAt:float3, up:float3=[0,1,0] ) {
+    init(pos:float3, lookAt:float3, up:float3=[0,1,0]) {
         self.position = pos
         self.lookAt = lookAt
         self.up = up
@@ -40,7 +40,7 @@ class Camera {
     /////
     ///////////////////////////////// ROTATE VIEW \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
-    func rotateViewRound(x:Float, y:Float, z:Float ) {
+    func rotateViewRound(x:Float, y:Float, z:Float) {
         var point = lookAt - position
 
         // If we pass in a negative X Y or Z, it will rotate the opposite way,
@@ -68,13 +68,13 @@ class Camera {
     /////
     ///////////////////////////////// MOVE CAMERA BY MOUSE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
-    func moveCameraByMouse( prevPoint:CGPoint, newPoint:CGPoint) {
+    func moveCameraByMouse(prevPoint:CGPoint, newPoint:CGPoint) {
         // If our cursor is still in the middle, we never moved... so don't update the screen
         guard prevPoint != newPoint else { return }
 
         // Get the direction the mouse moved in, but bring the number down to a reasonable amount
-        let rotateY = Float( (prevPoint.x - newPoint.x) ) / 100
-        let deltaY  = Float( (prevPoint.y - newPoint.y) ) / 100
+        let rotateY = Float((prevPoint.x - newPoint.x)) / 100
+        let deltaY  = Float((prevPoint.y - newPoint.y)) / 100
 
         // Multiply the direction GLKVector3 for Y by an acceleration (The higher the faster is goes).
         lookAt.y += deltaY * 15
@@ -82,10 +82,10 @@ class Camera {
         // Note, this is a bad way of doing this (Ideal would be spherical coordinates)
 
         // Check if the distance of our view exceeds 60 from our position, if so, stop it. (UP)
-        //    if( ( m_vView.y - m_vPosition.y ) >  10)  m_vView.y = m_vPosition.y + 10
+        //    if((m_vView.y - m_vPosition.y) >  10)  m_vView.y = m_vPosition.y + 10
 
         // Check if the distance of our view exceeds -60 from our position, if so, stop it. (DOWN)
-        //    if( ( m_vView.y - m_vPosition.y ) < -10)  m_vView.y = m_vPosition.y - 10
+        //    if((m_vView.y - m_vPosition.y) < -10)  m_vView.y = m_vPosition.y - 10
 
         // Here we rotate the view along the X avis depending on the direction (Left of Right)
         self.rotateViewRound(x: 0, y: -rotateY, z: 0)
@@ -98,7 +98,7 @@ class Camera {
     /////
     ///////////////////////////////// ROTATE AROUND POINT \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
-    func rotateAroundPoint(x:Float, y:Float, z:Float ) {
+    func rotateAroundPoint(x:Float, y:Float, z:Float) {
         var point = position - lookAt
 
         // Rotate the position along the desired axis around the desired point vCenter
@@ -117,7 +117,7 @@ class Camera {
     }
 
 
-    func rotateAroundPoint(atCenter vCenter:float3, x:Float, y:Float, z:Float ) {
+    func rotateAroundPoint(atCenter vCenter:float3, x:Float, y:Float, z:Float) {
         let point = position - vCenter
 
         // Rotate the position along the desired axis around the desired point vCenter
@@ -166,7 +166,7 @@ class Camera {
         return vCross
     }
 
-    func strafeCamera( speed:Float) {
+    func strafeCamera(speed:Float) {
         // Strafing is quite simple if you understand what the cross product is.
         // If you have 2 GLKVector3s (say the up GLKVector3 and the view GLKVector3) you can
         // use the cross product formula to get a GLKVector3 that is 90 degrees from the 2 GLKVector3s.
@@ -203,7 +203,7 @@ class Camera {
     }
 
     // Raises or lowers the camera
-    func raiseCamera(amount:Float ) {
+    func raiseCamera(amount:Float) {
         position.y += amount
         lookAt.y += amount
     }

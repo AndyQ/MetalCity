@@ -20,14 +20,14 @@ class FireworkScene {
 
     let inflightSemaphore = DispatchSemaphore(value: 1)
 
-    init( device:MTLDevice) {
+    init(device:MTLDevice) {
         // Launch the first firework immediately
         next_launch = get_current_timestamp()
 
         createLibraryAndRenderPipeline(device: device)
     }
 
-    func createLibraryAndRenderPipeline( device : MTLDevice ) {
+    func createLibraryAndRenderPipeline(device : MTLDevice) {
         let defaultLibrary = device.makeDefaultLibrary()!
         let fragmentProgram = defaultLibrary.makeFunction(name: "passThroughFragment")!
         let vertexProgram = defaultLibrary.makeFunction(name: "passThroughVertex")!
@@ -69,7 +69,7 @@ class FireworkScene {
         }
     }
 
-    func update( ) {
+    func update() {
         var bv = BufferWrapper(vertexBuffer)
         var bc = BufferWrapper(vertexColorBuffer)
 
@@ -96,7 +96,7 @@ class FireworkScene {
     func finishedDrawing() {
         self.inflightSemaphore.signal()
     }
-    func draw( commandEncoder renderEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer ) {
+    func draw(commandEncoder renderEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer) {
         renderEncoder.pushDebugGroup("draw morphing triangle")
         renderEncoder.setRenderPipelineState(pipelineState)
         renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)

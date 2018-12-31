@@ -63,7 +63,7 @@ class TextTextureAtlas {
 
     func buildAtlas() {
         let size = CGSize(width:512, height:512)
-        let image = Image.createImageFromDrawing( size:size, doDrawing: { (ctx) in
+        let image = Image.createImageFromDrawing(size:size, doDrawing: { (ctx) in
 
 //            var names = ["Medicalco", "Motors LLC", "Superior Med", "Unity Industrial", "Media.com", "END" ]
 //            var fonts = ["PartyLetPlain", "PartyLetPlain", "PartyLetPlain", "PingFangTC-Regular", "PartyLetPlain", "Menlo-Bold"]
@@ -77,7 +77,7 @@ class TextTextureAtlas {
 
             // Draw text
             var i : CGFloat = 0
-            print( "Generating building names..." )
+            print("Generating building names...")
             while i < size.height {
                 let string = generateName()
                 let fontName = fontNames.randomElement()!
@@ -85,7 +85,7 @@ class TextTextureAtlas {
 //                let string = names[j]
 //                let fontName = fonts[j]
 
-                print( "   \(string) using \(fontName)" )
+                print("   \(string) using \(fontName)")
 
                 let attrs: [NSAttributedString.Key: Any] = [.font: Font(name:fontName, size: 24)!, .strokeColor: Color.white, .foregroundColor: Color.white]
                 let textSize = string.size(withAttributes:attrs)

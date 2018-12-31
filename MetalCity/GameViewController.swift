@@ -106,17 +106,17 @@ class GameViewController: UIViewController {
     var prevPoint = CGPoint()
     var nrTouches = 0
 
-    @objc func tap( _ gr: UITapGestureRecognizer ) {
+    @objc func tap(_ gr: UITapGestureRecognizer) {
         if !menuVCView.isHidden {
             let p = gr.location(in: self.view)
-            if !menuVCView.frame.contains( p ) {
+            if !menuVCView.frame.contains(p) {
                 menuVCView.isHidden = true
             }
         } else {
             menuVCView.isHidden = !menuVCView.isHidden
 
 /*
-            let v = MenuView(frame:CGRect(x:self.view.bounds.width-210, y:30, width:180, height:175 ))
+            let v = MenuView(frame:CGRect(x:self.view.bounds.width-210, y:30, width:180, height:175))
             self.view.addSubview(v)
             self.popUpView = v
 */
@@ -124,7 +124,7 @@ class GameViewController: UIViewController {
     }
 
 #if !targetEnvironment(simulator)
-    @objc func pan( _ gr: UIPanGestureRecognizer ) {
+    @objc func pan(_ gr: UIPanGestureRecognizer) {
         let p = gr.location(in: self.view)
         switch gr.state {
         case .began:
@@ -139,44 +139,44 @@ class GameViewController: UIViewController {
             let dy = Float(p.y - prevPoint.y)
             if nrTouches == 1 {
                 if p.x < 100 {
-                    rotateViewUpAndDown( dy:dy)
+                    rotateViewUpAndDown(dy:dy)
                 } else if p.x > self.view.bounds.width - 100 {
-                    raiseCamera( dy:dy)
+                    raiseCamera(dy:dy)
                 } else {
-                    rotateView( dx:dx )
+                    rotateView(dx:dx)
                 }
 
             } else if nrTouches == 2 {
-                rotateView( dx:dx )
-                moveCamera( dy:dy)
+                rotateView(dx:dx)
+                moveCamera(dy:dy)
             } else if nrTouches == 3 {
-                raiseCamera( dy:dy)
-                strafeCamera( dx:dx)
+                raiseCamera(dy:dy)
+                strafeCamera(dx:dx)
             }
             prevPoint = p
         }
     }
 
-    func rotateView( dx : Float ) {
+    func rotateView(dx : Float) {
         renderer.camera.rotateViewRound(x: 0, y: dx * 0.01, z: 0)
     }
 
-    func rotateViewUpAndDown(dy : Float ) {
+    func rotateViewUpAndDown(dy : Float) {
         let deltaY = -dy * 0.01
         var v = renderer.camera.getView()
         v.y += deltaY * 30
         renderer.camera.setView(view:v)
     }
 
-    func moveCamera( dy : Float ) {
+    func moveCamera(dy : Float) {
         renderer.camera.moveCamera(speed: -dy * 0.01)
     }
 
-    func raiseCamera( dy : Float ) {
+    func raiseCamera(dy : Float) {
         renderer.camera.raiseCamera(amount: dy*0.1)
     }
 
-    func strafeCamera( dx : Float ) {
+    func strafeCamera(dx : Float) {
         renderer.camera.strafeCamera(speed: -dx * 0.005)
     }
 #endif

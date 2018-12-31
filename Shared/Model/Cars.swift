@@ -49,8 +49,8 @@ class Cars: Model {
     let WEST = 3
 
 
-    let frontColor = float4( 1, 1, 0.8, 1.0 )
-    let backColor = float4( 1, 0.2, 0, 1.0 )
+    let frontColor = float4(1, 1, 0.8, 1.0)
+    let backColor = float4(1, 0.2, 0, 1.0)
 
     var device : MTLDevice
 
@@ -63,7 +63,7 @@ class Cars: Model {
 
     var cars = [Car]()
 
-    init( device: MTLDevice ) {
+    init(device: MTLDevice) {
         self.device = device
 
         let vertexShader : String = "carVertexShader"
@@ -83,7 +83,7 @@ class Cars: Model {
         self.renderPipelineState = createLibraryAndRenderPipeline(device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader)
     }
 
-    func addCar( ) {
+    func addCar() {
 
         cars.append(Car())
 
@@ -115,13 +115,13 @@ class Cars: Model {
         indexBuffer.label = "indices plane"
     }
 
-    func update(  )
+    func update()
     {
         guard vertexBuffer != nil else { return }
         var pointer = vertexBuffer.contents().bindMemory(to: Vertex.self, capacity: vertices.count)
         for car in cars {
             // 4 vertices per car
-            updateCar( car:car, vertexPtr:pointer )
+            updateCar(car:car, vertexPtr:pointer)
 
             pointer = pointer.advanced(by: 4)
         }
@@ -129,7 +129,7 @@ class Cars: Model {
 
 
 
-    func updateCar( car: Car, vertexPtr: UnsafeMutablePointer<Vertex> ) {
+    func updateCar(car: Car, vertexPtr: UnsafeMutablePointer<Vertex>) {
         var camera : float3
 
         //If the car isn't ready, place it on the map and get it moving
@@ -178,7 +178,7 @@ class Cars: Model {
                     l -= 1
                 }
                 r = car.m_col
-                while ( WorldMap.instance.cellAt(car.m_row, r).contains(.roadEast) ) {
+                while (WorldMap.instance.cellAt(car.m_row, r).contains(.roadEast)) {
                     r += 1
                 }
                 car.m_col = l+2// r-l > 4 ?l+2 : l+1
@@ -226,11 +226,11 @@ class Cars: Model {
         let old_pos = car.m_position
         car.m_speed += car.m_max_speed * 0.05
         car.m_speed = min(car.m_speed, car.m_max_speed)
-        car.m_position = car.m_position + ( direction[car.m_direction] * MOVEMENT_SPEED * car.m_speed )
-        let futurePos = car.m_position + ( direction[car.m_direction] * MOVEMENT_SPEED * car.m_speed * 5 )
+        car.m_position = car.m_position + (direction[car.m_direction] * MOVEMENT_SPEED * car.m_speed)
+        let futurePos = car.m_position + (direction[car.m_direction] * MOVEMENT_SPEED * car.m_speed * 5)
 
         //If the car has moved out of view, there's no need to keep simulating it.
-        if !WorldMap.instance.isVisible( x:car.m_row,y: car.m_col) {
+        if !WorldMap.instance.isVisible(x:car.m_row,y: car.m_col) {
             car.m_ready = false
         }
 
@@ -298,7 +298,7 @@ class Cars: Model {
             return
         }
 
-        if !WorldMap.instance.isVisible( pos: car.m_drive_position ) {
+        if !WorldMap.instance.isVisible(pos: car.m_drive_position) {
             return
         }
 
@@ -335,22 +335,22 @@ class Cars: Model {
     }
 
 
-    func testPosition( atRow row: Int, col: Int, forCar car:Car ) -> Bool {
+    func testPosition(atRow row: Int, col: Int, forCar car:Car) -> Bool {
         //test the given position and see if it's already occupied
         if carMap[row][col] != 0 {
             return false
         }
         //now make sure that the lane is going the right direction
-        if !WorldMap.instance.cellAt( row, col).contains( .claimRoad ) {
+        if !WorldMap.instance.cellAt(row, col).contains(.claimRoad) {
             return false
         }
-        if WorldMap.instance.cellAt( row, col).rawValue != WorldMap.instance.cellAt( car.m_row, car.m_col).rawValue {
+        if WorldMap.instance.cellAt(row, col).rawValue != WorldMap.instance.cellAt(car.m_row, car.m_col).rawValue {
             return false
         }
         return true
     }
 
-    override func draw( commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer ) {
+    override func draw(commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer) {
         guard indices.count > 0 else { return }
         if vertexBuffer == nil {
             self.createBuffers()
@@ -366,7 +366,7 @@ class Cars: Model {
         if let texture = TextureManager.instance.textures[.headlight] {
             commandEncoder.setFragmentTexture(texture, index: 0)
         } else {
-            print( "ARRGH!")
+            print("ARRGH!")
         }
 
         commandEncoder.drawIndexedPrimitives(type: .triangle,

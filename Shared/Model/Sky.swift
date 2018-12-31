@@ -14,7 +14,7 @@ class Sky: Model {
     var vertices = [Vertex]()
     var indices = [UInt16]()
 
-    init( device: MTLDevice ) {
+    init(device: MTLDevice) {
         self.device = device
 
         let vertexShader : String = "indexedVertexShader"
@@ -22,7 +22,7 @@ class Sky: Model {
 
         super.init()
 
-        self.renderPipelineState = createLibraryAndRenderPipeline( device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader  )
+        self.renderPipelineState = createLibraryAndRenderPipeline(device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader)
 
         buildDome()
     }
@@ -34,8 +34,8 @@ class Sky: Model {
 
         var n = 0
         var vlist = [Vertex]()
-        for phi in stride( from:0, to:90-dphi+1, by:dphi ) {
-            for theta in stride( from:0, to:360 - dtheta+1, by:dtheta ) {
+        for phi in stride(from:0, to:90-dphi+1, by:dphi) {
+            for theta in stride(from:0, to:360 - dtheta+1, by:dtheta) {
                 var p = float4(0, 0, 0, 1)
 
                 p.x = radius * sinf(phi*DEGREES_TO_RADIANS) * cosf(theta*DEGREES_TO_RADIANS)
@@ -151,7 +151,7 @@ class Sky: Model {
             v.normal = float4(1,0,0,1)
             vertices.append(v)
 
-            indices.append( i )
+            indices.append(i)
             i += 1
         }
 
@@ -170,7 +170,7 @@ class Sky: Model {
         indexBuffer.label = "indices sky"
     }
 
-    func update(  )
+    func update()
     {
 
         let translation = float4x4(translate: [0,0,0])
@@ -192,7 +192,7 @@ class Sky: Model {
     func finishDrawing() {
     }
 
-    override func draw( commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer ) {
+    override func draw(commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer) {
         guard indices.count > 0 else { return }
         if vertexBuffer == nil {
             self.createBuffers()
@@ -206,7 +206,7 @@ class Sky: Model {
         if let texture = TextureManager.instance.textures[.sky] {
             commandEncoder.setFragmentTexture(texture, index: 0)
         } else {
-            print( "ARRGH!")
+            print("ARRGH!")
         }
 
         commandEncoder.drawIndexedPrimitives(type: .triangleStrip,

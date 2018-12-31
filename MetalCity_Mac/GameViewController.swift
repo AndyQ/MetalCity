@@ -54,7 +54,7 @@ class GameViewController: NSViewController {
 
     override func keyDown(with event: NSEvent) {
         guard let c = event.charactersIgnoringModifiers?.lowercased() else { return }
-        print( "Hit char - \(c)" )
+        print("Hit char - \(c)")
         switch c {
         case "r": renderer.rebuildCity()
         case "c": renderer.toggleAutoCam()

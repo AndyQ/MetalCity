@@ -24,7 +24,7 @@ class Lights: Model {
 
     var lights = [Light]()
 
-    init( device: MTLDevice ) {
+    init(device: MTLDevice) {
         self.device = device
 
         let vertexShader : String = "lightsVertexShader"
@@ -41,23 +41,23 @@ class Lights: Model {
             }
         }
 
-        self.renderPipelineState = createLibraryAndRenderPipeline( device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader  )
+        self.renderPipelineState = createLibraryAndRenderPipeline(device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader)
     }
 
-    func createLight(position:float3, color:float4, size:Float, blink:Bool ) {
+    func createLight(position:float3, color:float4, size:Float, blink:Bool) {
 
         let l = Light()
         l.blinkInterval = blink ? 1000 + randomInt(500) : 0
         l.size = size
         l.position = position
         l.color = color
-        lights.append( l )
+        lights.append(l)
 
         let v : [Vertex] = [
-            Vertex(position: float4(position.x, position.y, position.z, 1.0), normal: float4( 0, 1, 0, 1.0), color: color, texCoords: float2(0, 0)),
-            Vertex(position: float4(position.x, position.y, position.z, 1.0), normal: float4( 0, 1, 0, 1.0), color: color, texCoords: float2(1, 0)),
-            Vertex(position: float4(position.x, position.y, position.z, 1.0), normal: float4( 0, 1, 0, 1.0), color: color, texCoords: float2(1, 1)),
-            Vertex(position: float4(position.x, position.y, position.z, 1.0), normal: float4( 0, 1, 0, 1.0), color: color, texCoords: float2(0, 1))
+            Vertex(position: float4(position.x, position.y, position.z, 1.0), normal: float4(0, 1, 0, 1.0), color: color, texCoords: float2(0, 0)),
+            Vertex(position: float4(position.x, position.y, position.z, 1.0), normal: float4(0, 1, 0, 1.0), color: color, texCoords: float2(1, 0)),
+            Vertex(position: float4(position.x, position.y, position.z, 1.0), normal: float4(0, 1, 0, 1.0), color: color, texCoords: float2(1, 1)),
+            Vertex(position: float4(position.x, position.y, position.z, 1.0), normal: float4(0, 1, 0, 1.0), color: color, texCoords: float2(0, 1))
         ]
 
         let start = UInt16(vertices.count)
@@ -79,19 +79,19 @@ class Lights: Model {
         indexBuffer.label = "indices lights"
     }
 
-    func update( )
+    func update()
     {
         guard vertexBuffer != nil else { return }
         var pointer = vertexBuffer.contents().bindMemory(to: Vertex.self, capacity: vertices.count)
         for light in lights {
             // 4 vertices per car
-            updateLight( light:light, vertexPtr:pointer )
+            updateLight(light:light, vertexPtr:pointer)
 
             pointer = pointer.advanced(by: 4)
         }
     }
 
-    func updateLight( light:Light, vertexPtr: UnsafeMutablePointer<Vertex> ) {
+    func updateLight(light:Light, vertexPtr: UnsafeMutablePointer<Vertex>) {
 
 //        if (!Visible(_cell_x, _cell_z)) {
 //            return
@@ -142,7 +142,7 @@ class Lights: Model {
     func finishDrawing() {
     }
 
-    override func draw( commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer ) {
+    override func draw(commandEncoder : MTLRenderCommandEncoder, sharedUniformsBuffer : MTLBuffer) {
         guard indices.count > 0 else { return }
         if vertexBuffer == nil {
             self.createBuffers()
@@ -156,7 +156,7 @@ class Lights: Model {
         if let texture = TextureManager.instance.textures[.light] {
             commandEncoder.setFragmentTexture(texture, index: 0)
         } else {
-            print( "ARRRGH!" )
+            print("ARRRGH!")
         }
 
         commandEncoder.drawIndexedPrimitives(type: .triangle,

@@ -106,7 +106,7 @@ class Building : Model {
 
         if var arr = arr {
             if hasLogo {
-                self.logoRenderPipelineState = createLibraryAndRenderPipeline( device: device, vertexFunction:"logoVertexShader", fragmentFunction:"logoFragmentShader"  )
+                self.logoRenderPipelineState = createLibraryAndRenderPipeline(device: device, vertexFunction:"logoVertexShader", fragmentFunction:"logoFragmentShader")
                 arr.append(contentsOf: logoVertices)
             }
 
@@ -143,7 +143,7 @@ class Building : Model {
             verticesToDraw -= 6
         }
 
-        commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: verticesToDraw )
+        commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: verticesToDraw)
 
         guard let logoRenderPipelineState = logoRenderPipelineState else { return }
         if hasLogo {
@@ -153,7 +153,7 @@ class Building : Model {
             if let texture = TextureManager.instance.textures[.logos] {
                 commandEncoder.setFragmentTexture(texture, index: 0)
             }
-            commandEncoder.drawPrimitives(type: .triangle, vertexStart: verticesToDraw, vertexCount: 6 )
+            commandEncoder.drawPrimitives(type: .triangle, vertexStart: verticesToDraw, vertexCount: 6)
             commandEncoder.setCullMode(.none)
         }
     }
@@ -180,7 +180,7 @@ class Building : Model {
 
         var verticesArray = [Vertex]()
         let color = vector_float4(1,1,1,1)
-        let normal = vector_float4( 0, 1, 0, 1.0)
+        let normal = vector_float4(0, 1, 0, 1.0)
         let uv1 = vector_float2(u,v1)
         let uv2 = vector_float2(u,v2)
 
@@ -304,18 +304,18 @@ class Building : Model {
             // Triangle1 = v1, v2, v3
             // Triangle2 = v2, v4, v3
 
-            let n1 = calculateTriangleSurfaceNormal(v1:v1, v2:v2, v3:v3 )
-            let n2 = calculateTriangleSurfaceNormal(v1:v2, v2:v4, v3:v3 )
+            let n1 = calculateTriangleSurfaceNormal(v1:v1, v2:v2, v3:v3)
+            let n2 = calculateTriangleSurfaceNormal(v1:v2, v2:v4, v3:v3)
 
             v1.normal = n1
             v2.normal = n1
             v3.normal = n1
-            vlist.append( contentsOf:[v1, v2, v3] )
+            vlist.append(contentsOf:[v1, v2, v3])
 
             v2.normal = n2
             v4.normal = n2
             v3.normal = n2
-            vlist.append( contentsOf:[v2, v4, v3] )
+            vlist.append(contentsOf:[v2, v4, v3])
         }
 
         // Now add the roof
@@ -334,14 +334,14 @@ class Building : Model {
             var v1 = verticesArray[points - (1 + i * 2)]
             var v2 = verticesArray[points - (1 + (i+1) * 2)]
 
-            let n1 = calculateTriangleSurfaceNormal(v1:v, v2:v1, v3:v2 )
+            let n1 = calculateTriangleSurfaceNormal(v1:v, v2:v1, v3:v2)
             v.normal = n1
             v1.normal = n1
             v2.normal = n1
             v.texCoords = float2(0, 0)
             v1.texCoords = float2(0, 0)
             v2.texCoords = float2(0, 0)
-            vlist.append( contentsOf:[v, v1, v2] )
+            vlist.append(contentsOf:[v, v1, v2])
         }
 
         return vlist
@@ -394,7 +394,7 @@ class Building : Model {
         var  walls : [[Int]] = Array(repeating: Array(repeating: 0, count: 4), count: max_tiers)
         var vertices = [Vertex]()
         var tmpV : [Vertex]
-        while ( true ) {
+        while (true) {
             if h < min_height || tiers >= max_tiers {
                 break
             }
@@ -481,7 +481,7 @@ class Building : Model {
         tmpV = constructCube(left: Float(mid_x - half_width), right: Float(mid_x + half_width), front: Float(mid_z - half_depth), back: Float(mid_z + half_depth), bottom: 0, top: 2, textured: false)
         vertices.append(contentsOf: tmpV)
 
-        let arr = self.convertQuadsToTriangles( vertices )
+        let arr = self.convertQuadsToTriangles(vertices)
         return arr
     }
 
@@ -528,7 +528,7 @@ class Building : Model {
         bottom += foundation
 
         //now add tiers until we reach the top
-        while ( true )
+        while (true)
         {
             let remaining_height = height - bottom
             let section_depth = back - front
@@ -588,7 +588,7 @@ class Building : Model {
         tmpV = constructRoof(left: Float(left), right:Float(right), front:Float(front), back:Float(back), bottom:Float(bottom), roofTiers: 0)
         vertices.append(contentsOf: tmpV)
 
-        let arr = self.convertQuadsToTriangles( vertices )
+        let arr = self.convertQuadsToTriangles(vertices)
         return arr
     }
 
@@ -652,12 +652,12 @@ class Building : Model {
                 let loop = (i == 0 || i == length) ? 1 : 2
                 var v = Vertex()
                 for _ in 0 ..< loop {
-                    v.position = float4( Float(x), Float(startY), Float(z), 1)
-                    v.texCoords = float2( textureS, Float(startY) / Float(SEGMENTS_PER_TEXTURE))
+                    v.position = float4(Float(x), Float(startY), Float(z), 1)
+                    v.texCoords = float2(textureS, Float(startY) / Float(SEGMENTS_PER_TEXTURE))
                     vertices.append(v)
 
-                    v.position = float4( Float(x), Float(startY + height), Float(z), 1)
-                    v.texCoords = float2( textureS, Float(startY + height) / Float(SEGMENTS_PER_TEXTURE))
+                    v.position = float4(Float(x), Float(startY + height), Float(z), 1)
+                    v.texCoords = float2(textureS, Float(startY + height) / Float(SEGMENTS_PER_TEXTURE))
                     vertices.append(v)
                 }
             }
@@ -722,7 +722,7 @@ class Building : Model {
                 end = float2(left - logo_offset, back)
             }
 
-            createLogo( start:start, end:end, bottom:bottom, seed:Building.logoIndex, color:trim_color)
+            createLogo(start:start, end:end, bottom:bottom, seed:Building.logoIndex, color:trim_color)
             Building.logoIndex += 1
 //            d->CreateLogo (start, end, bottom, WorldLogoIndex (_state), _trim_color)
             hasLogo = true
@@ -785,17 +785,17 @@ class Building : Model {
             vertices.append(contentsOf: tmpV)
         }
 
-        //print( self.height )
+        //print(self.height)
         if (self.height > 45 && flipCoinIsHeads())
         {
             let center = float3((left + right) / 2.0, newBottom, (front + back) / 2.0)
-            DecorationManager.instance.addRadioTower( center:center, height:15 )
+            DecorationManager.instance.addRadioTower(center:center, height:15)
         }
 
         return vertices
     }
 
-    func constructCube( left: Float, right: Float, front:Float, back:Float, bottom:Float, top:Float, textured:Bool ) -> [Vertex] {
+    func constructCube(left: Float, right: Float, front:Float, back:Float, bottom:Float, top:Float, textured:Bool) -> [Vertex] {
         let x1 = left
         let x2 = right
         let y1 = bottom
@@ -813,7 +813,7 @@ class Building : Model {
         let v2 = top / mapping
 
         let color = vector_float4(1,1,1,1)
-        let normal = vector_float4( 0, 1, 0, 1.0)
+        let normal = vector_float4(0, 1, 0, 1.0)
 
         var v : [Vertex] = [
             Vertex(position:vector_float4(x1, y1, z1, 1.0), normal: normal, color: color, texCoords:vector_float2(u,v1)),
@@ -829,14 +829,14 @@ class Building : Model {
 
         for i in 0 ..< 10 {
             if textured {
-                v[i].texCoords = vector_float2( (v[i].position.x + v[i].position.z) / Float(SEGMENTS_PER_TEXTURE), v[i].texCoords.y )
+                v[i].texCoords = vector_float2((v[i].position.x + v[i].position.z) / Float(SEGMENTS_PER_TEXTURE), v[i].texCoords.y)
             } else {
-                v[i].texCoords = vector_float2( 0, 0 )
+                v[i].texCoords = vector_float2(0, 0)
             }
         }
 
         var vlist = [Vertex]()
-        for i in stride( from:0, to: 10-2, by:2 ) {
+        for i in stride(from:0, to: 10-2, by:2) {
             vlist.append(v[i])
             vlist.append(v[i+1])
             vlist.append(v[i+2])
@@ -845,7 +845,7 @@ class Building : Model {
 
         // Top and bottom should have no texture shown
         for i in 0 ..< 10 {
-            v[i].texCoords = vector_float2( 0, 0 )
+            v[i].texCoords = vector_float2(0, 0)
         }
 
         vlist.append(v[1])
@@ -861,12 +861,12 @@ class Building : Model {
         return vlist
     }
 
-    func convertQuadsToTriangles( _ vlist : [Vertex], useMainColor:Bool = true ) -> [Vertex] {
+    func convertQuadsToTriangles(_ vlist : [Vertex], useMainColor:Bool = true) -> [Vertex] {
         var vertices = [Vertex]()
 
         // generate triangles
         let points = vlist.count
-        for i in stride( from:0, to: points, by: 4 ) {
+        for i in stride(from:0, to: points, by: 4) {
             var v1 = vlist[i]
             var v2 = vlist[i+1]
             var v3 = vlist[i+2]
@@ -882,31 +882,31 @@ class Building : Model {
             // Triangle1 = v1, v2, v3
             // Triangle2 = v2, v4, v3
 
-            let n1 = calculateTriangleSurfaceNormal(v1:v1, v2:v2, v3:v3 )
-            let n2 = calculateTriangleSurfaceNormal(v1:v2, v2:v4, v3:v3 )
+            let n1 = calculateTriangleSurfaceNormal(v1:v1, v2:v2, v3:v3)
+            let n2 = calculateTriangleSurfaceNormal(v1:v2, v2:v4, v3:v3)
 
             v1.normal = n1
             v2.normal = n1
             v3.normal = n1
-            vertices.append( contentsOf:[v1, v2, v3] )
+            vertices.append(contentsOf:[v1, v2, v3])
 
             v2.normal = n2
             v4.normal = n2
             v3.normal = n2
-            vertices.append( contentsOf:[v2, v4, v3] )
+            vertices.append(contentsOf:[v2, v4, v3])
         }
 
         return vertices
-//        createVertexBufforFromVertexArray( array:vertices )
+//        createVertexBufforFromVertexArray(array:vertices)
     }
 
-    func createVertexBufforFromVertexArray( array:[Vertex] ) {
+    func createVertexBufforFromVertexArray(array:[Vertex]) {
         vertexCount = array.count
         vertexBuffer = device.makeBuffer(bytes:array, length: array.count * MemoryLayout<Vertex>.stride, options: [])!
         vertexBuffer.label = "vertices building"
     }
 
-    func createLogo( start:float2, end:float2, bottom:Float, seed:Int, color:float4 ) {
+    func createLogo(start:float2, end:float2, bottom:Float, seed:Int, color:float4) {
         let LOGO_OFFSET :Float = 1 //0.2
 
         let logo_index = seed % TextureManager.instance.textAtlas.nrItems
@@ -935,7 +935,7 @@ class Building : Model {
         let ver3 = Vertex(position: float4(start.x, top, start.y, 1) + out, normal: normal, color: color, texCoords: float2(u1,v1))
         let ver4 = Vertex(position: float4(end.x, top, end.y, 1) + out, normal: normal, color: color, texCoords: float2(u2,v1))
 
-        //print( "Creating logo" )
+        //print("Creating logo")
         logoVertices.append(contentsOf: convertQuadsToTriangles([ver1, ver2, ver3, ver4], useMainColor:false))
     }
 }

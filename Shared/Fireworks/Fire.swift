@@ -198,7 +198,7 @@ class Firework : Drawable {
 }
 
 
-private func draw_triangle_2d( b: inout BufferWrapper,
+private func draw_triangle_2d(b: inout BufferWrapper,
         _ pos: Vector3, width: Float, height: Float) {
     guard b.has_available(len: 24) else { return }
 
@@ -223,7 +223,7 @@ private func draw_triangle_2d( b: inout BufferWrapper,
     b.append_raw(v: pos.z - width)
     b.append_raw(v: 1.0)
 
-    b.append_raw(v: pos.x )
+    b.append_raw(v: pos.x)
     b.append_raw(v: pos.y)
     b.append_raw(v: pos.z + width)
     b.append_raw(v: 1.0)
@@ -235,7 +235,7 @@ private func draw_triangle_2d( b: inout BufferWrapper,
 }
 
 
-private func draw_triangle_color( b: inout BufferWrapper, _ color: Color4) {
+private func draw_triangle_color(b: inout BufferWrapper, _ color: Color4) {
     guard b.has_available(len: 24) else {
         return
     }

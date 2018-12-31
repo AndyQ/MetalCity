@@ -74,13 +74,13 @@ class Renderer: NSObject, MTKViewDelegate {
 
         super.init()
 
-        buildDescriptors( metalKitView: metalKitView)
+        buildDescriptors(metalKitView: metalKitView)
 
         buildSharedUniformBuffers()
     }
 
 
-    func buildDescriptors( metalKitView: MTKView ) {
+    func buildDescriptors(metalKitView: MTKView) {
         guard let queue = self.device.makeCommandQueue() else { return }
         self.commandQueue = queue
 
@@ -98,7 +98,7 @@ class Renderer: NSObject, MTKViewDelegate {
         sharedBufferProvider = BufferProvider(device: device, inflightBuffersCount: 3, sizeOfUniformsBuffer: MemoryLayout<Uniforms>.size)
     }
 
-    func createDepthTexture(  ) {
+    func createDepthTexture() {
         let drawableSize = metalLayer.drawableSize
         let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .depth32Float, width: Int(drawableSize.width), height: Int(drawableSize.height), mipmapped: false)
         descriptor.usage = .renderTarget
@@ -109,7 +109,7 @@ class Renderer: NSObject, MTKViewDelegate {
     }
 
 
-    func updateSharedUniforms( )
+    func updateSharedUniforms()
     {
         let aspect = Float(metalLayer.drawableSize.aspectRatio)
         let fov :Float = (aspect > 1) ? (Float.pi / 4) : (Float.pi / 3) //.pi_2/5
@@ -124,18 +124,18 @@ class Renderer: NSObject, MTKViewDelegate {
         var uniforms = Uniforms()
         uniforms.viewProjectionMatrix = modelViewProjectionMatrix
 
-        self.sharedUniformBuffer = sharedBufferProvider.nextBuffer( )
+        self.sharedUniformBuffer = sharedBufferProvider.nextBuffer()
         memcpy(self.sharedUniformBuffer.contents(), &uniforms, MemoryLayout<Uniforms>.size)
     }
 
-    func updateUniforms( )
+    func updateUniforms()
     {
-        updateSharedUniforms( )
+        updateSharedUniforms()
         city.update()
         fireworks.update()
     }
 
-    func createRenderPassWithColorAttachmentTexture( texture : MTLTexture ) -> MTLRenderPassDescriptor {
+    func createRenderPassWithColorAttachmentTexture(texture : MTLTexture) -> MTLRenderPassDescriptor {
         let renderPass = MTLRenderPassDescriptor()
         renderPass.colorAttachments[0].texture = texture
         renderPass.colorAttachments[0].loadAction = .clear
@@ -174,7 +174,7 @@ class Renderer: NSObject, MTKViewDelegate {
         }
 
         guard let drawable = metalLayer.nextDrawable() else { return }
-        let renderPass = createRenderPassWithColorAttachmentTexture( texture: drawable.texture )
+        let renderPass = createRenderPassWithColorAttachmentTexture(texture: drawable.texture)
 
         let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPass)!
         commandEncoder.setFrontFacing(.counterClockwise)
@@ -183,8 +183,8 @@ class Renderer: NSObject, MTKViewDelegate {
 
         commandEncoder.setDepthStencilState(self.depthState)
 
-        city.draw( commandEncoder: commandEncoder, sharedUniformsBuffer: self.sharedUniformBuffer )
-        fireworks.draw( commandEncoder: commandEncoder, sharedUniformsBuffer: self.sharedUniformBuffer )
+        city.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: self.sharedUniformBuffer)
+        fireworks.draw(commandEncoder: commandEncoder, sharedUniformsBuffer: self.sharedUniformBuffer)
 
         commandEncoder.endEncoding()
 
@@ -215,7 +215,7 @@ extension Renderer {
     }
 
     func changeAutocamMode() {
-        self.autoCam.nextBehaviour( manuallyChanged: true )
+        self.autoCam.nextBehaviour(manuallyChanged: true)
     }
 }
 #endif
