@@ -47,7 +47,7 @@ extension Image {
             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
 
         context!.setFillColor(Color.black.cgColor)
-        context!.fill(CGRect(x:0, y:0, width:size.width, height:size.height))
+        context!.fill(CGRect(size:size))
 
         let flipVertical = CGAffineTransform( a: 1, b: 0, c: 0, d: -1, tx: 0, ty: size.height )
         context!.concatenate(flipVertical)
@@ -74,18 +74,18 @@ extension Image {
 
     class func createImageFromDrawing2( size: CGSize, doDrawing : ((CGContext)->()) ) -> Image? {
 #if os(OSX)
-        let im = NSImage.init(size: size)
+        let im = NSImage(size: size)
 
-        let rep = NSBitmapImageRep.init(bitmapDataPlanes: nil,
-                                        pixelsWide: Int(size.width),
-                                        pixelsHigh: Int(size.height),
-                                        bitsPerSample: 8,
-                                        samplesPerPixel: 4,
-                                        hasAlpha: true,
-                                        isPlanar: false,
-                                        colorSpaceName: .calibratedRGB,
-                                        bytesPerRow: 0,
-                                        bitsPerPixel: 0)
+        let rep = NSBitmapImageRep(bitmapDataPlanes: nil,
+                                   pixelsWide: Int(size.width),
+                                   pixelsHigh: Int(size.height),
+                                   bitsPerSample: 8,
+                                   samplesPerPixel: 4,
+                                   hasAlpha: true,
+                                   isPlanar: false,
+                                   colorSpaceName: .calibratedRGB,
+                                   bytesPerRow: 0,
+                                   bitsPerPixel: 0)
 
 
         im.addRepresentation(rep!)

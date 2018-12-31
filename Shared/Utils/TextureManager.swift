@@ -60,7 +60,7 @@ class TextureManager {
         let size = CGSize(width:128, height:128)
         let image = Image.createImageFromDrawing( size:size, doDrawing: { (ctx) in
 
-            ctx.clear(CGRect(x:0, y:0, width:size.width, height:size.height))
+            ctx.clear(CGRect(size:size))
             ctx.setFillColor(Color.white.cgColor)
 
             let r1 = CGRect( x:20, y:(size.height/2) - 5, width:10, height:10 )
@@ -73,7 +73,7 @@ class TextureManager {
 
         let blurImage = Image.createImageFromDrawing( size:size, doDrawing: { (ctx) in
 
-            ctx.clear(CGRect(x:0, y:0, width:size.width, height:size.height))
+            ctx.clear(CGRect(size:size))
             ctx.setFillColor(Color.white.cgColor)
 
             //ctx.fill(CGRect(x:0, y:0, width:size.width, height:size.height))
@@ -166,22 +166,22 @@ class TextureManager {
         let size = CGSize(width:128, height:128)
 
         let image = Image.createImageFromDrawing( size:size, doDrawing: { (ctx) in
-            ctx.clear(CGRect(x:0, y:0, width:size.width, height:size.height))
+            ctx.clear(CGRect(size:size))
             ctx.setLineWidth(2)
             ctx.setAlpha(1)
             ctx.setStrokeColor(red: 0.075, green: 0.075, blue: 0.075, alpha: 1)
 
             ctx.beginPath()
-            ctx.move(to: CGPoint(x:0, y:0))
+            ctx.move(to: .zero)
             ctx.addLine(to: CGPoint(x:size.width, y:size.height))
-            ctx.move(to: CGPoint(x:0, y:0))
+            ctx.move(to: .zero)
             ctx.addLine(to: CGPoint(x:0, y:size.height))
-            ctx.move(to: CGPoint(x:0, y:0))
+            ctx.move(to: .zero)
             ctx.addLine(to: CGPoint(x:size.width, y:0))
             ctx.strokePath()
 
             ctx.beginPath()
-            ctx.move(to: CGPoint(x:0, y:0))
+            ctx.move(to: .zero)
 
             for i in stride(from:0, to:Int(size.width), by:9 ) {
                 if i % 2 != 0 {
@@ -430,7 +430,7 @@ extension TextureManager {
 
         let width = image.size.width
         let height = image.size.height
-        let bounds = CGRect(x:0, y:0, width:width, height:height)
+        let bounds = CGRect(size: image.size)
 
         let rowBytes = Int(width) * bytesPerPixel
         let colorSpace = CGColorSpaceCreateDeviceRGB()

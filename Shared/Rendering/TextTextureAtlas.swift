@@ -73,7 +73,7 @@ class TextTextureAtlas {
             // Media.com using DamascusLight
 
             ctx.setFillColor(red: 0.075, green: 0.075, blue: 0.075, alpha: 1)
-            ctx.fill(CGRect(x:0, y:0, width:size.width, height:size.height))
+            ctx.fill(CGRect(size:size))
 
             // Draw text
             var i : CGFloat = 0
@@ -87,7 +87,7 @@ class TextTextureAtlas {
 
                 print( "   \(string) using \(fontName)" )
 
-                let attrs = [.font: Font(name:fontName, size: 24)!, .strokeColor: Color.white, .foregroundColor: Color.white]
+                let attrs: [NSAttributedString.Key: Any] = [.font: Font(name:fontName, size: 24)!, .strokeColor: Color.white, .foregroundColor: Color.white]
                 let textSize = string.size(withAttributes:attrs)
 
                 if i + textSize.height > size.height {

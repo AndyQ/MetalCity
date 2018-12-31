@@ -128,7 +128,12 @@ extension float3 {
             vectorStart.z + ((vectorEnd.z - vectorStart.z) * t) )
         return v
     }
+}
 
+extension CGRect {
+    init(size: CGSize) {
+        self.init(origin: .zero, size: size)
+    }
 }
 
 extension float4 {
