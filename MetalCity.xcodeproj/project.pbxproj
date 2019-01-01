@@ -480,7 +480,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = JL8K7LH7KS;
+				DEVELOPMENT_TEAM = A4ZM73UFF5;
 				INFOPLIST_FILE = MetalCity_Mac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -503,7 +503,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = JL8K7LH7KS;
+				DEVELOPMENT_TEAM = A4ZM73UFF5;
 				INFOPLIST_FILE = MetalCity_Mac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -639,7 +639,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JL8K7LH7KS;
+				DEVELOPMENT_TEAM = A4ZM73UFF5;
 				INFOPLIST_FILE = MetalCity/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -658,7 +658,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JL8K7LH7KS;
+				DEVELOPMENT_TEAM = A4ZM73UFF5;
 				INFOPLIST_FILE = MetalCity/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
