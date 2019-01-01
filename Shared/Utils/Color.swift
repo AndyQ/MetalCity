@@ -22,18 +22,18 @@ public typealias Color = UIColor
 #endif
 
 extension Color {
-    
+
     public convenience init(rgba:float4) {
         self.init(red:CGFloat(rgba.x), green:CGFloat(rgba.y), blue:CGFloat(rgba.z), alpha:CGFloat(rgba.w))
     }
-    
+
 #if !os(OSX)
-    
+
     func rgba() -> float4 {
-        var fRed : CGFloat = 0
-        var fGreen : CGFloat = 0
-        var fBlue : CGFloat = 0
-        var fAlpha : CGFloat = 0
+        var fRed: CGFloat = 0
+        var fGreen: CGFloat = 0
+        var fBlue: CGFloat = 0
+        var fAlpha: CGFloat = 0
         self.getRed(&fRed, green: &fGreen, blue: &fBlue, alpha: &fAlpha)
         return float4(Float(fRed), Float(fGreen), Float(fBlue), 1.0)
     }
@@ -43,22 +43,22 @@ extension Color {
         getHue(&value, saturation: nil, brightness: nil, alpha: nil)
         return value
     }
-    
+
 
 #else
 
     func rgba() -> float4 {
-        var fRed : CGFloat = 0
-        var fGreen : CGFloat = 0
-        var fBlue : CGFloat = 0
-        var fAlpha : CGFloat = 0
-        
+        var fRed: CGFloat = 0
+        var fGreen: CGFloat = 0
+        var fBlue: CGFloat = 0
+        var fAlpha: CGFloat = 0
+
         self.getRed(&fRed, green: &fGreen, blue: &fBlue, alpha: &fAlpha)
         return float4(Float(fRed), Float(fGreen), Float(fBlue), 1.0)
     }
 
 #endif
-    
+
     @objc func debugQuickLookObject() -> AnyObject {
 #if os(OSX)
         return self as NSColor

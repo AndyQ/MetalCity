@@ -105,7 +105,7 @@ vertex ProjectedVertex objectVertexShaderb(const device InVertex *vertices [[buf
     return outVert;
 }
 
-fragment half4 objectFragmentShader(ProjectedVertex vert [[stage_in]] )
+fragment half4 objectFragmentShader(ProjectedVertex vert [[stage_in]])
 {
     float diffuseIntensity = max(0.33, dot(normalize(vert.normal), -kLightDirection));
     float a = vert.color.a;
@@ -113,7 +113,7 @@ fragment half4 objectFragmentShader(ProjectedVertex vert [[stage_in]] )
     return half4(color.r, color.g, color.b, a);
 }
 
-vertex ProjectedVertex indexedVertexShader( const device InVertex *vertices [[buffer(0)]],
+vertex ProjectedVertex indexedVertexShader(const device InVertex *vertices [[buffer(0)]],
                                            const device Uniforms &uniforms [[buffer(1)]],
                                            unsigned int  vertexId [[vertex_id]],
                                            unsigned int iid [[instance_id]])
@@ -143,7 +143,7 @@ fragment half4 indexedFragmentShader(ProjectedVertex fragments [[stage_in]],
     float4 baseColor = fragments.color * 0.25;// * 0.075;
     baseColor.a = 1;
     
-    if ( texture.x > 0.5 || texture.y > 0.5 || texture.z > 0.5 ) {
+    if (texture.x > 0.5 || texture.y > 0.5 || texture.z > 0.5) {
         return half4(baseColor + texture);
     }
     
@@ -151,7 +151,7 @@ fragment half4 indexedFragmentShader(ProjectedVertex fragments [[stage_in]],
 }
 
 // Lights shader
-vertex ProjectedVertex lightsVertexShader( const device InVertex *vertices [[buffer(0)]],
+vertex ProjectedVertex lightsVertexShader(const device InVertex *vertices [[buffer(0)]],
                                            const device Uniforms &uniforms [[buffer(1)]],
                                            unsigned int  vertexId [[vertex_id]],
                                            unsigned int iid [[instance_id]])
@@ -180,7 +180,7 @@ fragment half4 lightsFragmentShader(ProjectedVertex fragments [[stage_in]],
     
     float4 baseColor = fragments.color;
     
-    if ( texture.a != 0 ) {
+    if (texture.a != 0) {
         half4 c = half4(baseColor * texture);
         c.a = texture.a;
         return c;
@@ -191,7 +191,7 @@ fragment half4 lightsFragmentShader(ProjectedVertex fragments [[stage_in]],
 }
 
 // Building Shader
-vertex ProjectedVertex buildingVertexShader( const device InVertex *vertices [[buffer(0)]],
+vertex ProjectedVertex buildingVertexShader(const device InVertex *vertices [[buffer(0)]],
                                             const device Uniforms &uniforms [[buffer(1)]],
                                             unsigned int  vertexId [[vertex_id]],
                                             unsigned int iid [[instance_id]])
@@ -218,7 +218,7 @@ fragment half4 buildingFragmentShader(ProjectedVertex fragments [[stage_in]],
     float4 texture = textures.sample(samplers, fragments.texCoords);
     
     float4 baseColor = float4(0.075, 0.075, 0.075, 0);
-    if ( texture.x > 0.5 || texture.y > 0.5 || texture.z > 0.5 ) {
+    if (texture.x > 0.5 || texture.y > 0.5 || texture.z > 0.5) {
         baseColor = fragments.color * 0.25;// * 0.075;
         baseColor.a = 1;
     }
@@ -226,7 +226,7 @@ fragment half4 buildingFragmentShader(ProjectedVertex fragments [[stage_in]],
 }
 
 // Logo Shader
-vertex ProjectedVertex logoVertexShader( const device InVertex *vertices [[buffer(0)]],
+vertex ProjectedVertex logoVertexShader(const device InVertex *vertices [[buffer(0)]],
                                            const device Uniforms &uniforms [[buffer(1)]],
                                            unsigned int  vertexId [[vertex_id]],
                                            unsigned int iid [[instance_id]])
@@ -258,7 +258,7 @@ fragment half4 logoFragmentShader(ProjectedVertex fragments [[stage_in]],
 }
 
 // Radio Tower Shader
-vertex ProjectedVertex radioTowerVertexShader( const device InVertex *vertices [[buffer(0)]],
+vertex ProjectedVertex radioTowerVertexShader(const device InVertex *vertices [[buffer(0)]],
                                             const device Uniforms &uniforms [[buffer(1)]],
                                             unsigned int  vertexId [[vertex_id]],
                                             unsigned int iid [[instance_id]])
@@ -287,7 +287,7 @@ fragment half4 radioTowerFragmentShader(ProjectedVertex fragments [[stage_in]],
     return half4(texture);
 }
 
-vertex ProjectedVertex carVertexShader( const device InVertex *vertices [[buffer(0)]],
+vertex ProjectedVertex carVertexShader(const device InVertex *vertices [[buffer(0)]],
                                            const device Uniforms &uniforms [[buffer(1)]],
                                            unsigned int  vertexId [[vertex_id]],
                                            unsigned int iid [[instance_id]])

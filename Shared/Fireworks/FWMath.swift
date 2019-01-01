@@ -14,7 +14,7 @@ struct Vector3 {
     var z: Float
 
     func length() -> Float {
-        return sqrtf((x * x) + (y * y) + (z * z)) 
+        return sqrtf((x * x) + (y * y) + (z * z))
     }
 }
 
@@ -38,7 +38,7 @@ func random_float() -> Float {
 // Return Float in range [lower, upper]
 func random_range(lower: Float, _ upper: Float) -> Float {
     precondition(lower <= upper)
-    if RANDOM_RANGE_DEBUG { return random_choose(a:lower, upper); }
+    if RANDOM_RANGE_DEBUG { return random_choose(a:lower, upper) }
     let rand = random_float()
     let delta = upper - lower
     let ret = (rand * delta) + lower
@@ -51,7 +51,7 @@ func random_range(lower: Float, _ upper: Float) -> Float {
 // Return Int in range [lower, upper]
 func random_range(lower: Int, _ upper: Int) -> Int {
     precondition(lower <= upper)
-    if RANDOM_RANGE_DEBUG { return random_choose(a:lower, upper); }
+    if RANDOM_RANGE_DEBUG { return random_choose(a:lower, upper) }
     let delta = upper - lower
     let ret = (Int(arc4random()) % (delta + 1)) + lower
     precondition(ret >= lower)
@@ -75,7 +75,7 @@ func random_choose<T>(a: T, _ b: T) -> T {
 Return random 3D vector.  Length will be == 1.
 Source: gamedev.net
 This finds a random point on a circle, than finds the height of the sphere
-at that point.  It can use the top or bottom hemisphere for z.  
+at that point.  It can use the top or bottom hemisphere for z.
 This gives better distribution than two random angles (which will produce
 more points clustered at the poles)
 */
@@ -83,12 +83,12 @@ func RandomUniformUnitVector() -> Vector3 {
     let angle = random_range(lower:0.0, Float(2.0 * PI))
     let r = sqrtf(random_range(lower:0.0, 1.0))
     let hemisphere = random_choose(a:-1.0, 1.0)
-    
+
     let x = r * cosf(angle)
     let y = r * sinf(angle)
     let z = sqrtf(1.0 - r*r) * Float(hemisphere)
     let ret = Vector3(x: x, y:y, z:z)
-    
+
     return ret
 }
 

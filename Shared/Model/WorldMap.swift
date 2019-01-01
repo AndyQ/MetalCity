@@ -8,7 +8,7 @@
 
 import Foundation
 
-let WORLD_SIZE : Int = 512
+let WORLD_SIZE: Int = 512
 let WORLD_HALF = WORLD_SIZE / 2
 let WORLD_EDGE = 100
 let GRID_RESOLUTION = 32
@@ -16,29 +16,29 @@ let GRID_CELL = GRID_RESOLUTION / 2
 let GRID_SIZE = WORLD_SIZE / GRID_RESOLUTION
 
 class WorldMap {
-    static let instance : WorldMap = WorldMap()
-    
+    static let instance: WorldMap = WorldMap()
+
     var world = [[MapItem]]()
     var visGrid = [[Bool]]()
 
-    static func worldToGrid( _ x : Int, _ y : Int ) -> (Int,Int) {
+    static func worldToGrid(_ x: Int, _ y: Int) -> (Int,Int) {
         return (worldToGrid(x), worldToGrid(y))
     }
 
-    static func worldToGrid( _ x : Int ) -> Int {
+    static func worldToGrid(_ x: Int) -> Int {
         return (x/GRID_RESOLUTION).clamped(to: 0 ... GRID_SIZE-1)
     }
 
-    static func gridToWorld( _ x : Int, _ y : Int ) -> (Int,Int) {
+    static func gridToWorld(_ x: Int, _ y: Int) -> (Int,Int) {
         return (gridToWorld(x), gridToWorld(y))
     }
-    
-    static func gridToWorld( _ x: Int ) -> Int {
+
+    static func gridToWorld(_ x: Int) -> Int {
         return x * GRID_RESOLUTION
     }
-    
 
-    
+
+
     private init() {
     }
 
@@ -47,31 +47,31 @@ class WorldMap {
         visGrid = Array(repeating: Array(repeating: false, count: GRID_SIZE), count: GRID_SIZE)
     }
 
-    func cellAt( _ x : Int, _ y : Int) -> MapItem {
-        
+    func cellAt(_ x: Int, _ y: Int) -> MapItem {
+
         let cx = x.clamped(to: 0...WORLD_SIZE-1)
         let cy = y.clamped(to: 0...WORLD_SIZE-1)
         return self.world[cx][cy]
     }
-    
-    func addValue( _ x : Int, _ y : Int, val : MapItem ) {
+
+    func addValue(_ x: Int, _ y: Int, val: MapItem) {
         let cx = x.clamped(to: 0...WORLD_SIZE-1)
         let cy = y.clamped(to: 0...WORLD_SIZE-1)
         self.world[cx][cy].insert(val)
     }
-    
-    func isVisible(pos : float3) -> Bool {
+
+    func isVisible(pos: float3) -> Bool {
         return isVisible(x:Int(pos.x), y:Int(pos.z))
-    
+
     }
-    
-    func isVisible( x : Int, y : Int ) -> Bool {
+
+    func isVisible(x: Int, y: Int) -> Bool {
         let (x,y) = WorldMap.worldToGrid(x, y)
         return visGrid[x][y]
     }
-    
-    
-    func updateVisibilityGrid( ) {
+
+
+    func updateVisibilityGrid() {
         //Clear the visibility table
         visGrid = Array(repeating: Array(repeating: false, count: GRID_SIZE), count: GRID_SIZE)
 
@@ -85,7 +85,7 @@ class WorldMap {
         //Rather than obsess over sorting those objects properly, it's more efficient to
         //just mark them visible.
         var left = 3, right = 3, front = 3, back = 3
-        
+
         //Looking north, can't see south.
         if angle.y < 60.0 || angle.y > 300.0 {
             front = 2
@@ -114,10 +114,10 @@ class WorldMap {
                 visGrid[x][y] = true
             }
         }
-        
+
         //Doesn't matter where we are facing, objects in current cell are always visible
         visGrid[grid_x][grid_z] = true
-        
+
         //Here, we look at the angle from the current camera position to the cell
         //on the grid, and how much that angle deviates from the current view angle.
         for x in 0 ..< GRID_SIZE {
@@ -127,8 +127,8 @@ class WorldMap {
                     continue
                 }
                 //if the camera is to the left of this cell, use the left edge
-                let target_x : Float
-                let target_z : Float
+                let target_x: Float
+                let target_z: Float
                 if grid_x < x {
                     target_x = Float(x * GRID_RESOLUTION)
                 } else {
@@ -139,9 +139,9 @@ class WorldMap {
                 } else {
                     target_z = Float((y + 1) * GRID_RESOLUTION)
                 }
-                
+
                 let angle_to = 180 - angleBetweenPoints(target_x, target_z, position.x, position.z)
-                
+
                 //Store how many degrees the cell is to the
                 let angle_diff = fabsf(mathAngleDifference(angle.y, angle_to))
                 visGrid[x][y] = angle_diff < 60

@@ -23,7 +23,7 @@ class GameViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         guard let mtkView = self.view as? MTKView else {
             print("View attached to GameViewController is not an MTKView")
             return
@@ -48,53 +48,45 @@ class GameViewController: NSViewController {
 
         mtkView.delegate = renderer
     }
-    
+
     var prevPoint = CGPoint()
     var nrTouches = 0
-    
+
     override func keyDown(with event: NSEvent) {
-        if let c = event.charactersIgnoringModifiers?.lowercased() {
-            print( "Hit char - \(c)" )
-            if c == "r" {
-                // Rebuild city
-                renderer.rebuildCity()
-            } else if c == "c" {
-                // Toggle Autocam
-                renderer.toggleAutoCam()
-            } else if c == " " {
-                // Change autocam mode (if running)
-                renderer.changeAutocamMode()
-            } else if c == "t" {
-                // Change autocam mode (if running)
-                renderer.regenerateTextures()
-            }
+        guard let c = event.charactersIgnoringModifiers?.lowercased() else { return }
+        print("Hit char - \(c)")
+        switch c {
+        case "r": renderer.rebuildCity()
+        case "c": renderer.toggleAutoCam()
+        case " ": renderer.changeAutocamMode()
+        case "t": renderer.regenerateTextures()
+        default: return
         }
     }
-    
+
     override func mouseDown(with event: NSEvent) {
-        let p = event.locationInWindow
-        prevPoint = p
+        prevPoint = event.locationInWindow
     }
 
     override func mouseDragged(with event: NSEvent) {
         let p = event.locationInWindow
-        
+
         let cmdPressed = event.modifierFlags.contains(.command)
         let optionPressed = event.modifierFlags.contains(.option)
 
         let dx = Float(p.x - prevPoint.x)
         let dy = Float(p.y - prevPoint.y)
         if !cmdPressed && !optionPressed {
-            
+
             renderer.camera.rotateViewRound(x: 0, y: dx / 100.0, z: 0)
-            
+
             renderer.camera.moveCamera(speed: -dy * 0.05)
         } else if cmdPressed {
             let deltaY = -dy / 100.0
-            var v = renderer.camera.getView()
+            var v = renderer.camera.lookAt
             v.y += deltaY * 30
-            renderer.camera.setView(view:v)
-            
+            renderer.camera.lookAt = v
+
         } else if optionPressed {
             renderer.camera.raiseCamera(amount: dy*0.5)
             renderer.camera.strafeCamera(speed: -dx * 0.05)

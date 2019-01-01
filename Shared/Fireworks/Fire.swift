@@ -14,13 +14,6 @@ private let COLORS: [Color4] = [
     Color4(r: 1.0, g: 0.2, b: 0.2, a: 1.0),
 ]
 
-
-private func get_random_color() -> Color4 {
-    let i = random_range(lower:0, COLORS.count - 1)
-    return COLORS[i]
-}
-
-
 // Return distance traveled
 // Simulate air drag - velocity tapers off exponentially
 private func _get_flight(vel: Float, secs: Float) -> Float {
@@ -41,10 +34,9 @@ struct Flare {
     let duration_secs: Float
 
     // How far back the trail goes (plume mode)
-    let trail_secs: Float  
+    let trail_secs: Float
 
-
-    func pointAtTime(secs: Float, orig_pos: Vector3) -> Vector3 {
+    func point(at secs: Float, orig_pos: Vector3) -> Vector3 {
         var ret = orig_pos
         ret.x += _get_flight(vel: velocity_vec.x, secs: secs)
         ret.y += _get_flight(vel: velocity_vec.y, secs: secs)
@@ -56,8 +48,8 @@ struct Flare {
         return ret
     }
 
-    func colorAtTime(secs: Float) -> Color4 {
-        // Linear fade out is fine.  Note we can start with a > 1.0, 
+    func color(at secs: Float) -> Color4 {
+        // Linear fade out is fine.  Note we can start with a > 1.0,
         // so it actually appears exponential.
         let percent = secs / duration_secs
         var ret = color
@@ -67,7 +59,7 @@ struct Flare {
 }
 
 
-class Firework : Drawable {
+class Firework: Drawable {
     let pos: Vector3
     let start_time: Int64
     let type: Int
@@ -88,7 +80,7 @@ class Firework : Drawable {
 
     private func add_flares() {
         let count = 400
-        let orig_color = get_random_color()
+        let orig_color = COLORS.randomElement()!
 
         // Reserve exact storage space.  It saves a bit of wasted memory.
         m_flares.reserveCapacity(count)
@@ -117,24 +109,24 @@ class Firework : Drawable {
 
             let f = Flare(velocity_vec: velocity,
                         size: size,
-                        color: color, 
+                        color: color,
                         duration_secs: duration_secs,
                         trail_secs: trail_secs)
             m_flares.append(f)
         }
     }
 
-    func getSecondsElapsed(time: Int64) -> Float {
+    func secondsElapsed(time: Int64) -> Float {
         if time < start_time {
             return 0
         }
         return Float(time - start_time) / 1_000_000
     }
 
-    func draw(time: Int64, 
+    func draw(time: Int64,
               bv: inout BufferWrapper,
-                  bc: inout BufferWrapper) {
-        let secs = self.getSecondsElapsed(time: time)
+              bc: inout BufferWrapper) {
+        let secs = self.secondsElapsed(time: time)
         if self.type == 0 {
             // classic particle only
             for flare in self.m_flares {
@@ -155,8 +147,8 @@ class Firework : Drawable {
         if secs > flare.duration_secs {
             return
         }
-        let p = flare.pointAtTime(secs: secs, orig_pos: self.pos)
-        var color = flare.colorAtTime(secs: secs)
+        let p = flare.point(at: secs, orig_pos: self.pos)
+        var color = flare.color(at: secs)
         if secs > (flare.duration_secs - 0.1) {
             // flash out
             color.a = 1.0
@@ -167,7 +159,6 @@ class Firework : Drawable {
         draw_triangle_2d(b:&bv, p, width: size, height: -size)
         draw_triangle_color(b:&bc, color)
     }
-
 
     @inline(never)
     func render_flare_trail(flare: Flare, secs: Float,
@@ -180,13 +171,13 @@ class Firework : Drawable {
         if secs > flare.duration_secs {
             return
         }
-        var color = flare.colorAtTime(secs: secs)
+        var color = flare.color(at: secs)
         var plume_secs = Float(0)
         var size = flare.size
         var first = true
 
         while true {
-            let p = flare.pointAtTime(secs: secs, orig_pos: self.pos)
+            let p = flare.point(at: secs, orig_pos: self.pos)
             draw_triangle_2d(b:&bv, p, width: size, height: size)
             draw_triangle_color(b:&bc, color)
             if first {
@@ -194,7 +185,7 @@ class Firework : Drawable {
                 draw_triangle_color(b:&bc, color)
                 first = false
             }
-            
+
             size *= 0.95
             color.a *= 0.90
             secs -= PLUME_STEP_SECS
@@ -207,22 +198,20 @@ class Firework : Drawable {
 }
 
 
-private func draw_triangle_2d( b: inout BufferWrapper,
+private func draw_triangle_2d(b: inout BufferWrapper,
         _ pos: Vector3, width: Float, height: Float) {
-    guard b.has_available(len: 24) else {
-        return
-    }
+    guard b.has_available(len: 24) else { return }
 
     b.append_raw(v: pos.x - width)
     b.append_raw(v: pos.y)
     b.append_raw(v: pos.z)
     b.append_raw(v: 1.0)
-    
+
     b.append_raw(v: pos.x + width)
     b.append_raw(v: pos.y)
     b.append_raw(v: pos.z)
     b.append_raw(v: 1.0)
-    
+
     b.append_raw(v: pos.x)
     b.append_raw(v: pos.y + height)
     b.append_raw(v: pos.z)
@@ -233,12 +222,12 @@ private func draw_triangle_2d( b: inout BufferWrapper,
     b.append_raw(v: pos.y)
     b.append_raw(v: pos.z - width)
     b.append_raw(v: 1.0)
-    
-    b.append_raw(v: pos.x )
+
+    b.append_raw(v: pos.x)
     b.append_raw(v: pos.y)
     b.append_raw(v: pos.z + width)
     b.append_raw(v: 1.0)
-    
+
     b.append_raw(v: pos.x)
     b.append_raw(v: pos.y + height)
     b.append_raw(v: pos.z)
@@ -246,7 +235,7 @@ private func draw_triangle_2d( b: inout BufferWrapper,
 }
 
 
-private func draw_triangle_color( b: inout BufferWrapper, _ color: Color4) {
+private func draw_triangle_color(b: inout BufferWrapper, _ color: Color4) {
     guard b.has_available(len: 24) else {
         return
     }
