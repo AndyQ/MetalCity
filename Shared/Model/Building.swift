@@ -258,7 +258,7 @@ class Building: Model {
                     hasLogo = true
                     let start = float2(pos.x, pos.z);
                     let end = float2(p.x, p.z);
-                    createLogo(start: start, end: end, bottom: Float(height), seed: Building.logoIndex, color: randomColor())
+                    createLogo(start: start, end: end, bottom: Float(height), seed: Building.logoIndex, logoTextColor: randomColor())
                     Building.logoIndex += 1
                 }
             } else if (skip_counter != 1) {
@@ -718,7 +718,7 @@ class Building: Model {
                 end = float2(left - logo_offset, back)
             }
 
-            createLogo(start:start, end:end, bottom:bottom, seed:Building.logoIndex, color:trim_color)
+            createLogo(start:start, end:end, bottom:bottom, seed:Building.logoIndex, logoTextColor:trim_color)
             Building.logoIndex += 1
 //            d->CreateLogo (start, end, bottom, WorldLogoIndex (_state), _trim_color)
             hasLogo = true
@@ -899,7 +899,7 @@ class Building: Model {
         vertexBuffer.label = "vertices building"
     }
 
-    func createLogo(start:float2, end:float2, bottom:Float, seed:Int, color:float4) {
+    func createLogo(start:float2, end:float2, bottom:Float, seed:Int, logoTextColor:float4) {
         let LOGO_OFFSET :Float = 1 //0.2
 
         let logo_index = seed % TextureManager.instance.textAtlas.nrItems
@@ -921,10 +921,10 @@ class Building: Model {
         let u2 = textItem.tr.x
         let v2 = textItem.tr.y
 
-        let ver1 = Vertex(position: float4(start.x, bottom, start.y, 1) + out, normal: .normal, color: .color, texCoords: float2(u1,v2))
-        let ver2 = Vertex(position: float4(end.x, bottom, end.y, 1) + out, normal: .normal, color: .color, texCoords: float2(u2,v2))
-        let ver3 = Vertex(position: float4(start.x, top, start.y, 1) + out, normal: .normal, color: .color, texCoords: float2(u1,v1))
-        let ver4 = Vertex(position: float4(end.x, top, end.y, 1) + out, normal: .normal, color: .color, texCoords: float2(u2,v1))
+        let ver1 = Vertex(position: float4(start.x, bottom, start.y, 1) + out, normal: .normal, color: logoTextColor, texCoords: float2(u1,v2))
+        let ver2 = Vertex(position: float4(end.x, bottom, end.y, 1) + out, normal: .normal, color: logoTextColor, texCoords: float2(u2,v2))
+        let ver3 = Vertex(position: float4(start.x, top, start.y, 1) + out, normal: .normal, color: logoTextColor, texCoords: float2(u1,v1))
+        let ver4 = Vertex(position: float4(end.x, top, end.y, 1) + out, normal: .normal, color: logoTextColor, texCoords: float2(u2,v1))
 
         //print("Creating logo")
         logoVertices.append(contentsOf: convertQuadsToTriangles([ver1, ver2, ver3, ver4], useMainColor:false))
