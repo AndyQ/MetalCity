@@ -11,7 +11,6 @@ import MetalKit
 import CoreMotion
 import UserNotifications
 
-import Menu
 import SnapKit
 
 public struct DarkMenuTheme: MenuTheme {
@@ -112,10 +111,15 @@ class GameViewController: UIViewController {
 
 
     @objc func tap(_ gr: UITapGestureRecognizer) {
+        
+        if self.view.hitTest(gr.location(in: self.view), with: nil) != self.view {
+            return
+        }
+        
         menuHidden.toggle()
         
-        
         if self.menuHidden {
+            menu.hideContents(animated: true)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: {
                 UIView.animate(withDuration: 0.15) {
                     self.menuRightConstraint?.update(inset:-120)
@@ -203,13 +207,13 @@ extension GameViewController {
         
         menu = MenuView(title: "Menu", theme: DarkMenuTheme()) { () -> [MenuItem] in
             return [
-                ShortcutMenuItem(name: "Toggle autocam", shortcut: (.command, "Z"), action: {
+                ShortcutMenuItem(name: "Toggle autocam", shortcut: (.command, "A"), action: {
                     [unowned self] in
                     
                     self.renderer.toggleAutocam()
                 }),
                 
-                ShortcutMenuItem(name: "Next autocam mode", shortcut: ([.command, .shift], "Z"), action: {
+                ShortcutMenuItem(name: "Next autocam mode", shortcut: ([.command], "N"), action: {
                     [weak self] in
 
                     self?.renderer.changeAutocamMode()
@@ -217,12 +221,12 @@ extension GameViewController {
                 
                 SeparatorMenuItem(),
                 
-                ShortcutMenuItem(name: "Rebuild city", shortcut: ([.command, .alternate], "I"), action: {
+                ShortcutMenuItem(name: "Rebuild city", shortcut: ([.command], "R"), action: {
                     [weak self] in
 
                     self?.renderer.rebuildCity()
                 }),
-                ShortcutMenuItem(name: "Regenerate textures", shortcut: ([.command, .alternate], "L"), action: {
+                ShortcutMenuItem(name: "Regenerate textures", shortcut: ([.command], "T"), action: {
                     [weak self] in
 
                     self?.renderer.regenerateTextures()
