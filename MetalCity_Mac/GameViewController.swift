@@ -57,7 +57,7 @@ class GameViewController: NSViewController {
         print("Hit char - \(c)")
         switch c {
         case "r": renderer.rebuildCity()
-        case "c": renderer.toggleAutoCam()
+        case "c": renderer.toggleAutocam()
         case " ": renderer.changeAutocamMode()
         case "t": renderer.regenerateTextures()
         default: return

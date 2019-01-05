@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		56B29DC67F02C2A8C9FFFCC1 /* Pods_MetalCity_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F894B2D2D09D83E9817699D2 /* Pods_MetalCity_Mac.framework */; };
+		98914394CCD4D60DB1E1D0A6 /* Pods_MetalCity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDE257933FBB9CFFCC32A451 /* Pods_MetalCity.framework */; };
 		A117A82B21CA5393008FFC94 /* AutoCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A117A82A21CA5393008FFC94 /* AutoCamera.swift */; };
 		A117A83321CA78C3008FFC94 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A117A83221CA78C3008FFC94 /* AppDelegate.swift */; };
 		A117A83521CA78C3008FFC94 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A117A83421CA78C3008FFC94 /* GameViewController.swift */; };
@@ -69,8 +71,6 @@
 		A13069EB21CFB7CA0087E182 /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13069E221CFB7CA0087E182 /* Buffer.swift */; };
 		A13069EC21CFB7CA0087E182 /* Fire.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13069E321CFB7CA0087E182 /* Fire.swift */; };
 		A13069ED21CFB7CA0087E182 /* Fire.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13069E321CFB7CA0087E182 /* Fire.swift */; };
-		A13069F621D030C40087E182 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13069F521D030C40087E182 /* MenuViewController.swift */; };
-		A13069F921D032960087E182 /* MenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13069F821D032960087E182 /* MenuCell.swift */; };
 		A1B7655521C66A610043139A /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655421C66A610043139A /* State.swift */; };
 		A1B7655721C6818B0043139A /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655621C6818B0043139A /* Utils.swift */; };
 		A1B7655B21C698D70043139A /* BoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655A21C698D70043139A /* BoundingBox.swift */; };
@@ -81,6 +81,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		14262323BCA12CCF54129C0E /* Pods-MetalCity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetalCity.release.xcconfig"; path = "Pods/Target Support Files/Pods-MetalCity/Pods-MetalCity.release.xcconfig"; sourceTree = "<group>"; };
+		14CE9D34DFCB3C48701489D8 /* Pods-MetalCity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetalCity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MetalCity/Pods-MetalCity.debug.xcconfig"; sourceTree = "<group>"; };
+		42513201B6C7E4AD430AA7D4 /* Pods-MetalCity_Mac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetalCity_Mac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MetalCity_Mac/Pods-MetalCity_Mac.debug.xcconfig"; sourceTree = "<group>"; };
 		A117A82A21CA5393008FFC94 /* AutoCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCamera.swift; sourceTree = "<group>"; };
 		A117A83021CA78C3008FFC94 /* MetalCity_Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetalCity_Mac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A117A83221CA78C3008FFC94 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -119,8 +122,6 @@
 		A13069E121CFB7CA0087E182 /* Clock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Clock.swift; sourceTree = "<group>"; };
 		A13069E221CFB7CA0087E182 /* Buffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buffer.swift; sourceTree = "<group>"; };
 		A13069E321CFB7CA0087E182 /* Fire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fire.swift; sourceTree = "<group>"; };
-		A13069F521D030C40087E182 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
-		A13069F821D032960087E182 /* MenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCell.swift; sourceTree = "<group>"; };
 		A1B7655421C66A610043139A /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		A1B7655621C6818B0043139A /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A1B7655A21C698D70043139A /* BoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundingBox.swift; sourceTree = "<group>"; };
@@ -128,6 +129,9 @@
 		A1B7655E21C7BFD10043139A /* TextureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureManager.swift; sourceTree = "<group>"; };
 		A1B7656021C7D3430043139A /* Streetlights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Streetlights.swift; sourceTree = "<group>"; };
 		A1D9BD0021C57A7800D7204A /* PlaneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneModel.swift; sourceTree = "<group>"; };
+		BDE257933FBB9CFFCC32A451 /* Pods_MetalCity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MetalCity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D500C3C0F8923F180E45A60C /* Pods-MetalCity_Mac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetalCity_Mac.release.xcconfig"; path = "Pods/Target Support Files/Pods-MetalCity_Mac/Pods-MetalCity_Mac.release.xcconfig"; sourceTree = "<group>"; };
+		F894B2D2D09D83E9817699D2 /* Pods_MetalCity_Mac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MetalCity_Mac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56B29DC67F02C2A8C9FFFCC1 /* Pods_MetalCity_Mac.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,12 +147,24 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98914394CCD4D60DB1E1D0A6 /* Pods_MetalCity.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6A218512623B075DE428C472 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				14CE9D34DFCB3C48701489D8 /* Pods-MetalCity.debug.xcconfig */,
+				14262323BCA12CCF54129C0E /* Pods-MetalCity.release.xcconfig */,
+				42513201B6C7E4AD430AA7D4 /* Pods-MetalCity_Mac.debug.xcconfig */,
+				D500C3C0F8923F180E45A60C /* Pods-MetalCity_Mac.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		A117A83121CA78C3008FFC94 /* MetalCity_Mac */ = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +185,8 @@
 				A12CDB1921C2EBDC001A3DA2 /* MetalCity */,
 				A117A83121CA78C3008FFC94 /* MetalCity_Mac */,
 				A12CDB1821C2EBDC001A3DA2 /* Products */,
+				6A218512623B075DE428C472 /* Pods */,
+				E815B42851CBAE5CEA035C39 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -185,8 +204,6 @@
 			children = (
 				A12CDB1A21C2EBDC001A3DA2 /* AppDelegate.swift */,
 				A12CDB2C21C2EC23001A3DA2 /* GameViewController.swift */,
-				A13069F521D030C40087E182 /* MenuViewController.swift */,
-				A13069F821D032960087E182 /* MenuCell.swift */,
 				A12CDB1E21C2EBDC001A3DA2 /* Main.storyboard */,
 				A12CDB2121C2EBDD001A3DA2 /* Assets.xcassets */,
 				A12CDB2321C2EBDD001A3DA2 /* LaunchScreen.storyboard */,
@@ -265,6 +282,15 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		E815B42851CBAE5CEA035C39 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BDE257933FBB9CFFCC32A451 /* Pods_MetalCity.framework */,
+				F894B2D2D09D83E9817699D2 /* Pods_MetalCity_Mac.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -272,6 +298,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A117A84221CA78C4008FFC94 /* Build configuration list for PBXNativeTarget "MetalCity_Mac" */;
 			buildPhases = (
+				BBC5499AEEDE83CB6EC5A7C1 /* [CP] Check Pods Manifest.lock */,
 				A117A82C21CA78C3008FFC94 /* Sources */,
 				A117A82D21CA78C3008FFC94 /* Frameworks */,
 				A117A82E21CA78C3008FFC94 /* Resources */,
@@ -289,9 +316,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A12CDB2921C2EBDD001A3DA2 /* Build configuration list for PBXNativeTarget "MetalCity" */;
 			buildPhases = (
+				927752BBB72F031E053CB89C /* [CP] Check Pods Manifest.lock */,
 				A12CDB1321C2EBDC001A3DA2 /* Sources */,
 				A12CDB1421C2EBDC001A3DA2 /* Frameworks */,
 				A12CDB1521C2EBDC001A3DA2 /* Resources */,
+				CB4E7FA5A3CB418784752E34 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -361,6 +390,77 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		927752BBB72F031E053CB89C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MetalCity-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BBC5499AEEDE83CB6EC5A7C1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MetalCity_Mac-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CB4E7FA5A3CB418784752E34 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-MetalCity/Pods-MetalCity-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Menu/Menu.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Menu.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MetalCity/Pods-MetalCity-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A117A82C21CA78C3008FFC94 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -407,7 +507,6 @@
 			files = (
 				A1D9BD0121C57A7800D7204A /* PlaneModel.swift in Sources */,
 				A13069E621CFB7CA0087E182 /* FWMath.swift in Sources */,
-				A13069F921D032960087E182 /* MenuCell.swift in Sources */,
 				A117A85C21CA7A55008FFC94 /* Image.swift in Sources */,
 				A13069E421CFB7CA0087E182 /* Scene.swift in Sources */,
 				A12F600A21CC26FB000E920B /* Cars.swift in Sources */,
@@ -435,7 +534,6 @@
 				A130695721CE88DE0087E182 /* DecorationManager.swift in Sources */,
 				A1B7656121C7D3430043139A /* Streetlights.swift in Sources */,
 				A12CDB1B21C2EBDC001A3DA2 /* AppDelegate.swift in Sources */,
-				A13069F621D030C40087E182 /* MenuViewController.swift in Sources */,
 				A13069EA21CFB7CA0087E182 /* Buffer.swift in Sources */,
 				A130695B21CEFB2B0087E182 /* Lights.swift in Sources */,
 				A12CDB3421C2EC74001A3DA2 /* Shaders.metal in Sources */,
@@ -474,6 +572,7 @@
 /* Begin XCBuildConfiguration section */
 		A117A84321CA78C4008FFC94 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 42513201B6C7E4AD430AA7D4 /* Pods-MetalCity_Mac.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MetalCity_Mac/MetalCity_Mac.entitlements;
@@ -497,6 +596,7 @@
 		};
 		A117A84421CA78C4008FFC94 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D500C3C0F8923F180E45A60C /* Pods-MetalCity_Mac.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MetalCity_Mac/MetalCity_Mac.entitlements;
@@ -636,6 +736,7 @@
 		};
 		A12CDB2A21C2EBDD001A3DA2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 14CE9D34DFCB3C48701489D8 /* Pods-MetalCity.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -655,6 +756,7 @@
 		};
 		A12CDB2B21C2EBDD001A3DA2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 14262323BCA12CCF54129C0E /* Pods-MetalCity.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

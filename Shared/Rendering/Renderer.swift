@@ -199,23 +199,31 @@ class Renderer: NSObject, MTKViewDelegate {
         //projectionMatrix = matrix_perspective_projection(aspect: aspect, fovy: radians_from_degrees(65), near: 0.1, far: 100.0)
     }
 }
+#endif
 
 extension Renderer {
     func rebuildCity() {
+#if !targetEnvironment(simulator)
         DecorationManager.instance.reset()
         city = City(device:device)
+#endif
     }
 
     func regenerateTextures() {
+#if !targetEnvironment(simulator)
         TextureManager.instance.createTextures(device:device)
+#endif
     }
 
-    func toggleAutoCam() {
+    func toggleAutocam() {
+#if !targetEnvironment(simulator)
         autoCam.isEnabled = !autoCam.isEnabled
+#endif
     }
 
     func changeAutocamMode() {
+#if !targetEnvironment(simulator)
         self.autoCam.nextBehaviour(manuallyChanged: true)
+#endif
     }
 }
-#endif

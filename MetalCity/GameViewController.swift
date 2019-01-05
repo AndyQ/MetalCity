@@ -11,11 +11,32 @@ import MetalKit
 import CoreMotion
 import UserNotifications
 
+import Menu
+import SnapKit
+
+public struct DarkMenuTheme: MenuTheme {
+    
+    public let font = UIFont.systemFont(ofSize: 16, weight: .medium)
+    public let textColor = UIColor(red: 13/255.0, green: 51/255.0, blue: 48/255.0, alpha: 1.0)
+    public let brightTintColor = UIColor.white
+    public let darkTintColor = UIColor.black
+    public let highlightedTextColor = UIColor.white
+    public let highlightedBackgroundColor = UIColor(red: 55/255.0, green: 188/255.0, blue: 174/255.0, alpha: 1.0)
+    public let backgroundTint = UIColor(red: 25/255.0, green: 149/255.0, blue: 125/255.0, alpha: 0.11)
+    public let gestureBarTint = UIColor(red: 13/255.0, green: 51/255.0, blue: 48/255.0, alpha: 0.17)
+    public let blurEffect = UIBlurEffect(style: .light)
+    public let shadowColor = UIColor(red: 13/255.0, green: 15/255.0, blue: 12/255.0, alpha: 1.0)
+    public let shadowOpacity: Float = 1.0
+    public let shadowRadius: CGFloat = 7.0
+    public let separatorColor = UIColor(white: 0, alpha: 0.1)
+    
+    public init() {}
+}
+
 
 // Our iOS specific view controller
 class GameViewController: UIViewController {
 
-    @IBOutlet weak var menuVCView: UIView!
 #if !targetEnvironment(simulator)
     var mtkView: MTKView!
     var device: MTLDevice!
@@ -23,7 +44,10 @@ class GameViewController: UIViewController {
     var renderer: Renderer!
 
 
-    weak var popUpView: UIView?
+    var menu : MenuView!
+    var menuHidden : Bool = true
+    var menuExpanded : Bool = false
+    var menuRightConstraint: Constraint? = nil
 
     override var prefersHomeIndicatorAutoHidden: Bool { return true }
 
@@ -33,8 +57,8 @@ class GameViewController: UIViewController {
         UIApplication.shared.isIdleTimerDisabled = true
         self.view.isMultipleTouchEnabled = true
 
-        menuVCView.isHidden = true
-
+        setupMenu()
+        
 #if targetEnvironment(simulator)
         renderer = Renderer()
 
@@ -70,12 +94,10 @@ class GameViewController: UIViewController {
 
 #if !targetEnvironment(simulator)
         let gr = UIPanGestureRecognizer(target: self, action: #selector(pan))
-        gr.delegate = self
         self.view.addGestureRecognizer(gr)
 #endif
 
         let tapGr = UITapGestureRecognizer(target: self, action: #selector(tap))
-        tapGr.delegate = self
         tapGr.numberOfTapsRequired = 1
         self.view.addGestureRecognizer(tapGr)
     }
@@ -84,45 +106,35 @@ class GameViewController: UIViewController {
         return true
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let vc = segue.destination as? MenuViewController {
-#if !targetEnvironment(simulator)
-            vc.menuSelected = { [unowned self] (menuItem) in
-                switch menuItem {
-                case .toggleAutocam:
-                    self.renderer.toggleAutoCam()
-                case .nextAutocamMode:
-                     self.renderer.changeAutocamMode()
-                case .rebuildCity:
-                    self.renderer.rebuildCity()
-                case .regenerateTextures:
-                    self.renderer.regenerateTextures()
-                }
-            }
-#endif
-        }
-    }
 
     var prevPoint = CGPoint()
     var nrTouches = 0
 
-    @objc func tap(_ gr: UITapGestureRecognizer) {
-        if !menuVCView.isHidden {
-            let p = gr.location(in: self.view)
-            if !menuVCView.frame.contains(p) {
-                menuVCView.isHidden = true
-            }
-        } else {
-            menuVCView.isHidden = !menuVCView.isHidden
 
-/*
-            let v = MenuView(frame:CGRect(x:self.view.bounds.width-210, y:30, width:180, height:175))
-            self.view.addSubview(v)
-            self.popUpView = v
-*/
+    @objc func tap(_ gr: UITapGestureRecognizer) {
+        menuHidden.toggle()
+        
+        
+        if self.menuHidden {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: {
+                UIView.animate(withDuration: 0.15) {
+                    self.menuRightConstraint?.update(inset:-120)
+                    self.view.layoutIfNeeded()
+                }
+            })
+        } else {
+            UIView.animate(withDuration: 0.15, animations: {
+                self.menuRightConstraint?.update(inset: 30)
+                self.view.layoutIfNeeded()
+            }, completion: { (complete) in
+                UIView.animate(withDuration: 0.15) {
+                    self.menuRightConstraint?.update(inset: 10)
+                    self.view.layoutIfNeeded()
+                }
+            })
         }
     }
-
+    
 #if !targetEnvironment(simulator)
     @objc func pan(_ gr: UIPanGestureRecognizer) {
         let p = gr.location(in: self.view)
@@ -154,6 +166,8 @@ class GameViewController: UIViewController {
                 strafeCamera(dx:dx)
             }
             prevPoint = p
+        default:
+            break
         }
     }
 
@@ -163,9 +177,9 @@ class GameViewController: UIViewController {
 
     func rotateViewUpAndDown(dy: Float) {
         let deltaY = -dy * 0.01
-        var v = renderer.camera.getView()
+        var v = renderer.camera.lookAt
         v.y += deltaY * 30
-        renderer.camera.setView(view:v)
+        renderer.camera.lookAt = v
     }
 
     func moveCamera(dy: Float) {
@@ -182,8 +196,58 @@ class GameViewController: UIViewController {
 #endif
 }
 
-extension GameViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        return !touch.view!.isDescendant(of: menuVCView)
+
+// MARK: Menu
+extension GameViewController {
+    func setupMenu() {
+        
+        menu = MenuView(title: "Menu", theme: DarkMenuTheme()) { () -> [MenuItem] in
+            return [
+                ShortcutMenuItem(name: "Toggle autocam", shortcut: (.command, "Z"), action: {
+                    [unowned self] in
+                    
+                    self.renderer.toggleAutocam()
+                }),
+                
+                ShortcutMenuItem(name: "Next autocam mode", shortcut: ([.command, .shift], "Z"), action: {
+                    [weak self] in
+
+                    self?.renderer.changeAutocamMode()
+                }),
+                
+                SeparatorMenuItem(),
+                
+                ShortcutMenuItem(name: "Rebuild city", shortcut: ([.command, .alternate], "I"), action: {
+                    [weak self] in
+
+                    self?.renderer.rebuildCity()
+                }),
+                ShortcutMenuItem(name: "Regenerate textures", shortcut: ([.command, .alternate], "L"), action: {
+                    [weak self] in
+
+                    self?.renderer.regenerateTextures()
+                }),
+                
+                SeparatorMenuItem(),
+                
+                ShortcutMenuItem(name: "Help", shortcut: (.command, "?"), action: {}),
+                ]
+        }
+        
+        view.addSubview(menu)
+        
+        menu.tintColor = .black
+        menu.contentAlignment = .left
+        
+        menu.snp.makeConstraints {
+            make in
+            
+            self.menuRightConstraint = make.right.equalTo(self.view.safeAreaLayoutGuide.snp.right).inset(-200).constraint
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).inset(30)
+
+            //Menus don't have an intrinsic height
+            make.height.equalTo(40)
+        }
     }
+    
 }

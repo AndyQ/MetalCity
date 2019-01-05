@@ -1,0 +1,28 @@
+PODS:
+  - Menu (0.0.1):
+    - SnapKit
+  - SnapKit (4.2.0)
+
+DEPENDENCIES:
+  - Menu (from `https://github.com/TwoLivesLeft/Menu.git`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - SnapKit
+
+EXTERNAL SOURCES:
+  Menu:
+    :git: https://github.com/TwoLivesLeft/Menu.git
+
+CHECKOUT OPTIONS:
+  Menu:
+    :commit: a34af8e8845e24ee592c31a8278ae2e4f25fdb77
+    :git: https://github.com/TwoLivesLeft/Menu.git
+
+SPEC CHECKSUMS:
+  Menu: e64ee71964eec6ee51d8bc21790f8ed4fc6fd8f9
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+
+PODFILE CHECKSUM: 05678feff27dc5d2eacba98ed8f98e38719b7c38
+
+COCOAPODS: 1.5.3
