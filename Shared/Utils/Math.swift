@@ -122,6 +122,8 @@ extension CGSize {
 }
 
 extension float3 {
+    static let zero = float3(0,0,0)
+
     static func lerp(vectorStart: float3,  vectorEnd: float3, t: Float) -> float3 {
         return vectorStart + (vectorEnd - vectorStart) * t
     }
@@ -147,9 +149,6 @@ extension float4 {
     static let color = float4(1,1,1,1)
 }
 
-extension float3 {
-    static let zero = float3(0,0,0)
-}
 
 extension float4x4 {
     /// Creates a 4x4 matrix representing a translation given by the provided vector.
