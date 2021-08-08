@@ -31,15 +31,15 @@ class DecorationManager {
         lights = Lights(device:device)
     }
 
-    func addRadioTower(center:float3, height:Float) {
+    func addRadioTower(center:SIMD3<Float>, height:Float) {
         towers.createRadioTower(center: center, height: height)
     }
 
-    func addStreetLightStrip(atX x:Float, z:Float, width:Float, depth:Float, height:Float, color:float4) {
+    func addStreetLightStrip(atX x:Float, z:Float, width:Float, depth:Float, height:Float, color:SIMD4<Float>) {
         streetlights.addLightStrip(atX: x, z: z, width: width, depth: depth, height: height, color: color)
     }
 
-    func addLight(position:float3, color:float4, size:Float, blink:Bool) {
+    func addLight(position:SIMD3<Float>, color:SIMD4<Float>, size:Float, blink:Bool) {
         lights.createLight(position:position, color:color, size:size, blink:blink)
     }
 

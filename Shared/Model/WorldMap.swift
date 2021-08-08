@@ -60,7 +60,7 @@ class WorldMap {
         self.world[cx][cy].insert(val)
     }
 
-    func isVisible(pos: float3) -> Bool {
+    func isVisible(pos: SIMD3<Float>) -> Bool {
         return isVisible(x:Int(pos.x), y:Int(pos.z))
 
     }

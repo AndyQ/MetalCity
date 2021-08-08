@@ -36,7 +36,7 @@ class Sky: Model {
         var vlist = [Vertex]()
         for phi in stride(from:0, to:90-dphi+1, by:dphi) {
             for theta in stride(from:0, to:360 - dtheta+1, by:dtheta) {
-                var p = float4(0, 0, 0, 1)
+                var p = SIMD4<Float>(0, 0, 0, 1)
 
                 p.x = radius * sinf(phi*DEGREES_TO_RADIANS) * cosf(theta*DEGREES_TO_RADIANS)
                 p.z = radius * sinf(phi*DEGREES_TO_RADIANS) * sinf(theta*DEGREES_TO_RADIANS)
@@ -88,7 +88,7 @@ class Sky: Model {
             vx /= mag
             vy /= mag
             vz /= mag
-            var t = float2()
+            var t = SIMD2<Float>()
             t.x = hTile * (atan2f(vx, vz)/(Float.pi*2)) + 0.5
             t.y = vTile * (asinf(vy) / Float.pi) + 0.5
             vlist[i].texCoords = t
@@ -147,8 +147,8 @@ class Sky: Model {
         for var v in vlist {
             v.position.x += Float(WORLD_SIZE/2)
             v.position.z += Float(WORLD_SIZE/2)
-            v.color = float4(1,0,0,1)
-            v.normal = float4(1,0,0,1)
+            v.color = SIMD4<Float>(1,0,0,1)
+            v.normal = SIMD4<Float>(1,0,0,1)
             vertices.append(v)
 
             indices.append(i)

@@ -31,7 +31,7 @@ class Streetlights: Model {
 
     }
 
-    func addLightStrip(atX x:Float, z:Float, width:Float, depth:Float, height:Float, color:float4) {
+    func addLightStrip(atX x:Float, z:Float, width:Float, depth:Float, height:Float, color:SIMD4<Float>) {
         gridX = WorldMap.worldToGrid(Int(x + (width / 2)))
         gridY = WorldMap.worldToGrid(Int(z + (depth / 2)))
 
@@ -50,10 +50,10 @@ class Streetlights: Model {
         }
 
         let newVertices: [Vertex] = [
-            Vertex(position:float4(x, height, z, 1.0), normal: .normal, color: .color, texCoords:float2(0, 0)),
-            Vertex(position:float4(x, height, z + depth, 1.0), normal: .normal, color: .color, texCoords:float2(0, t)),
-            Vertex(position:float4(x + width, height, z + depth, 1.0), normal: .normal, color: .color, texCoords:float2(s, t)),
-            Vertex(position:float4(x + width, height, z, 1.0), normal: .normal, color: .color, texCoords:float2(s, 0))
+            Vertex(position:SIMD4<Float>(x, height, z, 1.0), normal: .normal, color: .color, texCoords:SIMD2<Float>(0, 0)),
+            Vertex(position:SIMD4<Float>(x, height, z + depth, 1.0), normal: .normal, color: .color, texCoords:SIMD2<Float>(0, t)),
+            Vertex(position:SIMD4<Float>(x + width, height, z + depth, 1.0), normal: .normal, color: .color, texCoords:SIMD2<Float>(s, t)),
+            Vertex(position:SIMD4<Float>(x + width, height, z, 1.0), normal: .normal, color: .color, texCoords:SIMD2<Float>(s, 0))
         ]
 
         let start = UInt16(vertices.count)

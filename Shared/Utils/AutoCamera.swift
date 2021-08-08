@@ -21,6 +21,27 @@ enum CameraBehaviour: Int, CaseIterable {
     static func random() -> CameraBehaviour {
         return CameraBehaviour.allCases.randomElement()!
     }
+    
+    var string : String {
+        switch self {
+            case .flycam1:
+                return "FlyCam 1"
+            case .flycam2:
+                return "FlyCam 2"
+            case .flycam3:
+                return "FlyCam 3"
+            case .orbitInward:
+                return "Orbit Inward"
+            case .orbitOutward:
+                return "Orbit Outward"
+            case .orbitElliptical:
+                return "Orbit Elliptical"
+            case .speed:
+                return "Speed"
+            case .spin:
+                return "Spin"
+        }
+    }
 }
 
 
@@ -78,9 +99,9 @@ class AutoCamera {
     }
 
 
-    func position(for t: UInt64) -> float3 {
-        var start: float3 = .zero
-        var end: float3 = .zero
+    func position(for t: UInt64) -> SIMD3<Float> {
+        var start: SIMD3<Float> = .zero
+        var end: SIMD3<Float> = .zero
 
         let hot_zone = appState.hot_zone
         let timeInCircuit = t % UInt64(FLYCAM_CIRCUT)
@@ -88,22 +109,22 @@ class AutoCamera {
         var delta = Float(timeInCircuit % UInt64(FLYCAM_LEG)) / Float(FLYCAM_LEG)
         switch leg {
         case 0:
-            start = float3(hot_zone.minPoint.x, 25.0, hot_zone.minPoint.z)
-            end = float3(hot_zone.minPoint.x, 60.0, hot_zone.maxPoint.z)
+            start = SIMD3<Float>(hot_zone.minPoint.x, 25.0, hot_zone.minPoint.z)
+            end = SIMD3<Float>(hot_zone.minPoint.x, 60.0, hot_zone.maxPoint.z)
         case 1:
-            start = float3(hot_zone.minPoint.x, 60.0, hot_zone.maxPoint.z)
-            end = float3(hot_zone.maxPoint.x, 25.0, hot_zone.maxPoint.z)
+            start = SIMD3<Float>(hot_zone.minPoint.x, 60.0, hot_zone.maxPoint.z)
+            end = SIMD3<Float>(hot_zone.maxPoint.x, 25.0, hot_zone.maxPoint.z)
         case 2:
-            start = float3(hot_zone.maxPoint.x, 25.0, hot_zone.maxPoint.z)
-            end = float3(hot_zone.maxPoint.x, 60.0, hot_zone.minPoint.z)
+            start = SIMD3<Float>(hot_zone.maxPoint.x, 25.0, hot_zone.maxPoint.z)
+            end = SIMD3<Float>(hot_zone.maxPoint.x, 60.0, hot_zone.minPoint.z)
         case 3:
-            start = float3(hot_zone.maxPoint.x, 60.0, hot_zone.minPoint.z)
-            end = float3(hot_zone.minPoint.x, 25.0, hot_zone.minPoint.z)
+            start = SIMD3<Float>(hot_zone.maxPoint.x, 60.0, hot_zone.minPoint.z)
+            end = SIMD3<Float>(hot_zone.minPoint.x, 25.0, hot_zone.minPoint.z)
         default:
             break
         }
         delta = mathScalarCurve(delta)
-        return float3.lerp(vectorStart: start, vectorEnd: end, t: delta)
+        return SIMD3<Float>.lerp(vectorStart: start, vectorEnd: end, t: delta)
     }
 
     func nextBehaviour(manuallyChanged:Bool = false) {
@@ -142,24 +163,24 @@ class AutoCamera {
         appState.cameraState.tracker += Float(elapsed) / 300.0
 
         let worldHalf = Float(WORLD_HALF)
-        var target: float3
+        var target: SIMD3<Float>
         switch behaviour {
         case .orbitInward:
             appState.cameraState.auto_position.x = worldHalf + sinf(appState.cameraState.tracker * DEGREES_TO_RADIANS) * 150.0
             appState.cameraState.auto_position.y = 60.0
             appState.cameraState.auto_position.z = worldHalf + cosf (appState.cameraState.tracker * DEGREES_TO_RADIANS) * 150.0
-            target = float3(worldHalf, 40.0, worldHalf)
+            target = SIMD3<Float>(worldHalf, 40.0, worldHalf)
         case .orbitOutward:
             appState.cameraState.auto_position.x = worldHalf + sinf (appState.cameraState.tracker * DEGREES_TO_RADIANS) * 250.0
             appState.cameraState.auto_position.y = 60.0
             appState.cameraState.auto_position.z = worldHalf + cosf (appState.cameraState.tracker * DEGREES_TO_RADIANS) * 250.0
-            target = float3 (worldHalf, 30.0, worldHalf)
+            target = SIMD3<Float> (worldHalf, 30.0, worldHalf)
         case .orbitElliptical:
             let dist = 150.0 + sinf (appState.cameraState.tracker * DEGREES_TO_RADIANS / 1.1) * 50
             appState.cameraState.auto_position.x = worldHalf + sinf (appState.cameraState.tracker * DEGREES_TO_RADIANS) * dist
             appState.cameraState.auto_position.y = 60.0
             appState.cameraState.auto_position.z = worldHalf + cosf (appState.cameraState.tracker * DEGREES_TO_RADIANS) * dist
-            target = float3 (worldHalf, 50.0, worldHalf)
+            target = SIMD3<Float> (worldHalf, 50.0, worldHalf)
         case .flycam1, .flycam2, .flycam3:
             appState.cameraState.auto_position = (position(for: now) + position(for: now + 4000)) / 2.0
             target = position(for: now + UInt64(FLYCAM_CIRCUT_HALF - ONE_SECOND) * 3)
@@ -169,7 +190,7 @@ class AutoCamera {
             appState.cameraState.auto_position.y /= 2
             target.y /= 2
         default:
-            target = float3(worldHalf + sinf (appState.cameraState.tracker * DEGREES_TO_RADIANS) * 300.0,
+            target = SIMD3<Float>(worldHalf + sinf (appState.cameraState.tracker * DEGREES_TO_RADIANS) * 300.0,
                 30.0,
                 worldHalf + cosf (appState.cameraState.tracker * DEGREES_TO_RADIANS) * 300.0)
             appState.cameraState.auto_position.x = worldHalf + sinf(appState.cameraState.tracker * DEGREES_TO_RADIANS) * 50.0

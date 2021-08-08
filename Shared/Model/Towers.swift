@@ -23,21 +23,21 @@ class Towers: Model {
         self.renderPipelineState = createLibraryAndRenderPipeline(device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader)
     }
 
-    func createRadioTower(center:float3, height:Float) {
-        let color = float4(0, 0, 0, 1)
+    func createRadioTower(center:SIMD3<Float>, height:Float) {
+        let color = SIMD4<Float>(0, 0, 0, 1)
 
         print("Adding tower")
-//        var center = float3(50, 65, 50.5)
+//        var center = SIMD3<Float>(50, 65, 50.5)
         let offset = height / 15.0
 
         //Radio tower
         let v: [Vertex] = [
-           Vertex(position: float4(center.x, center.y + height, center.z, 1.0), normal: .normal, color: color, texCoords: float2(0, 0)),
-           Vertex(position: float4(center.x - offset, center.y, center.z - offset, 1.0), normal: .normal, color: color, texCoords: float2(1, 1)),
-           Vertex(position: float4(center.x + offset, center.y, center.z - offset, 1.0), normal: .normal, color: color, texCoords: float2(0, 1)),
-           Vertex(position: float4(center.x + offset, center.y, center.z + offset, 1.0), normal: .normal, color: color, texCoords: float2(1, 1)),
-           Vertex(position: float4(center.x - offset, center.y, center.z + offset, 1.0), normal: .normal, color: color, texCoords: float2(0, 1)),
-           Vertex(position: float4(center.x - offset, center.y, center.z - offset, 1.0), normal: .normal, color: color, texCoords: float2(1, 1))
+           Vertex(position: SIMD4<Float>(center.x, center.y + height, center.z, 1.0), normal: .normal, color: color, texCoords: SIMD2<Float>(0, 0)),
+           Vertex(position: SIMD4<Float>(center.x - offset, center.y, center.z - offset, 1.0), normal: .normal, color: color, texCoords: SIMD2<Float>(1, 1)),
+           Vertex(position: SIMD4<Float>(center.x + offset, center.y, center.z - offset, 1.0), normal: .normal, color: color, texCoords: SIMD2<Float>(0, 1)),
+           Vertex(position: SIMD4<Float>(center.x + offset, center.y, center.z + offset, 1.0), normal: .normal, color: color, texCoords: SIMD2<Float>(1, 1)),
+           Vertex(position: SIMD4<Float>(center.x - offset, center.y, center.z + offset, 1.0), normal: .normal, color: color, texCoords: SIMD2<Float>(0, 1)),
+           Vertex(position: SIMD4<Float>(center.x - offset, center.y, center.z - offset, 1.0), normal: .normal, color: color, texCoords: SIMD2<Float>(1, 1))
         ]
 
         // Add triangles
@@ -47,7 +47,7 @@ class Towers: Model {
             vertices.append(v[i+1])
         }
 
-        DecorationManager.instance.addLight(position: float3(center.x, center.y + height + 1.0, center.z), color: float4(255.0/255.0, 192.0/255.0, 160.0/255.0, 1.0), size: 2, blink: true)
+        DecorationManager.instance.addLight(position: SIMD3<Float>(center.x, center.y + height + 1.0, center.z), color: SIMD4<Float>(255.0/255.0, 192.0/255.0, 160.0/255.0, 1.0), size: 2, blink: true)
     }
 
     func createBuffers() {

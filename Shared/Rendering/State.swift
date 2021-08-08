@@ -63,11 +63,11 @@ var textureSizes = [Int]()
 
 struct CameraState {
 
-    var angle: float3 = .zero
-    var position: float3 = .zero
-    var target: float3 = .zero
-    var auto_angle: float3 = .zero
-    var auto_position: float3 = .zero
+    var angle: SIMD3<Float> = .zero
+    var position: SIMD3<Float> = .zero
+    var target: SIMD3<Float> = .zero
+    var auto_angle: SIMD3<Float> = .zero
+    var auto_position: SIMD3<Float> = .zero
     var movement: Float = 0
     var moving: Bool = false
     var cam_auto: Bool = false
@@ -81,7 +81,7 @@ struct AppState {
     var cameraState = CameraState()
     var hot_zone = BoundingBox()
 
-    var bloom_color: float4 = float4(0,0,0,1)
+    var bloom_color: SIMD4<Float> = SIMD4<Float>(0,0,0,1)
     var last_update: Int = 0
 
     init() {

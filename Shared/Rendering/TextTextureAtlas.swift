@@ -11,10 +11,10 @@ import CoreGraphics
 
 class TextItem {
     var text: String = ""
-    var bl = float2(0, 0)
-    var br = float2(1, 0)
-    var tl = float2(0, 1)
-    var tr = float2(1, 1)
+    var bl = SIMD2<Float>(0, 0)
+    var br = SIMD2<Float>(1, 0)
+    var tl = SIMD2<Float>(0, 1)
+    var tr = SIMD2<Float>(1, 1)
 }
 
 class TextTextureAtlas {
@@ -104,10 +104,10 @@ class TextTextureAtlas {
 
                 let ti = TextItem()
                 ti.text = string
-                ti.bl = float2(Float(2/size.width), Float(i/size.height))
-                ti.br = float2(Float(2/size.width), Float((i + textSize.height)/size.height))
-                ti.tl = float2(Float((2+textSize.width)/size.width), Float(i/size.height))
-                ti.tr = float2(Float((2+textSize.width)/size.width), Float((i + textSize.height)/size.height))
+                ti.bl = SIMD2<Float>(Float(2/size.width), Float(i/size.height))
+                ti.br = SIMD2<Float>(Float(2/size.width), Float((i + textSize.height)/size.height))
+                ti.tl = SIMD2<Float>(Float((2+textSize.width)/size.width), Float(i/size.height))
+                ti.tr = SIMD2<Float>(Float((2+textSize.width)/size.width), Float((i + textSize.height)/size.height))
 
                 textItems.append(ti)
 

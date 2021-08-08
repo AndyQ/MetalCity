@@ -11,8 +11,7 @@ import MetalKit
 import CoreMotion
 import UserNotifications
 
-import SnapKit
-
+/*
 public struct DarkMenuTheme: MenuTheme {
     
     public let font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -31,22 +30,22 @@ public struct DarkMenuTheme: MenuTheme {
     
     public init() {}
 }
-
+*/
 
 // Our iOS specific view controller
 class GameViewController: UIViewController {
+    
+    @IBOutlet weak var menuButton : UIButton!
 
-#if !targetEnvironment(simulator)
     var mtkView: MTKView!
     var device: MTLDevice!
-#endif
+
     var renderer: Renderer!
 
-
-    var menu : MenuView!
+//    var menu : MenuView!
     var menuHidden : Bool = true
     var menuExpanded : Bool = false
-    var menuRightConstraint: Constraint? = nil
+//    var menuRightConstraint: Constraint? = nil
 
     override var prefersHomeIndicatorAutoHidden: Bool { return true }
 
@@ -58,11 +57,6 @@ class GameViewController: UIViewController {
 
         setupMenu()
         
-#if targetEnvironment(simulator)
-        renderer = Renderer()
-
-#else
-
         guard let mtkView = view as? MTKView else {
             print("View of Gameview controller is not an MTKView")
             return
@@ -89,12 +83,9 @@ class GameViewController: UIViewController {
         renderer.mtkView(mtkView, drawableSizeWillChange: mtkView.drawableSize)
 
         mtkView.delegate = renderer
-#endif
 
-#if !targetEnvironment(simulator)
         let gr = UIPanGestureRecognizer(target: self, action: #selector(pan))
         self.view.addGestureRecognizer(gr)
-#endif
 
         let tapGr = UITapGestureRecognizer(target: self, action: #selector(tap))
         tapGr.numberOfTapsRequired = 1
@@ -116,6 +107,7 @@ class GameViewController: UIViewController {
             return
         }
         
+/*
         menuHidden.toggle()
         
         if self.menuHidden {
@@ -137,9 +129,9 @@ class GameViewController: UIViewController {
                 }
             })
         }
+*/
     }
     
-#if !targetEnvironment(simulator)
     @objc func pan(_ gr: UIPanGestureRecognizer) {
         let p = gr.location(in: self.view)
         switch gr.state {
@@ -197,7 +189,6 @@ class GameViewController: UIViewController {
     func strafeCamera(dx: Float) {
         renderer.camera.strafeCamera(speed: -dx * 0.005)
     }
-#endif
 }
 
 
@@ -205,6 +196,42 @@ class GameViewController: UIViewController {
 extension GameViewController {
     func setupMenu() {
         
+        // shortcut: (.command, "A")
+        let toggleAutocam = UIAction(title: "Toggle autocam",
+                                     image: UIImage(systemName: "video.fill")) { [unowned self] _ in
+            self.renderer.toggleAutocam()
+        }
+                
+        let rebuildCity = UIAction(title: "Rebuild city",
+                                     image: UIImage(systemName: "building.2.fill")) { [unowned self] _ in
+            self.renderer.rebuildCity()
+        }
+        
+        let regenTextures = UIAction(title: "Regenerate textures",
+                                     image: UIImage(systemName: "paintbrush.fill")) { [unowned self] _ in
+            self.renderer.regenerateTextures()
+        }
+
+        let help = UIAction(title: "Help",
+                                     image: UIImage(systemName: "questionmark")) {  _ in
+        }
+
+        var autoCamModes = [UIAction]()
+        for mode in CameraBehaviour.allCases {
+            let action = UIAction(title: mode.string) {  _ in
+                self.renderer.setAutoCam(mode:mode)
+            }
+            autoCamModes.append(action)
+        }
+        let autoCamMenu = UIMenu(title: "AutoCam Modes", children: autoCamModes)
+
+
+        let menu = UIMenu(title: "", children: [toggleAutocam, autoCamMenu, rebuildCity, regenTextures, help])
+        
+        self.menuButton.showsMenuAsPrimaryAction = true
+        self.menuButton.menu = menu
+
+/*
         menu = MenuView(title: "Menu", theme: DarkMenuTheme()) { () -> [MenuItem] in
             return [
                 ShortcutMenuItem(name: "Toggle autocam", shortcut: (.command, "A"), action: {
@@ -252,6 +279,7 @@ extension GameViewController {
             //Menus don't have an intrinsic height
             make.height.equalTo(40)
         }
+*/
     }
     
 }

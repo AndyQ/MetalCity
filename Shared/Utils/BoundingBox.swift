@@ -11,8 +11,8 @@ import Foundation
 class BoundingBox {
     private let maxVal: Float = 999999999999999.9
 
-    var minPoint: float3 = .zero
-    var maxPoint: float3 = .zero
+    var minPoint: SIMD3<Float> = .zero
+    var maxPoint: SIMD3<Float> = .zero
 
     init() {
         clear()
@@ -29,7 +29,7 @@ class BoundingBox {
     /*-----------------------------------------------------------------------------
      Expand Bbox (if needed) to contain given point
      -----------------------------------------------------------------------------*/
-    func include(point: float3) {
+    func include(point: SIMD3<Float>) {
         minPoint.x = min(minPoint.x, point.x)
         minPoint.y = min(minPoint.y, point.y)
         minPoint.z = min(minPoint.z, point.z)

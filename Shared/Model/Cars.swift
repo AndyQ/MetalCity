@@ -14,10 +14,10 @@ import MetalKit
 
 
 class Car {
-    var m_position: float3 = .zero
-    var m_drive_position: float3 = .zero
-    var m_frontColor: float4 = .zero
-    var m_backColor: float4 = .zero
+    var m_position: SIMD3<Float> = .zero
+    var m_drive_position: SIMD3<Float> = .zero
+    var m_frontColor: SIMD4<Float> = .zero
+    var m_backColor: SIMD4<Float> = .zero
     var m_ready: Bool = false
     var m_front: Bool = false
     var m_drive_angle: Int = 0
@@ -30,11 +30,11 @@ class Car {
 }
 
 class Cars: Model {
-    let direction: [float3] = [
-        float3(0.0, 0.0, -1.0),
-        float3(1.0, 0.0,  0.0),
-        float3(0.0, 0.0,  1.0),
-        float3(-1.0, 0.0,  0.0)]
+    let direction: [SIMD3<Float>] = [
+        SIMD3<Float>(0.0, 0.0, -1.0),
+        SIMD3<Float>(1.0, 0.0,  0.0),
+        SIMD3<Float>(0.0, 0.0,  1.0),
+        SIMD3<Float>(-1.0, 0.0,  0.0)]
 
     let dangles: [Int] = [ 0, 90, 180, 270]
 
@@ -49,8 +49,8 @@ class Cars: Model {
     let WEST = 3
 
 
-    let frontColor = float4(1, 1, 0.8, 1.0)
-    let backColor = float4(1, 0.2, 0, 1.0)
+    let frontColor = SIMD4<Float>(1, 1, 0.8, 1.0)
+    let backColor = SIMD4<Float>(1, 0.2, 0, 1.0)
 
     var device: MTLDevice
 
@@ -58,7 +58,7 @@ class Cars: Model {
     var indices = [UInt32]()
 
 
-    var carAngles = [float2]()
+    var carAngles = [SIMD2<Float>]()
     var carMap: [[UInt8]]
 
     var cars = [Car]()
@@ -72,7 +72,7 @@ class Cars: Model {
         carMap = Array(repeating: Array(repeating: 0, count: WORLD_SIZE), count: WORLD_SIZE)
 
         for i in 0 ..< 360 {
-            var v = float2(0, 0)
+            var v = SIMD2<Float>(0, 0)
             v.x = cosf(Float(i) * DEGREES_TO_RADIANS) * CAR_SIZE
             v.y = sinf(Float(i) * DEGREES_TO_RADIANS) * CAR_SIZE
             carAngles.append(v)
@@ -128,7 +128,7 @@ class Cars: Model {
 
 
     func updateCar(car: Car, vertexPtr: UnsafeMutablePointer<Vertex>) {
-        var camera: float3
+        var camera: SIMD3<Float>
 
         //If the car isn't ready, place it on the map and get it moving
         camera = appState.cameraState.position
@@ -209,7 +209,7 @@ class Cars: Model {
                 car.m_col = r-2//r-l > 4 ? r-2: r-1
             }
 
-            car.m_position = float3(Float(car.m_row), 0.1, Float(car.m_col))
+            car.m_position = SIMD3<Float>(Float(car.m_row), 0.1, Float(car.m_col))
             car.m_drive_position = car.m_position
             car.m_ready = true
 
@@ -307,9 +307,9 @@ class Cars: Model {
         let turn = Int(mathAngleDifference(Float(car.m_drive_angle), Float(angle)))
 
         car.m_drive_angle += (turn > 0 ? 1: turn < 0 ? -1: 0)
-        pos = pos + float3(0.5, 0.0, 0.5)
+        pos = pos + SIMD3<Float>(0.5, 0.0, 0.5)
 
-        let c: float4
+        let c: SIMD4<Float>
         if car.m_front {
             c = frontColor
         } else {
@@ -319,16 +319,16 @@ class Cars: Model {
         let zAngle = carAngles[angle].y
 
         var ptr = vertexPtr
-        ptr.pointee.position = float4(pos.x + xAngle, 0, pos.z + zAngle, 1)
+        ptr.pointee.position = SIMD4<Float>(pos.x + xAngle, 0, pos.z + zAngle, 1)
         ptr.pointee.color = c
         ptr = ptr.advanced(by: 1)
-        ptr.pointee.position = float4(pos.x - xAngle, 0, pos.z - zAngle, 1)
+        ptr.pointee.position = SIMD4<Float>(pos.x - xAngle, 0, pos.z - zAngle, 1)
         ptr.pointee.color = c
         ptr = ptr.advanced(by: 1)
-        ptr.pointee.position = float4(pos.x - xAngle,  top, pos.z - zAngle, 1)
+        ptr.pointee.position = SIMD4<Float>(pos.x - xAngle,  top, pos.z - zAngle, 1)
         ptr.pointee.color = c
         ptr = ptr.advanced(by: 1)
-        ptr.pointee.position = float4(pos.x + xAngle,  top, pos.z + zAngle, 1)
+        ptr.pointee.position = SIMD4<Float>(pos.x + xAngle,  top, pos.z + zAngle, 1)
         ptr.pointee.color = c
     }
 

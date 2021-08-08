@@ -10,9 +10,9 @@ import MetalKit
 
 class Light {
     var blinkInterval: Int = 0
-    var color: float4 = float4(1,0,0,1)
+    var color: SIMD4<Float> = SIMD4<Float>(1,0,0,1)
     var size: Float = 0
-    var position: float3 = .zero
+    var position: SIMD3<Float> = .zero
 }
 
 class Lights: Model {
@@ -20,7 +20,7 @@ class Lights: Model {
     var vertices = [Vertex]()
     var indices = [UInt16]()
 
-    var lightAngles = [[float2]]()
+    var lightAngles = [[SIMD2<Float>]]()
 
     var lights = [Light]()
 
@@ -33,7 +33,7 @@ class Lights: Model {
         super.init()
 
         // Calc light angles
-        lightAngles = Array(repeating: Array(repeating: float2(0,0), count: 360), count: 5)
+        lightAngles = Array(repeating: Array(repeating: SIMD2<Float>(0,0), count: 360), count: 5)
         for s in 0 ..< 5 {
             for i in 0 ..< 360 {
                 lightAngles[s][i].x = cosf(Float(i) * DEGREES_TO_RADIANS) * (Float(s) + 0.5)
@@ -44,9 +44,9 @@ class Lights: Model {
         self.renderPipelineState = createLibraryAndRenderPipeline(device: device,vertexFunction: vertexShader, fragmentFunction: fragmentShader)
     }
 
-    func createLight(position:float3, color:float4, size:Float, blink:Bool) {
+    func createLight(position:SIMD3<Float>, color:SIMD4<Float>, size:Float, blink:Bool) {
 
-        let pos = float4(position.x, position.y, position.z, 1.0)
+        let pos = SIMD4<Float>(position.x, position.y, position.z, 1.0)
         let l = Light()
         l.blinkInterval = blink ? 1000 + randomInt(500): 0
         l.size = size
@@ -55,10 +55,10 @@ class Lights: Model {
         lights.append(l)
 
         let v: [Vertex] = [
-            Vertex(position: pos, normal: .normal, color: .color, texCoords: float2(0, 0)),
-            Vertex(position: pos, normal: .normal, color: .color, texCoords: float2(1, 0)),
-            Vertex(position: pos, normal: .normal, color: .color, texCoords: float2(1, 1)),
-            Vertex(position: pos, normal: .normal, color: .color, texCoords: float2(0, 1))
+            Vertex(position: pos, normal: .normal, color: .color, texCoords: SIMD2<Float>(0, 0)),
+            Vertex(position: pos, normal: .normal, color: .color, texCoords: SIMD2<Float>(1, 0)),
+            Vertex(position: pos, normal: .normal, color: .color, texCoords: SIMD2<Float>(1, 1)),
+            Vertex(position: pos, normal: .normal, color: .color, texCoords: SIMD2<Float>(0, 1))
         ]
 
         let start = UInt16(vertices.count)
@@ -110,7 +110,7 @@ class Lights: Model {
             return
         }
 */
-        let c: float4
+        let c: SIMD4<Float>
         if light.blinkInterval != 0 && getTickCount() % UInt64(light.blinkInterval) > 300 {
             // Turn Off
             c = .zero
@@ -124,16 +124,16 @@ class Lights: Model {
         let position = light.position
 
         var ptr = vertexPtr
-        ptr.pointee.position = float4(position.x + offset.x, position.y - vertSize, position.z + offset.y, 1)
+        ptr.pointee.position = SIMD4<Float>(position.x + offset.x, position.y - vertSize, position.z + offset.y, 1)
         ptr.pointee.color = c
         ptr = ptr.advanced(by: 1)
-        ptr.pointee.position = float4(position.x + offset.x, position.y + vertSize, position.z + offset.y, 1)
+        ptr.pointee.position = SIMD4<Float>(position.x + offset.x, position.y + vertSize, position.z + offset.y, 1)
         ptr.pointee.color = c
         ptr = ptr.advanced(by: 1)
-        ptr.pointee.position = float4(position.x - offset.x, position.y + vertSize, position.z - offset.y, 1)
+        ptr.pointee.position = SIMD4<Float>(position.x - offset.x, position.y + vertSize, position.z - offset.y, 1)
         ptr.pointee.color = c
         ptr = ptr.advanced(by: 1)
-        ptr.pointee.position = float4(position.x - offset.x, position.y - vertSize, position.z - offset.y, 1)
+        ptr.pointee.position = SIMD4<Float>(position.x - offset.x, position.y - vertSize, position.z - offset.y, 1)
         ptr.pointee.color = c
     }
 

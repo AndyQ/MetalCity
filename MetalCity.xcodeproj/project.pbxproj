@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		56B29DC67F02C2A8C9FFFCC1 /* Pods_MetalCity_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F894B2D2D09D83E9817699D2 /* Pods_MetalCity_Mac.framework */; };
-		98914394CCD4D60DB1E1D0A6 /* Pods_MetalCity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDE257933FBB9CFFCC32A451 /* Pods_MetalCity.framework */; };
 		A117A82B21CA5393008FFC94 /* AutoCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A117A82A21CA5393008FFC94 /* AutoCamera.swift */; };
 		A117A83321CA78C3008FFC94 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A117A83221CA78C3008FFC94 /* AppDelegate.swift */; };
 		A117A83521CA78C3008FFC94 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A117A83421CA78C3008FFC94 /* GameViewController.swift */; };
@@ -71,12 +69,6 @@
 		A13069EB21CFB7CA0087E182 /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13069E221CFB7CA0087E182 /* Buffer.swift */; };
 		A13069EC21CFB7CA0087E182 /* Fire.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13069E321CFB7CA0087E182 /* Fire.swift */; };
 		A13069ED21CFB7CA0087E182 /* Fire.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13069E321CFB7CA0087E182 /* Fire.swift */; };
-		A143567F21E10B7B00A678F8 /* UIScrollView+ScrollToRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = A143567821E10B7B00A678F8 /* UIScrollView+ScrollToRect.swift */; };
-		A143568021E10B7B00A678F8 /* MenuTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A143567A21E10B7B00A678F8 /* MenuTheme.swift */; };
-		A143568121E10B7B00A678F8 /* MenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A143567B21E10B7B00A678F8 /* MenuItemView.swift */; };
-		A143568221E10B7B00A678F8 /* MenuContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A143567C21E10B7B00A678F8 /* MenuContents.swift */; };
-		A143568321E10B7B00A678F8 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A143567D21E10B7B00A678F8 /* MenuItem.swift */; };
-		A143568421E10B7B00A678F8 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A143567E21E10B7B00A678F8 /* MenuView.swift */; };
 		A1B7655521C66A610043139A /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655421C66A610043139A /* State.swift */; };
 		A1B7655721C6818B0043139A /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655621C6818B0043139A /* Utils.swift */; };
 		A1B7655B21C698D70043139A /* BoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B7655A21C698D70043139A /* BoundingBox.swift */; };
@@ -87,9 +79,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		14262323BCA12CCF54129C0E /* Pods-MetalCity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetalCity.release.xcconfig"; path = "Pods/Target Support Files/Pods-MetalCity/Pods-MetalCity.release.xcconfig"; sourceTree = "<group>"; };
-		14CE9D34DFCB3C48701489D8 /* Pods-MetalCity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetalCity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MetalCity/Pods-MetalCity.debug.xcconfig"; sourceTree = "<group>"; };
-		42513201B6C7E4AD430AA7D4 /* Pods-MetalCity_Mac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetalCity_Mac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MetalCity_Mac/Pods-MetalCity_Mac.debug.xcconfig"; sourceTree = "<group>"; };
 		A117A82A21CA5393008FFC94 /* AutoCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCamera.swift; sourceTree = "<group>"; };
 		A117A83021CA78C3008FFC94 /* MetalCity_Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetalCity_Mac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A117A83221CA78C3008FFC94 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -128,12 +117,6 @@
 		A13069E121CFB7CA0087E182 /* Clock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Clock.swift; sourceTree = "<group>"; };
 		A13069E221CFB7CA0087E182 /* Buffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buffer.swift; sourceTree = "<group>"; };
 		A13069E321CFB7CA0087E182 /* Fire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fire.swift; sourceTree = "<group>"; };
-		A143567821E10B7B00A678F8 /* UIScrollView+ScrollToRect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+ScrollToRect.swift"; sourceTree = "<group>"; };
-		A143567A21E10B7B00A678F8 /* MenuTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTheme.swift; sourceTree = "<group>"; };
-		A143567B21E10B7B00A678F8 /* MenuItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItemView.swift; sourceTree = "<group>"; };
-		A143567C21E10B7B00A678F8 /* MenuContents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuContents.swift; sourceTree = "<group>"; };
-		A143567D21E10B7B00A678F8 /* MenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
-		A143567E21E10B7B00A678F8 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		A1B7655421C66A610043139A /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		A1B7655621C6818B0043139A /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A1B7655A21C698D70043139A /* BoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundingBox.swift; sourceTree = "<group>"; };
@@ -141,9 +124,6 @@
 		A1B7655E21C7BFD10043139A /* TextureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureManager.swift; sourceTree = "<group>"; };
 		A1B7656021C7D3430043139A /* Streetlights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Streetlights.swift; sourceTree = "<group>"; };
 		A1D9BD0021C57A7800D7204A /* PlaneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneModel.swift; sourceTree = "<group>"; };
-		BDE257933FBB9CFFCC32A451 /* Pods_MetalCity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MetalCity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D500C3C0F8923F180E45A60C /* Pods-MetalCity_Mac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetalCity_Mac.release.xcconfig"; path = "Pods/Target Support Files/Pods-MetalCity_Mac/Pods-MetalCity_Mac.release.xcconfig"; sourceTree = "<group>"; };
-		F894B2D2D09D83E9817699D2 /* Pods_MetalCity_Mac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MetalCity_Mac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,7 +131,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				56B29DC67F02C2A8C9FFFCC1 /* Pods_MetalCity_Mac.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,24 +138,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98914394CCD4D60DB1E1D0A6 /* Pods_MetalCity.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6A218512623B075DE428C472 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				14CE9D34DFCB3C48701489D8 /* Pods-MetalCity.debug.xcconfig */,
-				14262323BCA12CCF54129C0E /* Pods-MetalCity.release.xcconfig */,
-				42513201B6C7E4AD430AA7D4 /* Pods-MetalCity_Mac.debug.xcconfig */,
-				D500C3C0F8923F180E45A60C /* Pods-MetalCity_Mac.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		A117A83121CA78C3008FFC94 /* MetalCity_Mac */ = {
 			isa = PBXGroup;
 			children = (
@@ -197,8 +164,6 @@
 				A12CDB1921C2EBDC001A3DA2 /* MetalCity */,
 				A117A83121CA78C3008FFC94 /* MetalCity_Mac */,
 				A12CDB1821C2EBDC001A3DA2 /* Products */,
-				6A218512623B075DE428C472 /* Pods */,
-				E815B42851CBAE5CEA035C39 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -214,7 +179,6 @@
 		A12CDB1921C2EBDC001A3DA2 /* MetalCity */ = {
 			isa = PBXGroup;
 			children = (
-				A143567621E10B7B00A678F8 /* Menu */,
 				A12CDB1A21C2EBDC001A3DA2 /* AppDelegate.swift */,
 				A12CDB2C21C2EC23001A3DA2 /* GameViewController.swift */,
 				A12CDB1E21C2EBDC001A3DA2 /* Main.storyboard */,
@@ -278,35 +242,6 @@
 			path = Fireworks;
 			sourceTree = "<group>";
 		};
-		A143567621E10B7B00A678F8 /* Menu */ = {
-			isa = PBXGroup;
-			children = (
-				A143567721E10B7B00A678F8 /* Util */,
-				A143567921E10B7B00A678F8 /* Menu */,
-			);
-			path = Menu;
-			sourceTree = "<group>";
-		};
-		A143567721E10B7B00A678F8 /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				A143567821E10B7B00A678F8 /* UIScrollView+ScrollToRect.swift */,
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
-		A143567921E10B7B00A678F8 /* Menu */ = {
-			isa = PBXGroup;
-			children = (
-				A143567A21E10B7B00A678F8 /* MenuTheme.swift */,
-				A143567B21E10B7B00A678F8 /* MenuItemView.swift */,
-				A143567C21E10B7B00A678F8 /* MenuContents.swift */,
-				A143567D21E10B7B00A678F8 /* MenuItem.swift */,
-				A143567E21E10B7B00A678F8 /* MenuView.swift */,
-			);
-			path = Menu;
-			sourceTree = "<group>";
-		};
 		A1D9BCFF21C57A4D00D7204A /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -324,15 +259,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		E815B42851CBAE5CEA035C39 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				BDE257933FBB9CFFCC32A451 /* Pods_MetalCity.framework */,
-				F894B2D2D09D83E9817699D2 /* Pods_MetalCity_Mac.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -340,7 +266,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A117A84221CA78C4008FFC94 /* Build configuration list for PBXNativeTarget "MetalCity_Mac" */;
 			buildPhases = (
-				BBC5499AEEDE83CB6EC5A7C1 /* [CP] Check Pods Manifest.lock */,
 				A117A82C21CA78C3008FFC94 /* Sources */,
 				A117A82D21CA78C3008FFC94 /* Frameworks */,
 				A117A82E21CA78C3008FFC94 /* Resources */,
@@ -358,11 +283,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A12CDB2921C2EBDD001A3DA2 /* Build configuration list for PBXNativeTarget "MetalCity" */;
 			buildPhases = (
-				927752BBB72F031E053CB89C /* [CP] Check Pods Manifest.lock */,
 				A12CDB1321C2EBDC001A3DA2 /* Sources */,
 				A12CDB1421C2EBDC001A3DA2 /* Frameworks */,
 				A12CDB1521C2EBDC001A3DA2 /* Resources */,
-				CB4E7FA5A3CB418784752E34 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -380,14 +303,16 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1300;
 				ORGANIZATIONNAME = "Andy Qua";
 				TargetAttributes = {
 					A117A82F21CA78C3008FFC94 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1300;
 					};
 					A12CDB1621C2EBDC001A3DA2 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1300;
 					};
 				};
 			};
@@ -431,75 +356,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		927752BBB72F031E053CB89C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-MetalCity-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BBC5499AEEDE83CB6EC5A7C1 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-MetalCity_Mac-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CB4E7FA5A3CB418784752E34 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-MetalCity/Pods-MetalCity-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MetalCity/Pods-MetalCity-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A117A82C21CA78C3008FFC94 /* Sources */ = {
@@ -545,14 +401,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A143568221E10B7B00A678F8 /* MenuContents.swift in Sources */,
 				A1D9BD0121C57A7800D7204A /* PlaneModel.swift in Sources */,
 				A13069E621CFB7CA0087E182 /* FWMath.swift in Sources */,
-				A143568421E10B7B00A678F8 /* MenuView.swift in Sources */,
 				A117A85C21CA7A55008FFC94 /* Image.swift in Sources */,
 				A13069E421CFB7CA0087E182 /* Scene.swift in Sources */,
-				A143568121E10B7B00A678F8 /* MenuItemView.swift in Sources */,
-				A143568321E10B7B00A678F8 /* MenuItem.swift in Sources */,
 				A12F600A21CC26FB000E920B /* Cars.swift in Sources */,
 				A12CDB3821C2EEF8001A3DA2 /* Camera.swift in Sources */,
 				A117A85A21CA7A06008FFC94 /* Color.swift in Sources */,
@@ -561,7 +413,6 @@
 				A117A82B21CA5393008FFC94 /* AutoCamera.swift in Sources */,
 				A12F600C21CC2C3E000E920B /* WorldMap.swift in Sources */,
 				A1B7655B21C698D70043139A /* BoundingBox.swift in Sources */,
-				A143568021E10B7B00A678F8 /* MenuTheme.swift in Sources */,
 				A130695521CE84EC0087E182 /* Towers.swift in Sources */,
 				A12CDB4321C30AC2001A3DA2 /* City.swift in Sources */,
 				A1B7655F21C7BFD10043139A /* TextureManager.swift in Sources */,
@@ -578,7 +429,6 @@
 				A12CDB3E21C2F13C001A3DA2 /* Model.swift in Sources */,
 				A130695721CE88DE0087E182 /* DecorationManager.swift in Sources */,
 				A1B7656121C7D3430043139A /* Streetlights.swift in Sources */,
-				A143567F21E10B7B00A678F8 /* UIScrollView+ScrollToRect.swift in Sources */,
 				A12CDB1B21C2EBDC001A3DA2 /* AppDelegate.swift in Sources */,
 				A13069EA21CFB7CA0087E182 /* Buffer.swift in Sources */,
 				A130695B21CEFB2B0087E182 /* Lights.swift in Sources */,
@@ -618,7 +468,6 @@
 /* Begin XCBuildConfiguration section */
 		A117A84321CA78C4008FFC94 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 42513201B6C7E4AD430AA7D4 /* Pods-MetalCity_Mac.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MetalCity_Mac/MetalCity_Mac.entitlements;
@@ -626,6 +475,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = A4ZM73UFF5;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = MetalCity_Mac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -636,13 +486,12 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = Shared/Rendering/ShaderTypes.h;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
 		A117A84421CA78C4008FFC94 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D500C3C0F8923F180E45A60C /* Pods-MetalCity_Mac.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MetalCity_Mac/MetalCity_Mac.entitlements;
@@ -650,6 +499,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = A4ZM73UFF5;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = MetalCity_Mac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -660,7 +510,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = Shared/Rendering/ShaderTypes.h;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -690,6 +540,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -751,6 +602,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -782,12 +634,12 @@
 		};
 		A12CDB2A21C2EBDD001A3DA2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 14CE9D34DFCB3C48701489D8 /* Pods-MetalCity.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A4ZM73UFF5;
 				INFOPLIST_FILE = MetalCity/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -795,19 +647,19 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.andyqua.MetalCity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = Shared/Rendering/ShaderTypes.h;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		A12CDB2B21C2EBDD001A3DA2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 14262323BCA12CCF54129C0E /* Pods-MetalCity.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A4ZM73UFF5;
 				INFOPLIST_FILE = MetalCity/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -815,7 +667,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.andyqua.MetalCity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = Shared/Rendering/ShaderTypes.h;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

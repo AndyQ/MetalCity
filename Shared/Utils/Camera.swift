@@ -11,14 +11,14 @@ import CoreGraphics
 
 
 class Camera {
-    var position = float3(0)
-    var lookAt = float3([0,1,0.5])
-    var up = float3([0,1,0])
+    var position = SIMD3<Float>(0,0,0)
+    var lookAt = SIMD3<Float>([0,1,0.5])
+    var up = SIMD3<Float>([0,1,0])
 
     init() {
     }
 
-    init(pos:float3, lookAt:float3, up:float3=[0,1,0]) {
+    init(pos:SIMD3<Float>, lookAt:SIMD3<Float>, up:SIMD3<Float>=[0,1,0]) {
         self.position = pos
         self.lookAt = lookAt
         self.up = up
@@ -41,7 +41,7 @@ class Camera {
     ///////////////////////////////// ROTATE VIEW \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
     func rotateViewRound(x:Float, y:Float, z:Float) {
-        var point = lookAt - position
+        let point = lookAt - position
 
         // If we pass in a negative X Y or Z, it will rotate the opposite way,
         // so we only need one function for a left and right , up or down rotation.
@@ -99,7 +99,7 @@ class Camera {
     ///////////////////////////////// ROTATE AROUND POINT \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
     func rotateAroundPoint(x:Float, y:Float, z:Float) {
-        var point = position - lookAt
+        let point = position - lookAt
 
         // Rotate the position along the desired axis around the desired point vCenter
         if x != 0.0 {
@@ -117,7 +117,7 @@ class Camera {
     }
 
 
-    func rotateAroundPoint(atCenter vCenter:float3, x:Float, y:Float, z:Float) {
+    func rotateAroundPoint(atCenter vCenter:SIMD3<Float>, x:Float, y:Float, z:Float) {
         let point = position - vCenter
 
         // Rotate the position along the desired axis around the desired point vCenter
@@ -145,11 +145,11 @@ class Camera {
     /////
     ///////////////////////////////// STRAFE CAMERA \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
-    func getVectorRightAnglesAwayFromCamera() -> float3 {
-        var vCross = float3()
+    func getVectorRightAnglesAwayFromCamera() -> SIMD3<Float> {
+        var vCross = SIMD3<Float>()
 
         // Get the view GLKVector3 of our camera and store it in a local variable
-        let vViewPoint :float3 = lookAt - position
+        let vViewPoint :SIMD3<Float> = lookAt - position
         // GLKVector3 for the position/view.
 
         // Here we calculate the cross product of our up GLKVector3 and view GLKVector3
@@ -173,10 +173,10 @@ class Camera {
         // For a better explanation on how this works, check out the OpenGL "Normals" tutorial at our site.
 
         // Initialize a variable for the cross product result
-        var vCross = float3()
+        var vCross = SIMD3<Float>()
 
         // Get the view GLKVector3 of our camera and store it in a local variable
-        let vViewPoint: float3 = lookAt - position                            // GLKVector3 for the position/view.
+        let vViewPoint: SIMD3<Float> = lookAt - position                            // GLKVector3 for the position/view.
 
         // Here we calculate the cross product of our up GLKVector3 and view GLKVector3
 

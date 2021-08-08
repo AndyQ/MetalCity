@@ -119,12 +119,7 @@ class City {
         for i in stride(from:0, to:len, by:4) {
             let x = (i/4) % WORLD_SIZE
             let y = (i/4) / WORLD_SIZE
-/*
-            bytes[i] = 0 // red
-            bytes[i+1] = 0 // green
-            bytes[i+2] = 0 // blue
-            bytes[i+3] = 255 // alpha
-*/
+
             let cell = WorldMap.instance.cellAt(x, y)
             if cell.contains(.claimRoad) {
                 bytes[i] = 75 // red
@@ -148,14 +143,26 @@ class City {
                 bytes[i+3] = 255 // alpha
             }
         }
-        let ptr = UnsafeMutableRawPointer(mutating: &bytes)
-        let ctx = CGContext(data: ptr,
-                            width: WORLD_SIZE,
-                            height: WORLD_SIZE,
-                            bitsPerComponent: 8,
-                            bytesPerRow: WORLD_SIZE*4, //imageRef.bytesPerRow,
-                            space: CGColorSpaceCreateDeviceRGB(), //imageRef.colorSpace!,
-                            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
+        
+        let ctx = CGContext(data: &bytes,
+                                width: WORLD_SIZE,
+                                height: WORLD_SIZE,
+                                bitsPerComponent: 8,
+                                bytesPerRow: WORLD_SIZE*4, //imageRef.bytesPerRow,
+                                space: CGColorSpaceCreateDeviceRGB(), //imageRef.colorSpace!,
+                                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
+            
+
+//        }
+
+//        let ptr = UnsafeMutableRawPointer(mutating: &bytes)
+//        let ctx = CGContext(data: ptr,
+//                            width: WORLD_SIZE,
+//                            height: WORLD_SIZE,
+//                            bitsPerComponent: 8,
+//                            bytesPerRow: WORLD_SIZE*4, //imageRef.bytesPerRow,
+//                            space: CGColorSpaceCreateDeviceRGB(), //imageRef.colorSpace!,
+//                            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
 
         guard let newImageRef = ctx!.makeImage() else { return nil }
         let newImage = Image(cgImage:newImageRef)
@@ -275,8 +282,8 @@ class City {
         //in the middle of the world.  Save this in a bounding box so that later we can
         //have the camera fly around without clipping through buildings.
         appState.hot_zone.clear()
-        appState.hot_zone.include(point: float3(west_street, 0.0, north_street))
-        appState.hot_zone.include(point: float3(east_street, 0.0, south_street))
+        appState.hot_zone.include(point: SIMD3<Float>(west_street, 0.0, north_street))
+        appState.hot_zone.include(point: SIMD3<Float>(east_street, 0.0, south_street))
 
 
         print("   Placing large buildings in center of map")
@@ -423,7 +430,7 @@ class City {
     }
 
     func buildLightStrip(atX x1:Int, z z1:Int, direction:Direction, height: Float = 0) -> Int {
-        var  color: float4 = [0,0,0,1]
+        var  color: SIMD4<Float> = [0,0,0,1]
         var dir_x = 0
         var dir_z = 0
         let size_adjust: Float = 2.5//.5

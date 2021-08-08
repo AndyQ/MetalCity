@@ -26,7 +26,7 @@ func radians_from_degrees(_ degrees: Float) -> Float {
     return (degrees / 180) * .pi
 }
 
-func calculateTriangleSurfaceNormal(v1: Vertex, v2: Vertex, v3: Vertex) -> float4 {
+func calculateTriangleSurfaceNormal(v1: Vertex, v2: Vertex, v3: Vertex) -> SIMD4<Float> {
     let vector1 = (v2.position - v1.position).xyz
     let vector2 = (v3.position - v1.position).xyz
     let crossProduct = cross(vector1, vector2)
@@ -112,8 +112,8 @@ extension Float {
 
 extension CGSize {
     /// Transforms a `CGSize` into a vector with two numbers
-    var float2: simd.float2 {
-        return simd.float2(Float(self.width), Float(self.height))
+    var float2: SIMD2<Float> {
+        return SIMD2<Float>(Float(self.width), Float(self.height))
     }
 
     var aspectRatio: CGFloat {
@@ -121,10 +121,10 @@ extension CGSize {
     }
 }
 
-extension float3 {
-    static let zero = float3(0,0,0)
+extension SIMD3 where Scalar == Float {
+    static let zero = SIMD3<Float>(0,0,0)
 
-    static func lerp(vectorStart: float3,  vectorEnd: float3, t: Float) -> float3 {
+    static func lerp(vectorStart: SIMD3<Float>,  vectorEnd: SIMD3<Float>, t: Float) -> SIMD3<Float> {
         return vectorStart + (vectorEnd - vectorStart) * t
     }
 }
@@ -135,30 +135,30 @@ extension CGRect {
     }
 }
 
-extension float4 {
-    var xy: float2 {
-        return float2([self.x, self.y])
+extension SIMD4 where Scalar == Float {
+    var xy: SIMD2<Float> {
+        return SIMD2<Float>([self.x, self.y])
     }
 
-    var xyz: float3 {
-        return float3([self.x, self.y, self.z])
+    var xyz: SIMD3<Float> {
+        return SIMD3<Float>([self.x, self.y, self.z])
     }
 
-    static let zero = float4(0,0,0,0)
-    static let normal = float4(0, 1, 0, 1)
-    static let color = float4(1,1,1,1)
+    static let zero = SIMD4<Float>(0,0,0,0)
+    static let normal = SIMD4<Float>(0, 1, 0, 1)
+    static let color = SIMD4<Float>(1,1,1,1)
 }
 
 
 extension float4x4 {
     /// Creates a 4x4 matrix representing a translation given by the provided vector.
     /// - parameter vector: Vector giving the direction and magnitude of the translation.
-    init(translate vector: float3) {
+    init(translate vector: SIMD3<Float>) {
         // List of the matrix' columns
-        let baseX: float4 = [1, 0, 0, 0]
-        let baseY: float4 = [0, 1, 0, 0]
-        let baseZ: float4 = [0, 0, 1, 0]
-        let baseW: float4 = [vector.x, vector.y, vector.z, 1]
+        let baseX: SIMD4<Float> = [1, 0, 0, 0]
+        let baseY: SIMD4<Float> = [0, 1, 0, 0]
+        let baseZ: SIMD4<Float> = [0, 0, 1, 0]
+        let baseW: SIMD4<Float> = [vector.x, vector.y, vector.z, 1]
         self.init(baseX, baseY, baseZ, baseW)
     }
 
@@ -170,7 +170,7 @@ extension float4x4 {
 
     /// Creates a 4x4 matrix that will rotate through the given vector and given angle.
     /// - parameter angle: The amount of radians to rotate from the given vector center.
-    init(rotate vector: float3, angle: Float) {
+    init(rotate vector: SIMD3<Float>, angle: Float) {
         let c: Float = cos(angle)
         let s: Float = sin(angle)
         let cm = 1 - c
@@ -188,10 +188,10 @@ extension float4x4 {
         let z2 = vector.z*vector.z + (1-vector.z*vector.z)*c
 
         // List of the matrix' columns
-        let baseX: float4 = [x0, x1, x2, 0]
-        let baseY: float4 = [y0, y1, y2, 0]
-        let baseZ: float4 = [z0, z1, z2, 0]
-        let baseW: float4 = [ 0,  0,  0, 1]
+        let baseX: SIMD4<Float> = [x0, x1, x2, 0]
+        let baseY: SIMD4<Float> = [y0, y1, y2, 0]
+        let baseZ: SIMD4<Float> = [z0, z1, z2, 0]
+        let baseW: SIMD4<Float> = [ 0,  0,  0, 1]
         self.init(baseX, baseY, baseZ, baseW)
     }
 
@@ -204,10 +204,10 @@ extension float4x4 {
         let wzScale = -2 * far * near / zRange
 
         // List of the matrix' columns
-        let vectorP: float4 = [xScale,      0,       0,  0]
-        let vectorQ: float4 = [     0, yScale,       0,  0]
-        let vectorR: float4 = [     0,      0,  zScale, -1]
-        let vectorS: float4 = [     0,      0, wzScale,  0]
+        let vectorP: SIMD4<Float> = [xScale,      0,       0,  0]
+        let vectorQ: SIMD4<Float> = [     0, yScale,       0,  0]
+        let vectorR: SIMD4<Float> = [     0,      0,  zScale, -1]
+        let vectorS: SIMD4<Float> = [     0,      0, wzScale,  0]
         self.init(vectorP, vectorQ, vectorR, vectorS)
     }
 
@@ -222,7 +222,7 @@ extension float4x4 {
     }
 
 
-    static func makeLookAt(eye: float3, lookAt: float3, up:float3) -> float4x4 {
+    static func makeLookAt(eye: SIMD3<Float>, lookAt: SIMD3<Float>, up:SIMD3<Float>) -> float4x4 {
         let n = normalize(eye + (-lookAt))
         let u = normalize(cross(up, n))
         let v = cross(n, u)
@@ -239,9 +239,9 @@ extension float4x4 {
                      lookAtX: Float, lookAtY: Float, lookAtZ: Float,
                      upX: Float, upY: Float, upZ: Float) -> float4x4 {
 
-        let ev: float3 = [ eyeX, eyeY, eyeZ ]
-        let cv: float3 = [ lookAtX, lookAtY, lookAtZ ]
-        let uv: float3 = [ upX, upY, upZ ]
+        let ev: SIMD3<Float> = [ eyeX, eyeY, eyeZ ]
+        let cv: SIMD3<Float> = [ lookAtX, lookAtY, lookAtZ ]
+        let uv: SIMD3<Float> = [ upX, upY, upZ ]
 
         return makeLookAt(eye:ev, lookAt:cv, up:uv)
     }

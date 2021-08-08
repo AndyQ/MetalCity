@@ -224,7 +224,7 @@ extension TextureManager {
         var run = 0
         var run_length = 0
         var lit_density = 0
-        var color = float4(0,0,0,1)
+        var color = SIMD4<Float>(0,0,0,1)
         var lit = true
         let segment_size = (size*2) / SEGMENTS_PER_TEXTURE
 
@@ -245,10 +245,10 @@ extension TextureManager {
 
                 if lit {
                     let luminance: Float = 0.5 + Float(randomInt() % 128) / 256.0
-                    color = float4(RANDOM_COLOR_SHIFT+luminance, RANDOM_COLOR_SHIFT+luminance, RANDOM_COLOR_SHIFT+luminance, 1.0)
+                    color = SIMD4<Float>(RANDOM_COLOR_SHIFT+luminance, RANDOM_COLOR_SHIFT+luminance, RANDOM_COLOR_SHIFT+luminance, 1.0)
                 } else {
                     let v = Float(randomInt() % 40) / 256.0
-                    color = float4(v, v, v, 1)
+                    color = SIMD4<Float>(v, v, v, 1)
                 }
 
                 self.drawWindow(context: ctx, x:x * segment_size, y:y * segment_size, size:segment_size, color:color, textureId:textureType)
@@ -257,7 +257,7 @@ extension TextureManager {
         }
     }
 
-    func drawWindow(context ctx:CGContext, x:Int, y:Int, size:Int, color:float4, textureId: TextureType) {
+    func drawWindow(context ctx:CGContext, x:Int, y:Int, size:Int, color:SIMD4<Float>, textureId: TextureType) {
 
         let margin = size / 3
         let half = size / 2
@@ -295,10 +295,10 @@ extension TextureManager {
 
     }
 
-    func drawRect(context ctx:CGContext, left:Int, top:Int, right:Int, bottom:Int, color:float4) {
+    func drawRect(context ctx:CGContext, left:Int, top:Int, right:Int, bottom:Int, color:SIMD4<Float>) {
 
         // lighten up the color a bit
-        let c = Color(rgba:float4(color.x+0.1, color.y+0.1, color.z+0.1, 1))
+        let c = Color(rgba:SIMD4<Float>(color.x+0.1, color.y+0.1, color.z+0.1, 1))
         ctx.setFillColor(c.cgColor)
         ctx.setAlpha(1)
 
@@ -359,7 +359,7 @@ extension TextureManager {
         let half = width/2
         var color = appState.bloom_color
         let grey = (color.x + color.y + color.z) / 3.0
-        let greyColor = float4(grey, grey, grey, 1)
+        let greyColor = SIMD4<Float>(grey, grey, grey, 1)
 
         //desaturate, slightly dim
         color = (color + (greyColor * 2.0)) / 15.0
@@ -374,7 +374,7 @@ extension TextureManager {
 
         // Draw a bunch of little faux-buildings on the horizon.
         for i in stride(from:0, to:Int(width), by:5) {
-            drawRect(context: ctx, left: i, top: Int(bottom) - randomInt(8) - randomInt(8) - randomInt(8), right: i + randomInt(9), bottom: Int(bottom), color: float4(0,0,0,1))
+            drawRect(context: ctx, left: i, top: Int(bottom) - randomInt(8) - randomInt(8) - randomInt(8), right: i + randomInt(9), bottom: Int(bottom), color: SIMD4<Float>(0,0,0,1))
         }
 //        return
 
@@ -391,12 +391,12 @@ extension TextureManager {
 
             for offset in stride(from:-width, to:width+1, by:width) {
                 for scale in stride(from:Float(1.0), to: 0.0, by: -0.25) {
-                    var startC: float4
+                    var startC: SIMD4<Float>
                     let inv_scale = 1.0 - (scale)
                     if scale < 0.4 {
                         startC = appState.bloom_color * 0.1
                     } else {
-                        startC = float4(0, 0, 0, 1)
+                        startC = SIMD4<Float>(0, 0, 0, 1)
                     }
                     startC.w = 0.1
 

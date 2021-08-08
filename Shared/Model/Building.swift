@@ -48,8 +48,8 @@ class Building: Model {
     var type: BuildingType
     var seed: Int
     var roof_tiers: Int = 0
-    var color: float4
-    var trim_color: float4
+    var color: SIMD4<Float>
+    var trim_color: SIMD4<Float>
 
     var hasTower = false
     var hasTrim = false
@@ -59,7 +59,7 @@ class Building: Model {
 
     var logoVertices = [Vertex]()
 
-    init(device: MTLDevice, type:BuildingType, x:Int, y:Int, height:Int, width:Int, depth:Int, seed:Int, color:float4) {
+    init(device: MTLDevice, type:BuildingType, x:Int, y:Int, height:Int, width:Int, depth:Int, seed:Int, color:SIMD4<Float>) {
         self.device = device
 
         self.x = x
@@ -227,8 +227,8 @@ class Building: Model {
         //Get the center and radius of the circle
         let half_depth = depth / 2
         let half_width = width / 2
-        var center = float3(Float(x + half_width), 0.0, Float(y + half_depth))
-        var radius = float2(Float(half_width), Float(half_depth))
+        let center = SIMD3<Float>(Float(x + half_width), 0.0, Float(y + half_depth))
+        let radius = SIMD2<Float>(Float(half_width), Float(half_depth))
         var windows = 0
 
         var points = 0
@@ -236,7 +236,7 @@ class Building: Model {
         var v = Vertex()
         var verticesArray = [Vertex]()
 
-        var pos = float4(0, 0, 0, 1)
+        var pos = SIMD4<Float>(0, 0, 0, 1)
         var angle = 0
         while angle <= 360 {
             if (skip_counter >= skip_interval && (angle + skip_delta < 360))
@@ -256,8 +256,8 @@ class Building: Model {
                 windows += Int(length)
                 if length > 10 && !hasLogo {
                     hasLogo = true
-                    let start = float2(pos.x, pos.z);
-                    let end = float2(p.x, p.z);
+                    let start = SIMD2<Float>(pos.x, pos.z);
+                    let end = SIMD2<Float>(p.x, p.z);
                     createLogo(start: start, end: end, bottom: Float(height), seed: Building.logoIndex, logoTextColor: randomColor())
                     Building.logoIndex += 1
                 }
@@ -268,12 +268,12 @@ class Building: Model {
             p = pos
             pos.y = 0
             v.position = pos
-            v.texCoords = float2(Float(windows) / Float(SEGMENTS_PER_TEXTURE), 0.0)
+            v.texCoords = SIMD2<Float>(Float(windows) / Float(SEGMENTS_PER_TEXTURE), 0.0)
             verticesArray.append(v)
 
             pos.y = Float(height)
             v.position = pos
-            v.texCoords = float2(Float(windows) / Float(SEGMENTS_PER_TEXTURE), Float(height) / Float(SEGMENTS_PER_TEXTURE))
+            v.texCoords = SIMD2<Float>(Float(windows) / Float(SEGMENTS_PER_TEXTURE), Float(height) / Float(SEGMENTS_PER_TEXTURE))
             verticesArray.append(v)
 
             points += 2
@@ -334,9 +334,9 @@ class Building: Model {
             v.normal = n1
             v1.normal = n1
             v2.normal = n1
-            v.texCoords = float2(0, 0)
-            v1.texCoords = float2(0, 0)
-            v2.texCoords = float2(0, 0)
+            v.texCoords = SIMD2<Float>(0, 0)
+            v1.texCoords = SIMD2<Float>(0, 0)
+            v2.texCoords = SIMD2<Float>(0, 0)
             vlist.append(contentsOf:[v, v1, v2])
         }
 
@@ -648,12 +648,12 @@ class Building: Model {
                 let loop = (i == 0 || i == length) ? 1: 2
                 var v = Vertex()
                 for _ in 0 ..< loop {
-                    v.position = float4(Float(x), Float(startY), Float(z), 1)
-                    v.texCoords = float2(textureS, Float(startY) / Float(SEGMENTS_PER_TEXTURE))
+                    v.position = SIMD4<Float>(Float(x), Float(startY), Float(z), 1)
+                    v.texCoords = SIMD2<Float>(textureS, Float(startY) / Float(SEGMENTS_PER_TEXTURE))
                     vertices.append(v)
 
-                    v.position = float4(Float(x), Float(startY + height), Float(z), 1)
-                    v.texCoords = float2(textureS, Float(startY + height) / Float(SEGMENTS_PER_TEXTURE))
+                    v.position = SIMD4<Float>(Float(x), Float(startY + height), Float(z), 1)
+                    v.texCoords = SIMD2<Float>(textureS, Float(startY + height) / Float(SEGMENTS_PER_TEXTURE))
                     vertices.append(v)
                 }
             }
@@ -701,21 +701,21 @@ class Building: Model {
                 face = flipCoinIsHeads() ? .east: .west
             }
 
-            let start: float2
-            let end: float2
+            let start: SIMD2<Float>
+            let end: SIMD2<Float>
             switch face {
             case .north:
-                start = float2(left, back + logo_offset)
-                end = float2(right, back + logo_offset)
+                start = SIMD2<Float>(left, back + logo_offset)
+                end = SIMD2<Float>(right, back + logo_offset)
             case .south:
-                start = float2(right, front - logo_offset)
-                end = float2(left, front - logo_offset)
+                start = SIMD2<Float>(right, front - logo_offset)
+                end = SIMD2<Float>(left, front - logo_offset)
             case .east:
-                start = float2(right + logo_offset, back)
-                end = float2(right + logo_offset, front)
+                start = SIMD2<Float>(right + logo_offset, back)
+                end = SIMD2<Float>(right + logo_offset, front)
             case .west:
-                start = float2(left - logo_offset, front)
-                end = float2(left - logo_offset, back)
+                start = SIMD2<Float>(left - logo_offset, front)
+                end = SIMD2<Float>(left - logo_offset, back)
             }
 
             createLogo(start:start, end:end, bottom:bottom, seed:Building.logoIndex, logoTextColor:trim_color)
@@ -784,7 +784,7 @@ class Building: Model {
         //print(self.height)
         if (self.height > 45 && flipCoinIsHeads())
         {
-            let center = float3((left + right) / 2.0, newBottom, (front + back) / 2.0)
+            let center = SIMD3<Float>((left + right) / 2.0, newBottom, (front + back) / 2.0)
             DecorationManager.instance.addRadioTower(center:center, height:15)
         }
 
@@ -899,15 +899,15 @@ class Building: Model {
         vertexBuffer.label = "vertices building"
     }
 
-    func createLogo(start:float2, end:float2, bottom:Float, seed:Int, logoTextColor:float4) {
+    func createLogo(start:SIMD2<Float>, end:SIMD2<Float>, bottom:Float, seed:Int, logoTextColor:SIMD4<Float>) {
         let LOGO_OFFSET :Float = 1 //0.2
 
         let logo_index = seed % TextureManager.instance.textAtlas.nrItems
 
-        var to = float3(start.x, 0.0, start.y) - float3(end.x, 0.0, end.y)
+        var to = SIMD3<Float>(start.x, 0.0, start.y) - SIMD3<Float>(end.x, 0.0, end.y)
         to = normalize(to)
-        var outtmp = cross(float3(0.0, 1.0, 0.0), to) * LOGO_OFFSET
-        let out = float4(outtmp.x, outtmp.y, outtmp.z, 0)
+        let outtmp = cross(SIMD3<Float>(0.0, 1.0, 0.0), to) * LOGO_OFFSET
+        let out = SIMD4<Float>(outtmp.x, outtmp.y, outtmp.z, 0)
 
 
         let len = length(start - end)
@@ -921,10 +921,10 @@ class Building: Model {
         let u2 = textItem.tr.x
         let v2 = textItem.tr.y
 
-        let ver1 = Vertex(position: float4(start.x, bottom, start.y, 1) + out, normal: .normal, color: logoTextColor, texCoords: float2(u1,v2))
-        let ver2 = Vertex(position: float4(end.x, bottom, end.y, 1) + out, normal: .normal, color: logoTextColor, texCoords: float2(u2,v2))
-        let ver3 = Vertex(position: float4(start.x, top, start.y, 1) + out, normal: .normal, color: logoTextColor, texCoords: float2(u1,v1))
-        let ver4 = Vertex(position: float4(end.x, top, end.y, 1) + out, normal: .normal, color: logoTextColor, texCoords: float2(u2,v1))
+        let ver1 = Vertex(position: SIMD4<Float>(start.x, bottom, start.y, 1) + out, normal: .normal, color: logoTextColor, texCoords: SIMD2<Float>(u1,v2))
+        let ver2 = Vertex(position: SIMD4<Float>(end.x, bottom, end.y, 1) + out, normal: .normal, color: logoTextColor, texCoords: SIMD2<Float>(u2,v2))
+        let ver3 = Vertex(position: SIMD4<Float>(start.x, top, start.y, 1) + out, normal: .normal, color: logoTextColor, texCoords: SIMD2<Float>(u1,v1))
+        let ver4 = Vertex(position: SIMD4<Float>(end.x, top, end.y, 1) + out, normal: .normal, color: logoTextColor, texCoords: SIMD2<Float>(u2,v1))
 
         //print("Creating logo")
         logoVertices.append(contentsOf: convertQuadsToTriangles([ver1, ver2, ver3, ver4], useMainColor:false))

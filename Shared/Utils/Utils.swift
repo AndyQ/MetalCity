@@ -31,7 +31,7 @@ func randomInt(_ range: Int) -> Int {
     return i
 }
 
-func randomColor() -> float4 {
+func randomColor() -> SIMD4<Float> {
     let h = CGFloat(randomInt(255))/255.0
     let c = Color(hue:h, saturation:1.0, brightness:0.75, alpha:1).rgba()
 
@@ -73,7 +73,7 @@ var light_colors: [Color] = [
     Color(hue:0.65, saturation:0.0,  brightness:0.6, alpha:1)    //Dimmest white.
 ]
 
-func worldLightColor(_ index: Int) -> float4 {
+func worldLightColor(_ index: Int) -> SIMD4<Float> {
     let ci = index % light_colors.count
     return light_colors[ci].rgba()
 }

@@ -23,19 +23,19 @@ public typealias Color = UIColor
 
 extension Color {
 
-    public convenience init(rgba:float4) {
+    public convenience init(rgba:SIMD4<Float>) {
         self.init(red:CGFloat(rgba.x), green:CGFloat(rgba.y), blue:CGFloat(rgba.z), alpha:CGFloat(rgba.w))
     }
 
 #if !os(OSX)
 
-    func rgba() -> float4 {
+    func rgba() -> SIMD4<Float> {
         var fRed: CGFloat = 0
         var fGreen: CGFloat = 0
         var fBlue: CGFloat = 0
         var fAlpha: CGFloat = 0
         self.getRed(&fRed, green: &fGreen, blue: &fBlue, alpha: &fAlpha)
-        return float4(Float(fRed), Float(fGreen), Float(fBlue), 1.0)
+        return SIMD4<Float>(Float(fRed), Float(fGreen), Float(fBlue), 1.0)
     }
 
     public var hueComponent: CGFloat {
@@ -47,14 +47,14 @@ extension Color {
 
 #else
 
-    func rgba() -> float4 {
+    func rgba() -> SIMD4<Float> {
         var fRed: CGFloat = 0
         var fGreen: CGFloat = 0
         var fBlue: CGFloat = 0
         var fAlpha: CGFloat = 0
 
         self.getRed(&fRed, green: &fGreen, blue: &fBlue, alpha: &fAlpha)
-        return float4(Float(fRed), Float(fGreen), Float(fBlue), 1.0)
+        return SIMD4<Float>(Float(fRed), Float(fGreen), Float(fBlue), 1.0)
     }
 
 #endif
